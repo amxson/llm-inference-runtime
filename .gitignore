@@ -1,0 +1,33 @@
+# Python-generated files
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Local environments and test output
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local configuration and editor files
+.env
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Large local ML artifacts and caches
+.cache/
+.huggingface/
+models/
+checkpoints/
+*.safetensors
+*.gguf
+pytorch_model*.bin
+
+# Generated benchmark results
+benchmark_results/
