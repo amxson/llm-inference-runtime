@@ -1,16 +1,16 @@
-# Educational LLM Inference Runtime
+# LLM Inference Runtime
 
-This repository is an educational, engineering-focused project for learning how an LLM inference runtime works. It will explore the mechanisms behind high-throughput LLM serving in small, inspectable milestones.
+An LLM inference runtime built from first principles to explore and implement autoregressive decoding, KV caching, batching, scheduling, streaming, and inference optimizations.
 
-The project draws inspiration from systems such as vLLM, Hugging Face Text Generation Inference (TGI), and llama.cpp, but it is not a clone or a replacement for any of them.
+The project focuses on correctness, benchmarking, systems understanding, and progressive optimization. It draws inspiration from systems such as vLLM, Hugging Face Text Generation Inference (TGI), and llama.cpp, but is not intended to replace them.
 
 ## Status
 
-**M1 — Model & Tokenizer Loading**
+**M2 — Single Forward-Pass Inspection**
 
-The runtime can now load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, place the model in evaluation mode, and report configuration metadata. The default model for local experiments is `distilgpt2`.
+The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
-No forward pass, token generation, or decoding has been implemented yet.
+Autoregressive decoding and token generation have not been implemented yet.
 
 ## Expected progression
 
@@ -58,6 +58,22 @@ python -m llm_runtime.model_loader distilgpt2 --device cpu
 
 Model files are downloaded to the normal Hugging Face cache, not this repository. An explicit CUDA request fails with a clear error when CUDA is unavailable.
 
+## Inspect one forward pass
+
+Run one forward pass for the default prompt, `The capital of France is`:
+
+```powershell
+python -m llm_runtime.forward_inspect --device cpu
+```
+
+Supply a different prompt, model, or device when needed:
+
+```powershell
+python -m llm_runtime.forward_inspect --prompt "The tallest mountain is" --model distilgpt2 --device cpu
+```
+
+The report shows token IDs, token pieces, tensor shapes, output logits, and the top five raw-logit candidates from the final prompt position. It identifies what greedy decoding would select but does not append that token or run the model again.
+
 ## Current limitations
 
-M1 only loads and inspects model and tokenizer objects. It does not tokenize prompts, run forward passes, inspect logits, generate or sample tokens, manage inference memory, batch requests, schedule work, or expose a server.
+M2 performs exactly one model forward pass for inspection. It does not generate or append tokens, run an autoregressive loop, sample tokens, manage a KV cache, batch requests, schedule work, or expose a server.
