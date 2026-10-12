@@ -6,11 +6,11 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M2 — Single Forward-Pass Inspection**
+**M3 — Manual Greedy Autoregressive Decoding**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
-Autoregressive decoding and token generation have not been implemented yet.
+The runtime also supports manual greedy decoding for one request: select the next token with argmax, append it to the sequence, and repeat until EOS or the requested token limit.
 
 ## Expected progression
 
@@ -74,6 +74,16 @@ python -m llm_runtime.forward_inspect --prompt "The tallest mountain is" --model
 
 The report shows token IDs, token pieces, tensor shapes, output logits, and the top five raw-logit candidates from the final prompt position. It identifies what greedy decoding would select but does not append that token or run the model again.
 
+## Manual greedy decoding
+
+```powershell
+python -m llm_runtime.greedy_decode --device cpu --prompt "The capital of France is" --max-new-tokens 10
+```
+
+The decoder tokenizes once, selects each new token using `torch.argmax`, manually appends it, and extends the attention mask. It stops at EOS or `max_new_tokens`; a limit of zero performs no forward passes. The result includes generated text, token IDs, and a short trace of input sequence lengths.
+
+`model.generate()` is not used. This is a deliberately naive uncached decoder: every step recomputes the complete sequence. For a prompt of length T, successive forward calls process lengths T, T+1, T+2, and so on. Cache creation is disabled; KV-cache optimization is not implemented yet. No performance improvement is claimed.
+
 ## Current limitations
 
-M2 performs exactly one model forward pass for inspection. It does not generate or append tokens, run an autoregressive loop, sample tokens, manage a KV cache, batch requests, schedule work, or expose a server.
+M3 supports one request with deterministic greedy decoding. Sampling, KV caching, request batching, scheduling, and serving are not implemented yet. M2's separate inspection command still executes exactly one forward pass.
