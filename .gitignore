@@ -31,3 +31,5 @@ pytorch_model*.bin
 
 # Generated benchmark results
 benchmark_results/
+benchmarks/results/*
+!benchmarks/results/m5_naive_cpu.json

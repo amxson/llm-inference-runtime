@@ -6,13 +6,15 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M4 — Sampling**
+**M5 — Naive Baseline Benchmark**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
 The runtime also supports manual greedy decoding for one request: select the next token with argmax, append it to the sequence, and repeat until EOS or the requested token limit.
 
 Stochastic decoding now supports temperature scaling, top-k and top-p (nucleus) filtering, multinomial sampling, and reproducible local seeds.
+
+The benchmark harness measures the existing single-request uncached greedy decoder, with per-request timing, repeated-work counts, and JSON results.
 
 ## Expected progression
 
@@ -100,6 +102,28 @@ An optional seed initializes a local `torch.Generator` on the model's device, wi
 
 `model.generate()` is not used. Sampling remains uncached with `use_cache=False`, recomputing the full sequence each generation step. KV-cache optimization comes later; no performance improvement is claimed.
 
+## Naive baseline benchmark
+
+```powershell
+python -m llm_runtime.benchmark_naive --device cpu --prompt "The capital of France is" --max-new-tokens 10 --warmup-runs 1 --runs 3 --output benchmarks/results/m5_naive_cpu.json
+```
+
+Model/tokenizer loading is excluded. Warmups execute the same path before measured requests and do not enter the statistics. Timing uses `time.perf_counter()` and synchronizes CUDA before timing boundaries; CPU synchronization is a no-op.
+
+Request timing begins immediately before tokenization. TTFT ends when the first token is selected; total latency ends when the final generated token is selected. ITLs are differences between consecutive token-selection timestamps, including intervening token appending and mask updates. Final text decoding and result formatting are excluded. Zero-token requests report zero latency/throughput and null TTFT/mean ITL; a one-token request has no ITL.
+
+Tokens/sec is generated tokens divided by request latency: single-request throughput, not concurrent server throughput. Summary mean ITL pools all measured intervals. Three runs do not establish production tail percentiles. Input token positions processed is the sum of full-sequence forward input lengths, not a FLOP count. The complete sequence is recomputed for every token with `use_cache=False`.
+
+The representative machine/environment-specific result is saved in [benchmarks/results/m5_naive_cpu.json](benchmarks/results/m5_naive_cpu.json). It is a baseline measurement, without a cache comparison or speedup claim. Other local result files under `benchmarks/results/` are ignored.
+
+Recorded environment: Windows, Python 3.11.9, PyTorch 2.14.0+cpu, Transformers 5.17.0, four PyTorch threads. Model: `distilgpt2`; one warmup and three measured requests for the prompt above. Values are rounded here; JSON preserves the raw measurements.
+
+| Device | Prompt tokens | Generated tokens/request | Mean total latency | Mean TTFT | Mean ITL | Mean tokens/sec | Input positions/request |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| CPU | 5 | 10 | 343.123 ms | 24.579 ms | 35.394 ms | 29.212 | 95 |
+
+All measured runs produced identical greedy token IDs. These results describe this environment and request, not production serving performance.
+
 ## Current limitations
 
-M4 supports one request with greedy or stochastic decoding. Benchmarking, KV caching, request batching, scheduling, and serving are not implemented yet. M2's separate inspection command still executes exactly one forward pass.
+M5 supports one request with greedy or stochastic decoding and an uncached greedy benchmark. KV caching, request batching, scheduling, and serving are not implemented yet. M2's separate inspection command still executes exactly one forward pass.
