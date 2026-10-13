@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M6 — KV-Cache Decoding**
+**M7 — Cached vs Uncached Benchmark**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -114,7 +114,7 @@ Uncached decoding forwards the full context, appends a token, then forwards the 
 
 The trace separates prefill from decode and distinguishes actual model input length from logical context length. Attention masks cover the full logical sequence even when model input length is one. In the inspected Transformers 5.17.0 GPT-2 API, `DynamicCache.get_seq_length()` supplies the position offset; explicit position IDs are unnecessary for this ordinary unpadded single-request path.
 
-The real `distilgpt2` probe returned six dynamic cache layers, with K/V shape `[1, 12, 5, 64]` per layer after the five-token prompt. The correctness check compares fresh cached and uncached greedy token IDs. Performance comparison belongs to M7; M6 makes no speedup claim.
+The real `distilgpt2` probe returned six dynamic cache layers, with K/V shape `[1, 12, 5, 64]` per layer after the five-token prompt. Correctness checks compare fresh cached and uncached greedy token IDs; the paired M7 benchmark below measures performance separately.
 
 ## Naive baseline benchmark
 
@@ -138,6 +138,30 @@ Recorded environment: Windows, Python 3.11.9, PyTorch 2.14.0+cpu, Transformers 5
 
 All measured runs produced identical greedy token IDs. These results describe this environment and request, not production serving performance.
 
+## Cached vs uncached
+
+```powershell
+python -m llm_runtime.benchmark_cache --device cpu --prompt "The capital of France is" --max-new-tokens 10 --warmup-runs 1 --runs 3 --output benchmarks/results/m7_cached_vs_uncached_cpu.json
+```
+
+This comparison loads one model/tokenizer, warms up each mode, then alternates which mode runs first in each measured pair. Both modes use the M5 timing boundaries and synchronization helper. All measured token IDs must match before comparison ratios or JSON are produced. The uncached measurements are fresh; the historical M5 result is not the comparison denominator.
+
+KV caching avoids recomputing prior attention K/V state during incremental decoding. Prefill still processes the whole prompt, so a major TTFT improvement is not promised. The cache grows with sequence length: less recomputation does not make attention state or its memory free. There is no paged KV allocator.
+
+The representative [M7 JSON](benchmarks/results/m7_cached_vs_uncached_cpu.json) retains all raw runs, logical context lengths, work counts, per-request GPU peak allocations (null on CPU), and clearly named ratios. This is a short, environment-specific, single-request CPU experiment, not production serving throughput or a tail-latency study.
+
+Fresh results for `distilgpt2`, a five-token prompt, ten generated tokens, one warmup per mode, and three measured requests per mode (Windows, Python 3.11.9, PyTorch 2.14.0+cpu, Transformers 5.17.0, four PyTorch threads):
+
+| Metric | Uncached | Cached | Comparison |
+| --- | ---: | ---: | --- |
+| Input positions/request | 95 | 14 | Cached/uncached: 0.1474 |
+| Mean total latency | 699.031 ms | 381.035 ms | Uncached/cached: 1.835x |
+| Mean TTFT | 50.271 ms | 49.693 ms | Nearly unchanged |
+| Mean ITL | 72.084 ms | 36.816 ms | Uncached/cached: 1.958x |
+| Mean tokens/sec | 14.345 | 26.293 | Cached/uncached: 1.833x |
+
+All six measured requests produced exactly the same token IDs. Uncached input lengths were `[5, 6, 7, 8, 9, 10, 11, 12, 13, 14]`; cached input lengths were `[5, 1, 1, 1, 1, 1, 1, 1, 1, 1]`, while both logical contexts grew from 5 to 14. Cached decoding was faster in this measured experiment, primarily after prefill. The position count is not a FLOP count, and these results do not establish a universal speedup or production capacity.
+
 ## Current limitations
 
-M6 supports ordinary single-request KV caching for greedy decoding, uncached greedy/sampling paths, and the uncached baseline benchmark. No paged/block cache allocator, request batching, scheduler, or server exists. M2's separate inspection command still executes exactly one forward pass.
+M7 adds a paired cached/uncached greedy benchmark while preserving the earlier decoders and M5 baseline. No paged/block cache allocator, request batching, scheduler, or server exists. M2's separate inspection command still executes exactly one forward pass.
