@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M5 — Naive Baseline Benchmark**
+**M6 — KV-Cache Decoding**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -15,6 +15,8 @@ The runtime also supports manual greedy decoding for one request: select the nex
 Stochastic decoding now supports temperature scaling, top-k and top-p (nucleus) filtering, multinomial sampling, and reproducible local seeds.
 
 The benchmark harness measures the existing single-request uncached greedy decoder, with per-request timing, repeated-work counts, and JSON results.
+
+Cached greedy decoding now prefills the prompt once, then explicitly reuses the returned transformer K/V state while forwarding only the newest token.
 
 ## Expected progression
 
@@ -86,7 +88,7 @@ python -m llm_runtime.greedy_decode --device cpu --prompt "The capital of France
 
 The decoder tokenizes once, selects each new token using `torch.argmax`, manually appends it, and extends the attention mask. It stops at EOS or `max_new_tokens`; a limit of zero performs no forward passes. The result includes generated text, token IDs, and a short trace of input sequence lengths.
 
-`model.generate()` is not used. This is a deliberately naive uncached decoder: every step recomputes the complete sequence. For a prompt of length T, successive forward calls process lengths T, T+1, T+2, and so on. Cache creation is disabled; KV-cache optimization is not implemented yet. No performance improvement is claimed.
+`model.generate()` is not used. This path remains deliberately uncached: every step recomputes the complete sequence. For a prompt of length T, successive forward calls process lengths T, T+1, T+2, and so on. The separate cached greedy decoder below reuses K/V state.
 
 ## Sampling
 
@@ -100,7 +102,19 @@ Temperature must be positive and finite. Top-k is disabled by default; enabled v
 
 An optional seed initializes a local `torch.Generator` on the model's device, without resetting global random state. Repeating a seed and configuration is reproducible in the same model/environment; exact results can differ across devices or library versions. Both decoders manually append tokens and stop at EOS or the token limit.
 
-`model.generate()` is not used. Sampling remains uncached with `use_cache=False`, recomputing the full sequence each generation step. KV-cache optimization comes later; no performance improvement is claimed.
+`model.generate()` is not used. Sampling remains uncached with `use_cache=False`, recomputing the full sequence each generation step. Cached decoding is currently available only for greedy selection.
+
+## KV-cache greedy decoding
+
+```powershell
+python -m llm_runtime.cached_decode --device cpu --prompt "The capital of France is" --max-new-tokens 10
+```
+
+Uncached decoding forwards the full context, appends a token, then forwards the larger context again. Cached decoding prefills the full prompt once with `use_cache=True`, stores `outputs.past_key_values`, and explicitly passes it into subsequent calls with only the newest token. Each call's returned cache becomes the next call's cache. `model.generate()` and generation helpers are not used.
+
+The trace separates prefill from decode and distinguishes actual model input length from logical context length. Attention masks cover the full logical sequence even when model input length is one. In the inspected Transformers 5.17.0 GPT-2 API, `DynamicCache.get_seq_length()` supplies the position offset; explicit position IDs are unnecessary for this ordinary unpadded single-request path.
+
+The real `distilgpt2` probe returned six dynamic cache layers, with K/V shape `[1, 12, 5, 64]` per layer after the five-token prompt. The correctness check compares fresh cached and uncached greedy token IDs. Performance comparison belongs to M7; M6 makes no speedup claim.
 
 ## Naive baseline benchmark
 
@@ -126,4 +140,4 @@ All measured runs produced identical greedy token IDs. These results describe th
 
 ## Current limitations
 
-M5 supports one request with greedy or stochastic decoding and an uncached greedy benchmark. KV caching, request batching, scheduling, and serving are not implemented yet. M2's separate inspection command still executes exactly one forward pass.
+M6 supports ordinary single-request KV caching for greedy decoding, uncached greedy/sampling paths, and the uncached baseline benchmark. No paged/block cache allocator, request batching, scheduler, or server exists. M2's separate inspection command still executes exactly one forward pass.
