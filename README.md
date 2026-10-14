@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M7 — Cached vs Uncached Benchmark**
+**M8 — Request Lifecycle**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -162,6 +162,10 @@ Fresh results for `distilgpt2`, a five-token prompt, ten generated tokens, one w
 
 All six measured requests produced exactly the same token IDs. Uncached input lengths were `[5, 6, 7, 8, 9, 10, 11, 12, 13, 14]`; cached input lengths were `[5, 1, 1, 1, 1, 1, 1, 1, 1, 1]`, while both logical contexts grew from 5 to 14. Cached decoding was faster in this measured experiment, primarily after prefill. The position count is not a FLOP count, and these results do not establish a universal speedup or production capacity.
 
+## Request lifecycle
+
+`RequestState` owns an ID, prompt, token limits, selected IDs, request-local runtime inputs/cache, execution count, and stop reason. Its explicit lifecycle is `WAITING -> PREFILL -> DECODING -> FINISHED`, with EOS, token-limit, zero-token, cancellation, and error completion. Finished requests release runtime tensors/cache; small result dictionaries preserve tokens and text without serializing model state.
+
 ## Current limitations
 
-M7 adds a paired cached/uncached greedy benchmark while preserving the earlier decoders and M5 baseline. No paged/block cache allocator, request batching, scheduler, or server exists. M2's separate inspection command still executes exactly one forward pass.
+M8 adds request lifecycle state while preserving earlier decoders and benchmarks. No paged/block cache allocator, request batching, scheduler, or server exists. M2's separate inspection command still executes exactly one forward pass.
