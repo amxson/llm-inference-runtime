@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M8 — Request Lifecycle**
+**M9 — Decode Scheduler**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -168,4 +168,6 @@ All six measured requests produced exactly the same token IDs. Uncached input le
 
 ## Current limitations
 
-M8 adds request lifecycle state while preserving earlier decoders and benchmarks. No paged/block cache allocator, request batching, scheduler, or server exists. M2's separate inspection command still executes exactly one forward pass.
+`DecodeScheduler` admits requests FIFO up to `max_active`, then advances active requests round-robin through `add_request`, `step`, and `run_until_complete`. Each step selects at most one token for one request. Every request owns its cache/mask; finished state releases runtime storage. The lightweight trace records tick, ID, phase, model input length, and logical context.
+
+Scheduling is not batching: M9 still executes exactly one request per model forward. No paged/block allocator, batched execution, or server exists yet. Earlier decoders and benchmarks remain available.
