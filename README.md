@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M14 — Logical Block KV Allocator**
+**M15 — CPU Quantization Experiment**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -187,6 +187,27 @@ Active composition genuinely changes during execution, but this limited engine s
 Pass `block_allocator=pool` to `ContinuousBatcher` to model ownership during real request execution. Before each forward it reserves for the processed logical context (the newly selected token is processed next tick), stores IDs on `RequestState.kv_block_ids`, and records pool snapshots in the trace. Completion, cancellation, and failed forwards return blocks; exhaustion fails the affected cohort rather than pretending to provide memory-aware admission. Zero-token requests need no blocks.
 
 This is **not a custom paged-attention kernel** or vLLM PagedAttention. HF `DynamicCache` remains the actual tensor cache in the cached decoder/scheduler. The continuous batcher and HTTP server remain uncached; optional blocks there are capacity bookkeeping, not actual K/V storage. The HTTP server does not enable the allocator by default. This demonstrates block allocation, reuse, request block tables, and lifecycle without claiming physically paged Transformers tensors.
+
+## CPU quantization experiment
+
+```powershell
+python -m llm_runtime.benchmark_quantization --max-new-tokens 10 --warmup-runs 1 --runs 3 --output benchmarks/results/m15_quantization_cpu.json
+```
+
+This uses native [PyTorch dynamic quantization](https://docs.pytorch.org/docs/main/generated/torch.ao.quantization.quantize_dynamic.html) on the installed CPU `onednn` backend; no new dependency is needed. A deep copy of the FP32 model converts GPT-2's affine `Conv1D` projections to `Linear` with transposed weights, checks FP32 logits against the original, then quantizes **only the 24 attention/MLP projections** to INT8 weights with dynamic activation quantization. Biases, outputs, embeddings, layer norms, and the tied `lm_head` stay FP32. The original model is not modified.
+
+The [M15 artifact](benchmarks/results/m15_quantization_cpu.json) records setup, exact selected module names, all raw runs, token IDs/text, storage estimates and paired metrics. Both modes use the same five-token France prompt, ten-token budget, one excluded warmup and three alternating measured pairs, uncached, with M5 timing boundaries.
+
+| Metric | FP32 | Dynamic INT8 |
+| --- | ---: | ---: |
+| Weight tensor payload (bytes) | 327,650,304 | 200,248,320 |
+| Mean latency (ms) | 362.930 | 317.228 |
+| Mean TTFT (ms) | 26.267 | 23.475 |
+| Mean tokens/sec | 27.569 | 31.540 |
+
+Estimated weight payload fell 38.88% (127,401,984 bytes); measured latency fell 45.702 ms (1.144x FP32/INT8). **Outputs differed**: FP32 started ` the capital of the French Republic...`, INT8 ` in the midst of a major crisis...`. Within each mode all three outputs repeated identically, but this is not an equivalent-output speedup or a quality assessment. Greedy decisions can change after small logit perturbations and amplify into different continuations.
+
+FP32 model/tokenizer load took 3601.937 ms; copy/conversion/probe/quantization took another 1255.224 ms and is excluded from request timing. The FP32 adapter's maximum prompt logit error was 0.0000343. Storage counts unique parameter and unpacked quantized weight tensor payload, preserving tied-weight deduplication; it is **not RSS**, excludes packed-backend overhead, quantization metadata, buffers, activations and KV. Keeping both models alive for comparison does not save process memory. This installed legacy `torch.ao` API works but emits deprecation warnings; migration to torchao is future work, not hidden by the benchmark. Results are specific to this CPU/backend/workload, not a speed or quality promise.
 
 ## Streaming server
 

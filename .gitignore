@@ -35,3 +35,4 @@ benchmarks/results/*
 !benchmarks/results/m5_naive_cpu.json
 !benchmarks/results/m7_cached_vs_uncached_cpu.json
 !benchmarks/results/m13_serving_cpu.json
+!benchmarks/results/m15_quantization_cpu.json
