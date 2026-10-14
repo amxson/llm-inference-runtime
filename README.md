@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M10 — Static Batched Inference**
+**M11 — Continuous Batching**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -174,4 +174,8 @@ Scheduling is not batching: M9 still executes exactly one request per model forw
 
 The batch path tokenizes each request once and explicitly constructs left-padded tensors. PAD (or EOS when PAD is absent) is a local fill value; the tokenizer is never mutated. Attention masks hide padding and cumulative mask-derived position IDs preserve each GPT-2 row's unpadded positions. Final-position logits are selected for each row and tokens are recorded separately.
 
-This correctness-first batching path uses `use_cache=False` and recollates full logical sequences on every step. It does not combine variable-length DynamicCache objects or claim efficient batched KV reuse. The single-request cached decoder/scheduler remain available. No paged allocator or server exists yet.
+This correctness-first batching path uses `use_cache=False` and recollates full logical sequences on every step. It does not combine variable-length DynamicCache objects or claim efficient batched KV reuse. The single-request cached decoder/scheduler remain available.
+
+`ContinuousBatcher` maintains a FIFO waiting queue and a configurable `max_active` set. Each step admits available requests, advances all active rows once, removes completed rows, and frees capacity for the next step. A trace demonstrates `A+B -> A finishes -> B+C`; mixed prefill/decode rows share a real forward. Every admitted request advances each tick, while queued requests wait FIFO for capacity.
+
+Active composition genuinely changes during execution, but this limited engine still rebuilds uncached padded contexts. There is no merged KV layout or paged allocator. Cancellation and completed-history release are explicit; the last 1024 trace records are retained. A streaming server has not been added yet.
