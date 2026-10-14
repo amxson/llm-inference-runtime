@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M9 — Decode Scheduler**
+**M10 — Static Batched Inference**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -170,4 +170,8 @@ All six measured requests produced exactly the same token IDs. Uncached input le
 
 `DecodeScheduler` admits requests FIFO up to `max_active`, then advances active requests round-robin through `add_request`, `step`, and `run_until_complete`. Each step selects at most one token for one request. Every request owns its cache/mask; finished state releases runtime storage. The lightweight trace records tick, ID, phase, model input length, and logical context.
 
-Scheduling is not batching: M9 still executes exactly one request per model forward. No paged/block allocator, batched execution, or server exists yet. Earlier decoders and benchmarks remain available.
+Scheduling is not batching: M9 still executes exactly one request per model forward. M10's separate `batched_greedy_decode` executes multiple rows in one forward and progresses a fixed cohort synchronously, removing finished rows independently.
+
+The batch path tokenizes each request once and explicitly constructs left-padded tensors. PAD (or EOS when PAD is absent) is a local fill value; the tokenizer is never mutated. Attention masks hide padding and cumulative mask-derived position IDs preserve each GPT-2 row's unpadded positions. Final-position logits are selected for each row and tokens are recorded separately.
+
+This correctness-first batching path uses `use_cache=False` and recollates full logical sequences on every step. It does not combine variable-length DynamicCache objects or claim efficient batched KV reuse. The single-request cached decoder/scheduler remain available. No paged allocator or server exists yet.
