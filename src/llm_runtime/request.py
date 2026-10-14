@@ -22,6 +22,8 @@ class RequestState:
     generated_token_ids: list[int] = field(default_factory=list)
     runtime_inputs: dict[str, Any] = field(default_factory=dict, repr=False, compare=False)
     kv_cache: Any = field(default=None, repr=False, compare=False)
+    # Logical allocator ownership only; these IDs never index HF cache tensors.
+    kv_block_ids: list[int] = field(default_factory=list, init=False)
     status: RequestStatus = field(default=RequestStatus.WAITING, init=False)
     stop_reason: str | None = field(default=None, init=False)
     model_execution_count: int = field(default=0, init=False)
@@ -76,6 +78,7 @@ class RequestState:
         self.stop_reason = reason
         self.status = RequestStatus.FINISHED
         self.kv_cache = None
+        self.kv_block_ids.clear()
         self.runtime_inputs.clear()
 
     def to_result(self, tokenizer) -> dict[str, Any]:

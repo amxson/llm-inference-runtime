@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M13 — Serving Concurrency Benchmark**
+**M14 — Logical Block KV Allocator**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -146,7 +146,7 @@ python -m llm_runtime.benchmark_cache --device cpu --prompt "The capital of Fran
 
 This comparison loads one model/tokenizer, warms up each mode, then alternates which mode runs first in each measured pair. Both modes use the M5 timing boundaries and synchronization helper. All measured token IDs must match before comparison ratios or JSON are produced. The uncached measurements are fresh; the historical M5 result is not the comparison denominator.
 
-KV caching avoids recomputing prior attention K/V state during incremental decoding. Prefill still processes the whole prompt, so a major TTFT improvement is not promised. The cache grows with sequence length: less recomputation does not make attention state or its memory free. There is no paged KV allocator.
+KV caching avoids recomputing prior attention K/V state during incremental decoding. Prefill still processes the whole prompt, so a major TTFT improvement is not promised. The cache grows with sequence length: less recomputation does not make attention state or its memory free. The separate logical block allocator does not change this tensor storage.
 
 The representative [M7 JSON](benchmarks/results/m7_cached_vs_uncached_cpu.json) retains all raw runs, logical context lengths, work counts, per-request GPU peak allocations (null on CPU), and clearly named ratios. This is a short, environment-specific, single-request CPU experiment, not production serving throughput or a tail-latency study.
 
@@ -178,7 +178,15 @@ This correctness-first batching path uses `use_cache=False` and recollates full 
 
 `ContinuousBatcher` maintains a FIFO waiting queue and a configurable `max_active` set. Each step admits available requests, advances all active rows once, removes completed rows, and frees capacity for the next step. A trace demonstrates `A+B -> A finishes -> B+C`; mixed prefill/decode rows share a real forward. Every admitted request advances each tick, while queued requests wait FIFO for capacity.
 
-Active composition genuinely changes during execution, but this limited engine still rebuilds uncached padded contexts. There is no merged KV layout or paged allocator. Cancellation and completed-history release are explicit; the last 1024 trace records are retained.
+Active composition genuinely changes during execution, but this limited engine still rebuilds uncached padded contexts. There is no merged KV layout or physical paging. Cancellation and completed-history release are explicit; the last 1024 trace records are retained.
+
+## Logical block KV allocator
+
+`BlockAllocator(total_blocks, block_size)` models paged KV memory management with a fixed pool, FIFO free list, per-request block tables, atomic growth, explicit free, and deterministic reuse. `reserve(id, token_count)` rounds processed-context capacity up to whole blocks; `free(id)` rejects unknown/double frees. `stats()` returns total/free/allocated blocks, utilization, and independent table snapshots. Noncontiguous free blocks can serve one growing request; unused tail capacity is internal fragmentation.
+
+Pass `block_allocator=pool` to `ContinuousBatcher` to model ownership during real request execution. Before each forward it reserves for the processed logical context (the newly selected token is processed next tick), stores IDs on `RequestState.kv_block_ids`, and records pool snapshots in the trace. Completion, cancellation, and failed forwards return blocks; exhaustion fails the affected cohort rather than pretending to provide memory-aware admission. Zero-token requests need no blocks.
+
+This is **not a custom paged-attention kernel** or vLLM PagedAttention. HF `DynamicCache` remains the actual tensor cache in the cached decoder/scheduler. The continuous batcher and HTTP server remain uncached; optional blocks there are capacity bookkeeping, not actual K/V storage. The HTTP server does not enable the allocator by default. This demonstrates block allocation, reuse, request block tables, and lifecycle without claiming physically paged Transformers tensors.
 
 ## Streaming server
 
