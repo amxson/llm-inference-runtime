@@ -1,0 +1,1116 @@
+{
+  "benchmark": "ordinary_vs_speculative_greedy",
+  "compatibility": {
+    "vocab_size": 50257,
+    "exact_vocab_id_mapping": true,
+    "core_bpe_rules_identical": true,
+    "probe_encoding_parity": true,
+    "core_sha256": "89c8814a2f50fe79e0f7da01c23507f17f60fc7149e896d65d4da146a950119e",
+    "backend_metadata_differing_fields": [
+      "added_tokens",
+      "post_processor"
+    ],
+    "runtime_tokenizer": "target tokenizer shared by both models"
+  },
+  "environment": {
+    "target_model": "distilgpt2",
+    "draft_model": "sshleifer/tiny-gpt2",
+    "target_parameters": 81912576,
+    "draft_parameters": 102714,
+    "device": "cpu",
+    "python_version": "3.11.9",
+    "pytorch_version": "2.14.0+cpu",
+    "transformers_version": "5.17.0",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "torch_thread_count": 4
+  },
+  "config": {
+    "prompt": "The capital of France is",
+    "max_new_tokens": 10,
+    "draft_tokens": 3,
+    "warmup_runs_per_mode": 1,
+    "measured_runs_per_mode": 3,
+    "measured_execution_order": [
+      [
+        "ordinary",
+        "speculative"
+      ],
+      [
+        "speculative",
+        "ordinary"
+      ],
+      [
+        "ordinary",
+        "speculative"
+      ]
+    ],
+    "use_cache": false,
+    "timing": "M5 before tokenization to last selection; speculative block tokens available together after verification",
+    "model_loading_and_compatibility_included": false,
+    "rejected_definition": "all proposed tokens not emitted as accepted draft tokens, including discarded suffix",
+    "scope": "single-request greedy only; uncached target and draft; final text decode excluded"
+  },
+  "ordinary": {
+    "runs": [
+      {
+        "prompt_token_count": 5,
+        "generated_token_count": 10,
+        "max_new_tokens": 10,
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286
+        ],
+        "generated_text": " the capital of the French Republic. The capital of",
+        "full_text": "The capital of France is the capital of the French Republic. The capital of",
+        "model_forward_call_count": 10,
+        "forward_input_lengths": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "total_input_token_positions_processed": 95,
+        "stopped_on_eos": false,
+        "stop_reason": "max_new_tokens",
+        "total_latency_ms": 379.25210000048537,
+        "ttft_ms": 26.05940000012197,
+        "inter_token_latencies_ms": [
+          40.396899999905145,
+          44.36660000010306,
+          31.12260000034439,
+          36.455800000112504,
+          39.017999999487074,
+          39.34360000039305,
+          36.83900000032736,
+          45.5270999991626,
+          40.12310000052821
+        ],
+        "mean_itl_ms": 39.24363333337371,
+        "generated_tokens_per_second": 26.367685241524573,
+        "token_availability_ms": [
+          26.05940000012197,
+          66.45630000002711,
+          110.82290000013018,
+          141.94550000047457,
+          178.40130000058707,
+          217.41930000007414,
+          256.7629000004672,
+          293.60190000079456,
+          339.12899999995716,
+          379.25210000048537
+        ]
+      },
+      {
+        "prompt_token_count": 5,
+        "generated_token_count": 10,
+        "max_new_tokens": 10,
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286
+        ],
+        "generated_text": " the capital of the French Republic. The capital of",
+        "full_text": "The capital of France is the capital of the French Republic. The capital of",
+        "model_forward_call_count": 10,
+        "forward_input_lengths": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "total_input_token_positions_processed": 95,
+        "stopped_on_eos": false,
+        "stop_reason": "max_new_tokens",
+        "total_latency_ms": 380.15070000074047,
+        "ttft_ms": 24.397700000008626,
+        "inter_token_latencies_ms": [
+          24.12370000001829,
+          30.686099999911676,
+          29.02070000072854,
+          30.2665999997771,
+          36.689900000055786,
+          38.43539999979839,
+          58.67839999973512,
+          49.2684000000736,
+          58.583800000633346
+        ],
+        "mean_itl_ms": 39.52811111119243,
+        "generated_tokens_per_second": 26.305357322715757,
+        "token_availability_ms": [
+          24.397700000008626,
+          48.521400000026915,
+          79.20749999993859,
+          108.22820000066713,
+          138.49480000044423,
+          175.18470000050002,
+          213.6201000002984,
+          272.2985000000335,
+          321.5669000001071,
+          380.15070000074047
+        ]
+      },
+      {
+        "prompt_token_count": 5,
+        "generated_token_count": 10,
+        "max_new_tokens": 10,
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286
+        ],
+        "generated_text": " the capital of the French Republic. The capital of",
+        "full_text": "The capital of France is the capital of the French Republic. The capital of",
+        "model_forward_call_count": 10,
+        "forward_input_lengths": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "total_input_token_positions_processed": 95,
+        "stopped_on_eos": false,
+        "stop_reason": "max_new_tokens",
+        "total_latency_ms": 366.3007999994079,
+        "ttft_ms": 33.50179999961256,
+        "inter_token_latencies_ms": [
+          27.276800000436197,
+          30.54439999959868,
+          33.62159999960568,
+          42.14100000081089,
+          37.485199999537144,
+          38.40020000006916,
+          36.570100000062666,
+          42.310599999836995,
+          44.44909999983793
+        ],
+        "mean_itl_ms": 36.97766666664393,
+        "generated_tokens_per_second": 27.2999676768824,
+        "token_availability_ms": [
+          33.50179999961256,
+          60.778600000048755,
+          91.32299999964744,
+          124.94459999925311,
+          167.085600000064,
+          204.57079999960115,
+          242.9709999996703,
+          279.541099999733,
+          321.85169999957,
+          366.3007999994079
+        ]
+      }
+    ],
+    "summary": {
+      "mean_total_latency_ms": 375.23453333354456,
+      "min_total_latency_ms": 366.3007999994079,
+      "max_total_latency_ms": 380.15070000074047,
+      "mean_ttft_ms": 27.986299999914383,
+      "mean_itl_ms": 38.583137037070024,
+      "mean_generated_tokens_per_second": 26.657670080374242,
+      "generated_token_ids_identical": true
+    }
+  },
+  "speculative": {
+    "runs": [
+      {
+        "prompt_token_count": 5,
+        "generated_token_count": 10,
+        "max_new_tokens": 10,
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286
+        ],
+        "generated_text": " the capital of the French Republic. The capital of",
+        "full_text": "The capital of France is the capital of the French Republic. The capital of",
+        "proposed_draft_tokens": 27,
+        "accepted_draft_tokens": 0,
+        "rejected_draft_tokens": 27,
+        "acceptance_rate": 0.0,
+        "target_verification_calls": 10,
+        "draft_forward_calls": 27,
+        "target_forward_input_lengths": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          15,
+          15
+        ],
+        "draft_forward_input_lengths": [
+          5,
+          6,
+          7,
+          6,
+          7,
+          8,
+          7,
+          8,
+          9,
+          8,
+          9,
+          10,
+          9,
+          10,
+          11,
+          10,
+          11,
+          12,
+          11,
+          12,
+          13,
+          12,
+          13,
+          14,
+          13,
+          14,
+          14
+        ],
+        "stopped_on_eos": false,
+        "stop_reason": "max_new_tokens",
+        "trace": [
+          {
+            "prefix_length": 5,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              262,
+              510,
+              11,
+              11
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              262
+            ]
+          },
+          {
+            "prefix_length": 6,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              3139,
+              284,
+              284,
+              11
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              3139
+            ]
+          },
+          {
+            "prefix_length": 7,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              286,
+              287,
+              287,
+              287
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              286
+            ]
+          },
+          {
+            "prefix_length": 8,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              262,
+              326,
+              326,
+              326
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              262
+            ]
+          },
+          {
+            "prefix_length": 9,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              4141,
+              286,
+              286,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              4141
+            ]
+          },
+          {
+            "prefix_length": 10,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              2066,
+              13,
+              13,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              2066
+            ]
+          },
+          {
+            "prefix_length": 11,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              13,
+              13,
+              13,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              13
+            ]
+          },
+          {
+            "prefix_length": 12,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              383,
+              13,
+              287,
+              5087
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              383
+            ]
+          },
+          {
+            "prefix_length": 13,
+            "draft_token_ids": [
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              3139,
+              326,
+              326
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              3139
+            ]
+          },
+          {
+            "prefix_length": 14,
+            "draft_token_ids": [
+              16046
+            ],
+            "target_predictions": [
+              286,
+              389
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              286
+            ]
+          }
+        ],
+        "total_latency_ms": 546.7948999994405,
+        "ttft_ms": 37.23409999929572,
+        "inter_token_latencies_ms": [
+          37.62860000006185,
+          43.72940000030212,
+          64.72860000030778,
+          72.41269999940414,
+          81.75540000047476,
+          58.10310000015306,
+          53.93149999963498,
+          49.54509999970469,
+          47.72640000010142
+        ],
+        "mean_itl_ms": 56.61786666668276,
+        "generated_tokens_per_second": 18.288392960523648,
+        "token_availability_ms": [
+          37.23409999929572,
+          74.86269999935757,
+          118.5920999996597,
+          183.32069999996747,
+          255.7333999993716,
+          337.4887999998464,
+          395.59189999999944,
+          449.5233999996344,
+          499.0684999993391,
+          546.7948999994405
+        ]
+      },
+      {
+        "prompt_token_count": 5,
+        "generated_token_count": 10,
+        "max_new_tokens": 10,
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286
+        ],
+        "generated_text": " the capital of the French Republic. The capital of",
+        "full_text": "The capital of France is the capital of the French Republic. The capital of",
+        "proposed_draft_tokens": 27,
+        "accepted_draft_tokens": 0,
+        "rejected_draft_tokens": 27,
+        "acceptance_rate": 0.0,
+        "target_verification_calls": 10,
+        "draft_forward_calls": 27,
+        "target_forward_input_lengths": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          15,
+          15
+        ],
+        "draft_forward_input_lengths": [
+          5,
+          6,
+          7,
+          6,
+          7,
+          8,
+          7,
+          8,
+          9,
+          8,
+          9,
+          10,
+          9,
+          10,
+          11,
+          10,
+          11,
+          12,
+          11,
+          12,
+          13,
+          12,
+          13,
+          14,
+          13,
+          14,
+          14
+        ],
+        "stopped_on_eos": false,
+        "stop_reason": "max_new_tokens",
+        "trace": [
+          {
+            "prefix_length": 5,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              262,
+              510,
+              11,
+              11
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              262
+            ]
+          },
+          {
+            "prefix_length": 6,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              3139,
+              284,
+              284,
+              11
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              3139
+            ]
+          },
+          {
+            "prefix_length": 7,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              286,
+              287,
+              287,
+              287
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              286
+            ]
+          },
+          {
+            "prefix_length": 8,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              262,
+              326,
+              326,
+              326
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              262
+            ]
+          },
+          {
+            "prefix_length": 9,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              4141,
+              286,
+              286,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              4141
+            ]
+          },
+          {
+            "prefix_length": 10,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              2066,
+              13,
+              13,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              2066
+            ]
+          },
+          {
+            "prefix_length": 11,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              13,
+              13,
+              13,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              13
+            ]
+          },
+          {
+            "prefix_length": 12,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              383,
+              13,
+              287,
+              5087
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              383
+            ]
+          },
+          {
+            "prefix_length": 13,
+            "draft_token_ids": [
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              3139,
+              326,
+              326
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              3139
+            ]
+          },
+          {
+            "prefix_length": 14,
+            "draft_token_ids": [
+              16046
+            ],
+            "target_predictions": [
+              286,
+              389
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              286
+            ]
+          }
+        ],
+        "total_latency_ms": 487.6278000001548,
+        "ttft_ms": 35.25179999996908,
+        "inter_token_latencies_ms": [
+          36.638000000493776,
+          44.54209999948944,
+          42.42530000010447,
+          40.518900000279245,
+          52.22429999957967,
+          75.15539999985776,
+          59.38490000062302,
+          56.32969999987836,
+          45.15739999988
+        ],
+        "mean_itl_ms": 50.26400000002064,
+        "generated_tokens_per_second": 20.507444407387815,
+        "token_availability_ms": [
+          35.25179999996908,
+          71.88980000046286,
+          116.4318999999523,
+          158.85720000005676,
+          199.376100000336,
+          251.60039999991568,
+          326.75579999977344,
+          386.14070000039646,
+          442.4704000002748,
+          487.6278000001548
+        ]
+      },
+      {
+        "prompt_token_count": 5,
+        "generated_token_count": 10,
+        "max_new_tokens": 10,
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286
+        ],
+        "generated_text": " the capital of the French Republic. The capital of",
+        "full_text": "The capital of France is the capital of the French Republic. The capital of",
+        "proposed_draft_tokens": 27,
+        "accepted_draft_tokens": 0,
+        "rejected_draft_tokens": 27,
+        "acceptance_rate": 0.0,
+        "target_verification_calls": 10,
+        "draft_forward_calls": 27,
+        "target_forward_input_lengths": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          15,
+          15
+        ],
+        "draft_forward_input_lengths": [
+          5,
+          6,
+          7,
+          6,
+          7,
+          8,
+          7,
+          8,
+          9,
+          8,
+          9,
+          10,
+          9,
+          10,
+          11,
+          10,
+          11,
+          12,
+          11,
+          12,
+          13,
+          12,
+          13,
+          14,
+          13,
+          14,
+          14
+        ],
+        "stopped_on_eos": false,
+        "stop_reason": "max_new_tokens",
+        "trace": [
+          {
+            "prefix_length": 5,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              262,
+              510,
+              11,
+              11
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              262
+            ]
+          },
+          {
+            "prefix_length": 6,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              3139,
+              284,
+              284,
+              11
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              3139
+            ]
+          },
+          {
+            "prefix_length": 7,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              286,
+              287,
+              287,
+              287
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              286
+            ]
+          },
+          {
+            "prefix_length": 8,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              262,
+              326,
+              326,
+              326
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              262
+            ]
+          },
+          {
+            "prefix_length": 9,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              4141,
+              286,
+              286,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              4141
+            ]
+          },
+          {
+            "prefix_length": 10,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              2066,
+              13,
+              13,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              2066
+            ]
+          },
+          {
+            "prefix_length": 11,
+            "draft_token_ids": [
+              16046,
+              16046,
+              16046
+            ],
+            "target_predictions": [
+              13,
+              13,
+              13,
+              13
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              13
+            ]
+          },
+          {
+            "prefix_length": 12,
+            "draft_token_ids": [
+              5087,
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              383,
+              13,
+              287,
+              5087
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              383
+            ]
+          },
+          {
+            "prefix_length": 13,
+            "draft_token_ids": [
+              5087,
+              5087
+            ],
+            "target_predictions": [
+              3139,
+              326,
+              326
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              3139
+            ]
+          },
+          {
+            "prefix_length": 14,
+            "draft_token_ids": [
+              16046
+            ],
+            "target_predictions": [
+              286,
+              389
+            ],
+            "accepted_count": 0,
+            "mismatch_index": 0,
+            "emitted_token_ids": [
+              286
+            ]
+          }
+        ],
+        "total_latency_ms": 519.5092000003569,
+        "ttft_ms": 31.77849999974569,
+        "inter_token_latencies_ms": [
+          37.75130000030913,
+          44.3358000002263,
+          63.192099999469065,
+          67.56860000041343,
+          77.42270000017015,
+          53.48379999941244,
+          46.53930000040418,
+          50.6124000003183,
+          46.82469999988825
+        ],
+        "mean_itl_ms": 54.19230000006792,
+        "generated_tokens_per_second": 19.248937266160308,
+        "token_availability_ms": [
+          31.77849999974569,
+          69.52980000005482,
+          113.86560000028112,
+          177.05769999975018,
+          244.6263000001636,
+          322.04900000033376,
+          375.5327999997462,
+          422.0721000001504,
+          472.6845000004687,
+          519.5092000003569
+        ]
+      }
+    ],
+    "summary": {
+      "mean_total_latency_ms": 517.9772999999841,
+      "min_total_latency_ms": 487.6278000001548,
+      "max_total_latency_ms": 546.7948999994405,
+      "mean_ttft_ms": 34.75479999967016,
+      "mean_itl_ms": 53.69138888892377,
+      "mean_generated_tokens_per_second": 19.34825821135726,
+      "generated_token_ids_identical": true
+    }
+  },
+  "comparison": {
+    "exact_token_id_parity": true,
+    "latency_delta_speculative_minus_ordinary_ms": 142.74276666643954,
+    "latency_speedup_ordinary_over_speculative": 0.7244227369298927
+  },
+  "setup": {
+    "both_models_tokenizers_load_ms": 6854.400700000042
+  }
+}

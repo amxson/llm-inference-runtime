@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M15 — CPU Quantization Experiment**
+**M16 — Greedy Speculative Decoding**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -208,6 +208,30 @@ The [M15 artifact](benchmarks/results/m15_quantization_cpu.json) records setup, 
 Estimated weight payload fell 38.88% (127,401,984 bytes); measured latency fell 45.702 ms (1.144x FP32/INT8). **Outputs differed**: FP32 started ` the capital of the French Republic...`, INT8 ` in the midst of a major crisis...`. Within each mode all three outputs repeated identically, but this is not an equivalent-output speedup or a quality assessment. Greedy decisions can change after small logit perturbations and amplify into different continuations.
 
 FP32 model/tokenizer load took 3601.937 ms; copy/conversion/probe/quantization took another 1255.224 ms and is excluded from request timing. The FP32 adapter's maximum prompt logit error was 0.0000343. Storage counts unique parameter and unpacked quantized weight tensor payload, preserving tied-weight deduplication; it is **not RSS**, excludes packed-backend overhead, quantization metadata, buffers, activations and KV. Keeping both models alive for comparison does not save process memory. This installed legacy `torch.ao` API works but emits deprecation warnings; migration to torchao is future work, not hidden by the benchmark. Results are specific to this CPU/backend/workload, not a speed or quality promise.
+
+## Greedy speculative decoding
+
+```powershell
+python -m llm_runtime.speculative_decode --device cpu --max-new-tokens 10 --draft-tokens 3
+python -m llm_runtime.benchmark_speculative --max-new-tokens 10 --draft-tokens 3 --warmup-runs 1 --runs 3 --output benchmarks/results/m16_speculative_cpu.json
+```
+
+The explicit algorithm is `draft K tokens -> one target verification -> accept matching prefix -> correct first mismatch`. Target logits at prefix position `T-1+j` predict proposal `j`. A mismatch emits the target argmax and discards the remaining draft suffix. If all proposals match, the last target position can supply one bonus token, unless EOS/budget forbids it. The context boundary can fall back to a target-only final token. Only accepted/corrected tokens extend the real prefix; no other engine's generation/speculation API is used.
+
+Default target `distilgpt2` has 81,912,576 parameters; draft `sshleifer/tiny-gpt2` has 102,714. Compatibility checks verify the complete 50,257-token ID mapping, special IDs, core BPE/normalization/decoding rules and encoding probes (including whitespace/Unicode/special text). Backend `added_tokens`/`post_processor` metadata differs; the runtime deliberately shares the **target tokenizer** for both models rather than claiming the serialized tokenizers are identical. Both models recompute full contexts with `use_cache=False`; there is no cache rollback or HTTP integration.
+
+The [M16 artifact](benchmarks/results/m16_speculative_cpu.json) compares fresh ordinary target greedy and speculative runs on the same five-token France prompt and ten-token limit: one excluded warmup/mode, three alternating measured pairs. **All six outputs matched exactly.**
+
+| Metric | Ordinary target | Speculative |
+| --- | ---: | ---: |
+| Mean latency (ms) | 375.235 | 517.977 |
+| Mean TTFT (ms) | 27.986 | 34.755 |
+| Mean tokens/sec | 26.658 | 19.348 |
+| Target forwards/request | 10 | 10 |
+
+This implementation was **slower** by 142.743 ms (38.04% relative to ordinary). Each speculative request proposed 27 tokens, accepted 0, rejected 27, and performed ten target verification calls plus 27 draft forwards. Rejected means every proposal not accepted, including discarded suffix tokens. Tiny-gpt2 is compatible and cheap but a poor predictor for this target/workload, so it saved no target calls and added work. Acceptance is not a quality score. No production speculative performance is claimed.
+
+Timing follows M5 start-before-tokenization/end-at-last-selection boundaries; loading, compatibility checks and final text decoding are excluded. Accepted block tokens become available together after verification, so within-block ITLs may be zero; this is local decoder availability, not network streaming. Tests cover exact greedy parity for matching prefixes, mismatch correction, bonus tokens, EOS, budgets and context boundaries; benchmark parity failure raises before writing JSON.
 
 ## Streaming server
 
