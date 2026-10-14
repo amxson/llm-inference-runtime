@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M12 — Streaming Inference Server**
+**M13 — Serving Concurrency Benchmark**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -192,3 +192,27 @@ python -m uvicorn llm_runtime.server:app --host 127.0.0.1 --port 8765
 SSE uses `text/event-stream`, emitting `token` events after each real runtime step and a terminal `done` result (or `error` followed by `done`). Token events include IDs, individual token text, and the decoded generated prefix; use the prefix/final result for Unicode-safe text rather than assuming per-token strings always concatenate perfectly. Zero-token requests emit only `done`.
 
 A single worker owns the uncached continuous batcher (maximum four active requests, 64 pending clients). Commands are admitted between forwards; model work runs off the event loop. Disconnect cleanup queues cancellation, so it cannot mutate an in-flight batch. Completed engine history is released. A shared-forward error fails its active rows while keeping the worker alive. App-factory model/tokenizer injection supports download-free tests. No authentication, distributed workers, or production capacity is claimed.
+
+## Serving concurrency benchmark
+
+With the local Uvicorn server running:
+
+```powershell
+python -m llm_runtime.benchmark_server --url http://127.0.0.1:8765 --concurrency 1 2 4 --requests 16 --max-new-tokens 4 --warmup-runs 1 --output benchmarks/results/m13_serving_cpu.json
+```
+
+This performs actual concurrent network HTTP/SSE requests, not in-process ASGI transport and not a renamed single-request throughput metric. A semaphore limits outstanding client requests; per-request timing starts after semaphore admission. TTFT ends at first SSE token arrival and latency ends at terminal `done` arrival, including HTTP/validation/server queueing. Each level's full wall duration includes all measured request execution and client cleanup; successful request/token totals divided by that duration give throughput. Serial warmups precede each level and are excluded.
+
+Raw failures and partial token counts are retained. Latency/TTFT statistics use successful requests; throughput counts completed successful tokens while failure time stays in the denominator. Linear-interpolated p50/p95/p99 are exploratory, workload-specific, small-sample statistics. Sixteen requests do not establish production capacity or reliable tail behavior. The service still runs the uncached continuous batcher; CLI single-request KV caching is not being benchmarked here.
+
+The representative [M13 JSON](benchmarks/results/m13_serving_cpu.json) records the workload, transport, server engine/capacity, raw request metrics, and summaries. Only representative milestone artifacts are tracked; other generated results remain ignored.
+
+Measured on the local CPU Uvicorn service with `distilgpt2`, the five-token France prompt, four new tokens/request, sixteen requests/level, and one serial warmup/level. Values below are rounded; JSON retains every raw request.
+
+| Concurrency | Successful | Duration (s) | Requests/sec | Tokens/sec | Mean latency (ms) | p50 / p95 / p99 latency (ms) | Mean TTFT (ms) | p50 / p95 TTFT (ms) |
+| ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | --- |
+| 1 | 16/16 | 43.963 | 0.364 | 1.456 | 2730.650 | 2341.087 / 4774.372 / 5731.418 | 658.715 | 588.470 / 1051.899 |
+| 2 | 16/16 | 3.501 | 4.570 | 18.282 | 427.234 | 416.199 / 631.494 / 633.879 | 139.633 | 136.279 / 206.030 |
+| 4 | 16/16 | 2.476 | 6.461 | 25.845 | 588.227 | 633.568 / 799.945 / 805.563 | 214.249 | 215.012 / 348.269 |
+
+All 48 requests produced the same four greedy IDs, with 64 completed tokens per level and no failures. Server telemetry observed maximum batch sizes 1, 2, and 4, and 64, 40, and 21 forwards during the respective measured levels. The concurrency-one phase was unusually slow relative to later phases. These unaltered measurements are not sufficient to establish why or to attribute the entire difference to batching; a small sequential sweep can be affected by transient machine conditions. Concurrency four also had higher mean latency than concurrency two despite higher aggregate throughput. No production capacity or causal speedup claim is made.

@@ -1,0 +1,886 @@
+{
+  "benchmark": "serving_concurrency_greedy",
+  "environment": {
+    "client_python_version": "3.11.9",
+    "client_platform": "Windows-10-10.0.26200-SP0",
+    "httpx_version": "0.28.1",
+    "http_server_header": "uvicorn",
+    "server": {
+      "model": "distilgpt2",
+      "device": "cpu",
+      "engine": "continuous_uncached_greedy",
+      "max_active": 4
+    }
+  },
+  "config": {
+    "transport": "network_http_sse",
+    "server_host": "127.0.0.1",
+    "server_port": 8765,
+    "scheme": "http",
+    "prompt": "The capital of France is",
+    "max_new_tokens": 4,
+    "concurrency_levels": [
+      1,
+      2,
+      4
+    ],
+    "requests_per_level": 16,
+    "serial_warmups_per_level": 1,
+    "request_latency": "after client semaphore admission through terminal SSE done arrival",
+    "ttft": "request start through first SSE token arrival",
+    "throughput": "successful requests/tokens divided by full measured level wall time, including failures",
+    "latency_statistics": "successful requests only; failed raw metrics retained",
+    "percentiles": "linear interpolation; exploratory, workload-specific, small samples"
+  },
+  "levels": [
+    {
+      "concurrency": 1,
+      "requests": [
+        {
+          "request_index": 0,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 1776.2749000003168,
+          "ttft_ms": 510.8413000002656,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 1,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 1336.6545000003498,
+          "ttft_ms": 432.2698000000855,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 2,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 1741.5075999997498,
+          "ttft_ms": 330.19259999991846,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 3,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 2774.9870000002375,
+          "ttft_ms": 535.8065000000352,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 4,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 5970.679499999733,
+          "ttft_ms": 681.0108999998192,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 5,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 3903.0046999996557,
+          "ttft_ms": 1076.3280999999552,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 6,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 1758.4361999997782,
+          "ttft_ms": 564.463700000033,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 7,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 1631.927099999757,
+          "ttft_ms": 532.8110000000379,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 8,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 4341.58780000007,
+          "ttft_ms": 866.6692000001603,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 9,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 2725.046900000052,
+          "ttft_ms": 1043.7560000000303,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 10,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 2228.5319000002346,
+          "ttft_ms": 621.5764000003219,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 11,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 4375.602699999945,
+          "ttft_ms": 1033.850899999834,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 12,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 2453.641400000379,
+          "ttft_ms": 612.4754000002213,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 13,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 2109.0501999997286,
+          "ttft_ms": 412.7577999997811,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 14,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 2554.6862999999576,
+          "ttft_ms": 482.8272999998262,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 15,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 2008.7736999998924,
+          "ttft_ms": 801.8026999998256,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        }
+      ],
+      "summary": {
+        "total_requests": 16,
+        "successful_requests": 16,
+        "failed_requests": 0,
+        "duration_seconds": 43.96256579999999,
+        "aggregate_generated_tokens": 64,
+        "failed_partial_tokens": 0,
+        "requests_per_second": 0.36394600062219307,
+        "generated_tokens_per_second": 1.4557840024887723,
+        "mean_latency_ms": 2730.64952499999,
+        "p50_latency_ms": 2341.0866500003067,
+        "p95_latency_ms": 4774.371899999892,
+        "p99_latency_ms": 5731.417979999764,
+        "mean_ttft_ms": 658.7149750000094,
+        "p50_ttft_ms": 588.4695500001271,
+        "p95_ttft_ms": 1051.8990250000115,
+        "latency_sample_count": 16,
+        "ttft_sample_count": 16,
+        "successful_token_ids_identical": true
+      },
+      "server_forward_calls_during_level": 64,
+      "server_max_observed_batch_size_since_start": 1
+    },
+    {
+      "concurrency": 2,
+      "requests": [
+        {
+          "request_index": 0,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 359.7891999997955,
+          "ttft_ms": 106.08019999972385,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 1,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 408.8814000001548,
+          "ttft_ms": 170.55160000018077,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 2,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 454.78899999989153,
+          "ttft_ms": 92.4021000000721,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 3,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 476.45009999996546,
+          "ttft_ms": 136.7072000002736,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 4,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 410.3312000002006,
+          "ttft_ms": 131.7551000001913,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 5,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 423.92919999974765,
+          "ttft_ms": 135.8501999998225,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 6,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 634.4757000001664,
+          "ttft_ms": 157.91269999999713,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 7,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 630.500100000063,
+          "ttft_ms": 235.71240000001126,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 8,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 469.1791000000194,
+          "ttft_ms": 145.7169000000249,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 9,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 464.3039000002318,
+          "ttft_ms": 154.81420000014623,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 10,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 422.06620000024486,
+          "ttft_ms": 196.13600000002407,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 11,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 377.75909999982105,
+          "ttft_ms": 168.22629999978744,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 12,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 294.46180000013555,
+          "ttft_ms": 89.3076000002111,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 13,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 312.9926000001433,
+          "ttft_ms": 97.6835999999821,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 14,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 352.0343000000139,
+          "ttft_ms": 106.09650000014881,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 15,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 343.80230000033407,
+          "ttft_ms": 109.18240000000878,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        }
+      ],
+      "summary": {
+        "total_requests": 16,
+        "successful_requests": 16,
+        "failed_requests": 0,
+        "duration_seconds": 3.5007367000002887,
+        "aggregate_generated_tokens": 64,
+        "failed_partial_tokens": 0,
+        "requests_per_second": 4.57046655351106,
+        "generated_tokens_per_second": 18.28186621404424,
+        "mean_latency_ms": 427.23407500005806,
+        "p50_latency_ms": 416.19870000022274,
+        "p95_latency_ms": 631.4940000000888,
+        "p99_latency_ms": 633.8793600001509,
+        "mean_ttft_ms": 139.63343750003787,
+        "p50_ttft_ms": 136.27870000004805,
+        "p95_ttft_ms": 206.03010000002087,
+        "latency_sample_count": 16,
+        "ttft_sample_count": 16,
+        "successful_token_ids_identical": true
+      },
+      "server_forward_calls_during_level": 40,
+      "server_max_observed_batch_size_since_start": 2
+    },
+    {
+      "concurrency": 4,
+      "requests": [
+        {
+          "request_index": 0,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 317.1575000001212,
+          "ttft_ms": 75.88020000002871,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 1,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 402.9156999999941,
+          "ttft_ms": 124.43510000002789,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 2,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 488.5887000000366,
+          "ttft_ms": 217.07460000016,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 3,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 496.1696000000302,
+          "ttft_ms": 212.94910000005984,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 4,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 432.58479999985866,
+          "ttft_ms": 176.54039999979432,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 5,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 478.23109999990265,
+          "ttft_ms": 148.4826000000794,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 6,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 645.5357999998341,
+          "ttft_ms": 149.41799999996874,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 7,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 641.7621000000509,
+          "ttft_ms": 136.2674000001789,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 8,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 806.9675000001553,
+          "ttft_ms": 391.7197999999189,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 9,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 797.6044000001821,
+          "ttft_ms": 333.78520000042045,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 10,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 676.8519000002016,
+          "ttft_ms": 271.6599000000315,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 11,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 673.4051999997064,
+          "ttft_ms": 261.52830000000904,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 12,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 645.967699999801,
+          "ttft_ms": 260.71049999973184,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 13,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 659.1462999999749,
+          "ttft_ms": 199.07139999986612,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 14,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 625.3732000000127,
+          "ttft_ms": 239.25439999993614,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        },
+        {
+          "request_index": 15,
+          "success": true,
+          "completion_status": "max_new_tokens",
+          "http_status": 200,
+          "error_type": null,
+          "total_latency_ms": 623.3689000000595,
+          "ttft_ms": 229.20290000001842,
+          "generated_token_count": 4,
+          "generated_token_ids": [
+            262,
+            3139,
+            286,
+            262
+          ]
+        }
+      ],
+      "summary": {
+        "total_requests": 16,
+        "successful_requests": 16,
+        "failed_requests": 0,
+        "duration_seconds": 2.4762696000002506,
+        "aggregate_generated_tokens": 64,
+        "failed_partial_tokens": 0,
+        "requests_per_second": 6.461331997129222,
+        "generated_tokens_per_second": 25.84532798851689,
+        "mean_latency_ms": 588.2268999999951,
+        "p50_latency_ms": 633.5676500000318,
+        "p95_latency_ms": 799.9451750001754,
+        "p99_latency_ms": 805.5630350001593,
+        "mean_ttft_ms": 214.24873750001439,
+        "p50_ttft_ms": 215.01185000010992,
+        "p95_ttft_ms": 348.26885000029506,
+        "latency_sample_count": 16,
+        "ttft_sample_count": 16,
+        "successful_token_ids_identical": true
+      },
+      "server_forward_calls_during_level": 21,
+      "server_max_observed_batch_size_since_start": 4
+    }
+  ]
+}
