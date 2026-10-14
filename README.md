@@ -6,7 +6,7 @@ The project focuses on correctness, benchmarking, systems understanding, and pro
 
 ## Status
 
-**M11 — Continuous Batching**
+**M12 — Streaming Inference Server**
 
 The runtime can load a Hugging Face tokenizer and decoder-only causal language model, select CPU or CUDA, tokenize a prompt, execute one forward pass, and inspect the output logits and final-position next-token candidates. The default model for local experiments is `distilgpt2`.
 
@@ -42,7 +42,7 @@ Python 3.11 or newer is required.
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install -e ".[test]"
+python -m pip install -e ".[server,test]"
 python -m pytest
 ```
 
@@ -178,4 +178,17 @@ This correctness-first batching path uses `use_cache=False` and recollates full 
 
 `ContinuousBatcher` maintains a FIFO waiting queue and a configurable `max_active` set. Each step admits available requests, advances all active rows once, removes completed rows, and frees capacity for the next step. A trace demonstrates `A+B -> A finishes -> B+C`; mixed prefill/decode rows share a real forward. Every admitted request advances each tick, while queued requests wait FIFO for capacity.
 
-Active composition genuinely changes during execution, but this limited engine still rebuilds uncached padded contexts. There is no merged KV layout or paged allocator. Cancellation and completed-history release are explicit; the last 1024 trace records are retained. A streaming server has not been added yet.
+Active composition genuinely changes during execution, but this limited engine still rebuilds uncached padded contexts. There is no merged KV layout or paged allocator. Cancellation and completed-history release are explicit; the last 1024 trace records are retained.
+
+## Streaming server
+
+```powershell
+python -m pip install -e ".[server,test]"
+python -m uvicorn llm_runtime.server:app --host 127.0.0.1 --port 8765
+```
+
+`GET /health`, `POST /generate`, and `POST /generate/stream` share a model/tokenizer loaded once per app lifespan. JSON bodies contain `prompt` and `max_new_tokens` (default 10; range 0-128); this API is greedy-only and is not an OpenAI-compatible API. Unknown sampling fields are rejected. The context budget is validated before streaming begins.
+
+SSE uses `text/event-stream`, emitting `token` events after each real runtime step and a terminal `done` result (or `error` followed by `done`). Token events include IDs, individual token text, and the decoded generated prefix; use the prefix/final result for Unicode-safe text rather than assuming per-token strings always concatenate perfectly. Zero-token requests emit only `done`.
+
+A single worker owns the uncached continuous batcher (maximum four active requests, 64 pending clients). Commands are admitted between forwards; model work runs off the event loop. Disconnect cleanup queues cancellation, so it cannot mutate an in-flight batch. Completed engine history is released. A shared-forward error fails its active rows while keeping the worker alive. App-factory model/tokenizer injection supports download-free tests. No authentication, distributed workers, or production capacity is claimed.
