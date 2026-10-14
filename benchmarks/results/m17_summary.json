@@ -1,0 +1,424 @@
+{
+  "benchmark": "representative_milestone_summary",
+  "schema_version": 1,
+  "scope": "copied measurements only; artifacts are separate experiments, not a cross-milestone leaderboard",
+  "caveats": [
+    "M7 uses fresh paired modes, not historical M5 as denominator",
+    "M13 concurrency-one phase was anomalously slow; cause is not established",
+    "M15 outputs differed; storage payload is not RSS",
+    "M16 has exact greedy parity but no accepted draft tokens on this workload",
+    "Small CPU samples do not establish production capacity or reliable tails"
+  ],
+  "experiments": {
+    "m5": {
+      "source_file": "m5_naive_cpu.json",
+      "source_canonical_sha256": "fcb747cf5db21e5e7f672c2983c6503d23c44c6603f91fc63f31698e2cf0e249",
+      "benchmark": "naive_uncached_greedy",
+      "environment": {
+        "model_name": "distilgpt2",
+        "device": "cpu",
+        "python_version": "3.11.9",
+        "pytorch_version": "2.14.0+cpu",
+        "transformers_version": "5.17.0",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "torch_thread_count": 4,
+        "cuda_available": false,
+        "cuda_device_name": null,
+        "cuda_max_memory_allocated_bytes": null
+      },
+      "config": {
+        "prompt": "The capital of France is",
+        "max_new_tokens": 10,
+        "warmup_runs": 1,
+        "runs": 3,
+        "use_cache": false,
+        "timing": "perf_counter; synchronized on CUDA; start before tokenization; end at last token selection",
+        "final_text_decoding_included": false,
+        "throughput_scope": "single_request",
+        "mean_itl_aggregation": "pooled intervals across measured requests",
+        "zero_token_convention": "total latency and throughput 0; TTFT and mean ITL null"
+      },
+      "summary": {
+        "mean_total_latency_ms": 343.1227666669656,
+        "min_total_latency_ms": 325.2778000005492,
+        "max_total_latency_ms": 365.39170000014565,
+        "mean_ttft_ms": 24.578800000199408,
+        "mean_itl_ms": 35.39377407408514,
+        "mean_generated_tokens_per_second": 29.21186691104192,
+        "generated_token_ids_identical": true
+      },
+      "input_positions_per_run": [
+        95,
+        95,
+        95
+      ]
+    },
+    "m7": {
+      "source_file": "m7_cached_vs_uncached_cpu.json",
+      "source_canonical_sha256": "879072e8ec8594e667df64da88cf724ee3bb42cc54e84d4126c59d4cc788bd3b",
+      "benchmark": "cached_vs_uncached_greedy",
+      "environment": {
+        "model_name": "distilgpt2",
+        "device": "cpu",
+        "python_version": "3.11.9",
+        "pytorch_version": "2.14.0+cpu",
+        "transformers_version": "5.17.0",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "torch_thread_count": 4,
+        "cuda_available": false,
+        "cuda_device_name": null
+      },
+      "config": {
+        "prompt": "The capital of France is",
+        "max_new_tokens": 10,
+        "warmup_runs_per_mode": 1,
+        "measured_runs_per_mode": 3,
+        "measured_execution_order": [
+          [
+            "uncached",
+            "cached"
+          ],
+          [
+            "cached",
+            "uncached"
+          ],
+          [
+            "uncached",
+            "cached"
+          ]
+        ],
+        "timing": "M5 perf_counter boundaries; synchronized CUDA; start before tokenization; end at last selection",
+        "final_text_decoding_included": false,
+        "model_loading_included": false,
+        "throughput_scope": "single_request",
+        "mean_itl_aggregation": "pooled intervals across measured requests",
+        "zero_token_convention": "total latency and throughput 0; TTFT/ITL and undefined ratios null",
+        "gpu_peak_scope": "each measured request, includes resident model allocations"
+      },
+      "uncached": {
+        "mean_total_latency_ms": 699.0308000046449,
+        "min_total_latency_ms": 664.0698999981396,
+        "max_total_latency_ms": 750.5343000084395,
+        "mean_ttft_ms": 50.271166668001875,
+        "mean_itl_ms": 72.08440370407145,
+        "mean_generated_tokens_per_second": 14.344921710625567,
+        "generated_token_ids_identical": true
+      },
+      "cached": {
+        "mean_total_latency_ms": 381.03453333800036,
+        "min_total_latency_ms": 368.569700003718,
+        "max_total_latency_ms": 404.50080001028255,
+        "mean_ttft_ms": 49.69260000507347,
+        "mean_itl_ms": 36.81577037032521,
+        "mean_generated_tokens_per_second": 26.29278319355091,
+        "generated_token_ids_identical": true
+      },
+      "comparison": {
+        "exact_token_id_parity": true,
+        "mean_uncached_input_positions": 95,
+        "mean_cached_input_positions": 14,
+        "input_position_ratio_cached_over_uncached": 0.14736842105263157,
+        "latency_speedup_uncached_over_cached": 1.8345602270767487,
+        "throughput_speedup_cached_over_uncached": 1.83289834018929,
+        "itl_ratio_uncached_over_cached": 1.9579762416753332,
+        "ttft_ratio_uncached_over_cached": 1.0116429138919947
+      }
+    },
+    "m13": {
+      "source_file": "m13_serving_cpu.json",
+      "source_canonical_sha256": "a646d5dc45e1b03013627c212332376b453a1c125a13d9b22df3f984471baec0",
+      "benchmark": "serving_concurrency_greedy",
+      "environment": {
+        "client_python_version": "3.11.9",
+        "client_platform": "Windows-10-10.0.26200-SP0",
+        "httpx_version": "0.28.1",
+        "http_server_header": "uvicorn",
+        "server": {
+          "model": "distilgpt2",
+          "device": "cpu",
+          "engine": "continuous_uncached_greedy",
+          "max_active": 4
+        }
+      },
+      "config": {
+        "transport": "network_http_sse",
+        "server_host": "127.0.0.1",
+        "server_port": 8765,
+        "scheme": "http",
+        "prompt": "The capital of France is",
+        "max_new_tokens": 4,
+        "concurrency_levels": [
+          1,
+          2,
+          4
+        ],
+        "requests_per_level": 16,
+        "serial_warmups_per_level": 1,
+        "request_latency": "after client semaphore admission through terminal SSE done arrival",
+        "ttft": "request start through first SSE token arrival",
+        "throughput": "successful requests/tokens divided by full measured level wall time, including failures",
+        "latency_statistics": "successful requests only; failed raw metrics retained",
+        "percentiles": "linear interpolation; exploratory, workload-specific, small samples"
+      },
+      "levels": [
+        {
+          "concurrency": 1,
+          "summary": {
+            "total_requests": 16,
+            "successful_requests": 16,
+            "failed_requests": 0,
+            "duration_seconds": 43.96256579999999,
+            "aggregate_generated_tokens": 64,
+            "failed_partial_tokens": 0,
+            "requests_per_second": 0.36394600062219307,
+            "generated_tokens_per_second": 1.4557840024887723,
+            "mean_latency_ms": 2730.64952499999,
+            "p50_latency_ms": 2341.0866500003067,
+            "p95_latency_ms": 4774.371899999892,
+            "p99_latency_ms": 5731.417979999764,
+            "mean_ttft_ms": 658.7149750000094,
+            "p50_ttft_ms": 588.4695500001271,
+            "p95_ttft_ms": 1051.8990250000115,
+            "latency_sample_count": 16,
+            "ttft_sample_count": 16,
+            "successful_token_ids_identical": true
+          },
+          "server_forward_calls_during_level": 64,
+          "server_max_observed_batch_size_since_start": 1
+        },
+        {
+          "concurrency": 2,
+          "summary": {
+            "total_requests": 16,
+            "successful_requests": 16,
+            "failed_requests": 0,
+            "duration_seconds": 3.5007367000002887,
+            "aggregate_generated_tokens": 64,
+            "failed_partial_tokens": 0,
+            "requests_per_second": 4.57046655351106,
+            "generated_tokens_per_second": 18.28186621404424,
+            "mean_latency_ms": 427.23407500005806,
+            "p50_latency_ms": 416.19870000022274,
+            "p95_latency_ms": 631.4940000000888,
+            "p99_latency_ms": 633.8793600001509,
+            "mean_ttft_ms": 139.63343750003787,
+            "p50_ttft_ms": 136.27870000004805,
+            "p95_ttft_ms": 206.03010000002087,
+            "latency_sample_count": 16,
+            "ttft_sample_count": 16,
+            "successful_token_ids_identical": true
+          },
+          "server_forward_calls_during_level": 40,
+          "server_max_observed_batch_size_since_start": 2
+        },
+        {
+          "concurrency": 4,
+          "summary": {
+            "total_requests": 16,
+            "successful_requests": 16,
+            "failed_requests": 0,
+            "duration_seconds": 2.4762696000002506,
+            "aggregate_generated_tokens": 64,
+            "failed_partial_tokens": 0,
+            "requests_per_second": 6.461331997129222,
+            "generated_tokens_per_second": 25.84532798851689,
+            "mean_latency_ms": 588.2268999999951,
+            "p50_latency_ms": 633.5676500000318,
+            "p95_latency_ms": 799.9451750001754,
+            "p99_latency_ms": 805.5630350001593,
+            "mean_ttft_ms": 214.24873750001439,
+            "p50_ttft_ms": 215.01185000010992,
+            "p95_ttft_ms": 348.26885000029506,
+            "latency_sample_count": 16,
+            "ttft_sample_count": 16,
+            "successful_token_ids_identical": true
+          },
+          "server_forward_calls_during_level": 21,
+          "server_max_observed_batch_size_since_start": 4
+        }
+      ]
+    },
+    "m15": {
+      "source_file": "m15_quantization_cpu.json",
+      "source_canonical_sha256": "18157b26bd70c76dd7238126b163845c5aaf5f608d2a50b9d71b008e1effcceb",
+      "benchmark": "cpu_dynamic_int8_gpt2",
+      "environment": {
+        "model_name": "distilgpt2",
+        "device": "cpu",
+        "python_version": "3.11.9",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "pytorch_version": "2.14.0+cpu",
+        "transformers_version": "5.17.0",
+        "torch_thread_count": 4,
+        "quantized_engine": "onednn"
+      },
+      "config": {
+        "prompt": "The capital of France is",
+        "max_new_tokens": 10,
+        "warmup_runs_per_mode": 1,
+        "measured_runs_per_mode": 3,
+        "measured_execution_order": [
+          [
+            "fp32",
+            "int8"
+          ],
+          [
+            "int8",
+            "fp32"
+          ],
+          [
+            "fp32",
+            "int8"
+          ]
+        ],
+        "use_cache": false,
+        "timing": "M5 boundaries: before tokenization to final selection; load/setup and final text decode excluded",
+        "method": "torch.ao.quantization.quantize_dynamic; Conv1D-to-Linear; qint8 projection weights",
+        "precision": "INT8 projection weights and dynamic activation quantization; FP32 biases/outputs/other modules",
+        "unquantized": "embeddings, layer norms, tied lm_head",
+        "storage_metric": "unique parameter + unpacked quantized weight payload; excludes buffers, qparams, packing overhead, activations, KV and RSS"
+      },
+      "fp32": {
+        "summary": {
+          "mean_total_latency_ms": 362.92996666694916,
+          "min_total_latency_ms": 352.5073999999222,
+          "max_total_latency_ms": 373.35500000062893,
+          "mean_ttft_ms": 26.266933333317866,
+          "mean_itl_ms": 37.407003703736805,
+          "mean_generated_tokens_per_second": 27.568690387134797,
+          "generated_token_ids_identical": true
+        },
+        "weight_payload_bytes": 327650304
+      },
+      "int8": {
+        "summary": {
+          "mean_total_latency_ms": 317.22770000002737,
+          "min_total_latency_ms": 311.7372999995496,
+          "max_total_latency_ms": 327.5829000003796,
+          "mean_ttft_ms": 23.475033333549316,
+          "mean_itl_ms": 32.63918518516422,
+          "mean_generated_tokens_per_second": 31.539653570377368,
+          "generated_token_ids_identical": true
+        },
+        "weight_payload_bytes": 200248320
+      },
+      "comparison": {
+        "exact_token_id_parity": false,
+        "weight_payload_reduction_bytes": 127401984,
+        "weight_payload_reduction_fraction": 0.38883523819346133,
+        "latency_delta_int8_minus_fp32_ms": -45.70226666692179,
+        "latency_speedup_fp32_over_int8": 1.1440677048912118,
+        "quality_scope": "greedy token/text sanity on one prompt, not a quality evaluation"
+      },
+      "setup": {
+        "quantization_setup_ms": 1255.224000000453,
+        "quantized_module_count": 24,
+        "fp32_model_tokenizer_load_ms": 3601.9369999994524
+      }
+    },
+    "m16": {
+      "source_file": "m16_speculative_cpu.json",
+      "source_canonical_sha256": "a96696dd359560bb9fd94cc81099e90b5ee06ffa596086515d5e0dcaf25f9fe5",
+      "benchmark": "ordinary_vs_speculative_greedy",
+      "environment": {
+        "target_model": "distilgpt2",
+        "draft_model": "sshleifer/tiny-gpt2",
+        "target_parameters": 81912576,
+        "draft_parameters": 102714,
+        "device": "cpu",
+        "python_version": "3.11.9",
+        "pytorch_version": "2.14.0+cpu",
+        "transformers_version": "5.17.0",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "torch_thread_count": 4
+      },
+      "config": {
+        "prompt": "The capital of France is",
+        "max_new_tokens": 10,
+        "draft_tokens": 3,
+        "warmup_runs_per_mode": 1,
+        "measured_runs_per_mode": 3,
+        "measured_execution_order": [
+          [
+            "ordinary",
+            "speculative"
+          ],
+          [
+            "speculative",
+            "ordinary"
+          ],
+          [
+            "ordinary",
+            "speculative"
+          ]
+        ],
+        "use_cache": false,
+        "timing": "M5 before tokenization to last selection; speculative block tokens available together after verification",
+        "model_loading_and_compatibility_included": false,
+        "rejected_definition": "all proposed tokens not emitted as accepted draft tokens, including discarded suffix",
+        "scope": "single-request greedy only; uncached target and draft; final text decode excluded"
+      },
+      "ordinary": {
+        "mean_total_latency_ms": 375.23453333354456,
+        "min_total_latency_ms": 366.3007999994079,
+        "max_total_latency_ms": 380.15070000074047,
+        "mean_ttft_ms": 27.986299999914383,
+        "mean_itl_ms": 38.583137037070024,
+        "mean_generated_tokens_per_second": 26.657670080374242,
+        "generated_token_ids_identical": true
+      },
+      "speculative": {
+        "mean_total_latency_ms": 517.9772999999841,
+        "min_total_latency_ms": 487.6278000001548,
+        "max_total_latency_ms": 546.7948999994405,
+        "mean_ttft_ms": 34.75479999967016,
+        "mean_itl_ms": 53.69138888892377,
+        "mean_generated_tokens_per_second": 19.34825821135726,
+        "generated_token_ids_identical": true
+      },
+      "comparison": {
+        "exact_token_id_parity": true,
+        "latency_delta_speculative_minus_ordinary_ms": 142.74276666643954,
+        "latency_speedup_ordinary_over_speculative": 0.7244227369298927
+      },
+      "compatibility": {
+        "vocab_size": 50257,
+        "exact_vocab_id_mapping": true,
+        "core_bpe_rules_identical": true,
+        "probe_encoding_parity": true,
+        "core_sha256": "89c8814a2f50fe79e0f7da01c23507f17f60fc7149e896d65d4da146a950119e",
+        "backend_metadata_differing_fields": [
+          "added_tokens",
+          "post_processor"
+        ],
+        "runtime_tokenizer": "target tokenizer shared by both models"
+      },
+      "speculative_counters_per_run": [
+        {
+          "proposed_draft_tokens": 27,
+          "accepted_draft_tokens": 0,
+          "rejected_draft_tokens": 27,
+          "target_verification_calls": 10,
+          "draft_forward_calls": 27,
+          "acceptance_rate": 0.0
+        },
+        {
+          "proposed_draft_tokens": 27,
+          "accepted_draft_tokens": 0,
+          "rejected_draft_tokens": 27,
+          "target_verification_calls": 10,
+          "draft_forward_calls": 27,
+          "acceptance_rate": 0.0
+        },
+        {
+          "proposed_draft_tokens": 27,
+          "accepted_draft_tokens": 0,
+          "rejected_draft_tokens": 27,
+          "target_verification_calls": 10,
+          "draft_forward_calls": 27,
+          "acceptance_rate": 0.0
+        }
+      ]
+    }
+  }
+}

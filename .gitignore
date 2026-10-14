@@ -37,3 +37,4 @@ benchmarks/results/*
 !benchmarks/results/m13_serving_cpu.json
 !benchmarks/results/m15_quantization_cpu.json
 !benchmarks/results/m16_speculative_cpu.json
+!benchmarks/results/m17_summary.json

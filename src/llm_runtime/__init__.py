@@ -1,4 +1,4 @@
-"""Educational building blocks for an LLM inference runtime."""
+"""First-principles building blocks for an LLM inference runtime."""
 
 __version__ = "0.1.0"
 
