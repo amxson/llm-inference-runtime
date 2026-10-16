@@ -1,16 +1,23 @@
 """FastAPI service with one model lifetime and genuine token-level SSE delivery."""
 
 import asyncio
+from collections import deque
+import copy
 from contextlib import asynccontextmanager
 import json
+import os
+from pathlib import Path
+import time
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field
 
 from llm_runtime.continuous_batcher import ContinuousBatcher
 from llm_runtime.model_loader import DEFAULT_MODEL_NAME, load_model_and_tokenizer
 from llm_runtime.request import RequestState
+from llm_runtime.portfolio import ENGINE_COMMIT, benchmark_index, read_benchmark
 
 
 class GenerateBody(BaseModel):
@@ -28,6 +35,37 @@ class ServingRuntime:
         self.commands = asyncio.Queue()
         self.channels = {}
         self.worker = None
+        self.started = time.perf_counter()
+        self.recent_traces = deque(maxlen=128)
+        self.in_flight = False
+        self._published = {}
+        self._publish()
+
+    def _publish(self):
+        """Called only by the owning event loop, BETWEEN model forwards.
+
+        Readers get a completed-boundary snapshot, not concurrently-mutating
+        engine lists from the inference thread. Recent trace history is bounded.
+        """
+        self._published = {
+            "tick": self.engine.tick,
+            "active_request_ids": [state.request_id for state in self.engine.active],
+            "waiting_request_ids": [state.request_id for state in self.engine.waiting],
+            "queue_depth": len(self.engine.waiting),
+            "batch_size": len(self.engine.active), "max_active": self.engine.max_active,
+            "model_forward_count": self.engine.model_forward_count,
+            "logical_allocator": None,
+            "requests": [{"request_id": state.request_id, "status": state.status.value,
+                          "generated_token_count": state.generated_token_count}
+                         for state in self.engine.requests.values()],
+            "traces": list(self.recent_traces),
+        }
+
+    def snapshot(self):
+        # No await: only already-published plain data is read, even during a forward.
+        return {**copy.deepcopy(self._published), "in_flight": self.in_flight,
+                "snapshot_boundary": "last completed worker boundary",
+                "engine": "continuous_uncached_greedy", "serving_cache": False}
 
     async def start(self):
         self.worker = asyncio.create_task(self._run())
@@ -87,25 +125,39 @@ class ServingRuntime:
                 self._command(kind, value)
             if stopping:
                 break
+            self._publish()
             if not self.engine.has_work:
                 continue
             try:
                 # The event loop remains responsive; only this worker executes forwards.
+                step_start = time.perf_counter()
+                self.in_flight = True
                 trace = await asyncio.to_thread(self.engine.step)
+                self.in_flight = False
+                trace = copy.deepcopy(trace)
+                trace["observed_at_ms"] = (time.perf_counter() - self.started) * 1000
+                trace["worker_step_ms"] = (time.perf_counter() - step_start) * 1000
+                trace["waiting_request_ids"] = [state.request_id for state in self.engine.waiting]
+                trace["queue_depth"] = len(self.engine.waiting)
                 for event in trace["events"]:
                     state = self.engine.requests[event["request_id"]]
                     channel = self.channels.get(state.request_id)
                     if channel is not None:
-                        channel.put_nowait(("token", {
+                        payload = {
                             "request_id": state.request_id,
                             "token_id": event["token_id"],
                             "token_index": state.generated_token_count,
                             "token_text": self.tokenizer.decode([event["token_id"]], skip_special_tokens=True),
                             "generated_text": self.tokenizer.decode(state.generated_token_ids, skip_special_tokens=True),
-                        }))
+                            "tick": trace["tick"], "phase": event["phase"],
+                        }
+                        event.update(payload)
+                        channel.put_nowait(("token", payload))
+                self.recent_traces.append(trace)
                 for request_id in trace["completed"]:
                     self._complete(self.engine.requests[request_id])
             except Exception:
+                self.in_flight = False
                 # A failed shared forward fails its active rows, not the worker/process.
                 for state in list(self.engine.active):
                     if not state.is_finished:
@@ -115,6 +167,7 @@ class ServingRuntime:
                         channel.put_nowait(("error", {"message": "Inference failed."}))
                     self._complete(state)
                 self.engine.active.clear()
+            self._publish()
             await asyncio.sleep(0)  # Publish events before scheduling the next forward.
         for state in list(self.engine.requests.values()):
             self.engine.cancel_request(state.request_id)
@@ -126,7 +179,8 @@ def encode_sse(event: str, data: dict) -> str:
 
 
 def create_app(model=None, tokenizer=None, *, loader=load_model_and_tokenizer,
-               model_name=DEFAULT_MODEL_NAME, device="cpu", max_active=4) -> FastAPI:
+               model_name=DEFAULT_MODEL_NAME, device="cpu", max_active=4,
+               cors_origins=None, benchmark_directory=None) -> FastAPI:
     if (model is None) != (tokenizer is None) or max_active < 1:
         raise ValueError("Inject both model and tokenizer; max_active must be >= 1.")
 
@@ -142,6 +196,29 @@ def create_app(model=None, tokenizer=None, *, loader=load_model_and_tokenizer,
             await runtime.close()
 
     app = FastAPI(title="LLM Inference Runtime", lifespan=lifespan)
+    origins = cors_origins if cors_origins is not None else [
+        value.strip() for value in os.getenv("LLM_RUNTIME_CORS_ORIGINS", "").split(",") if value.strip()]
+    if "*" in origins:
+        raise ValueError("Configure explicit frontend CORS origins, not a wildcard.")
+    if origins:
+        app.add_middleware(CORSMiddleware, allow_origins=origins,
+                           allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
+    results_directory = (Path(benchmark_directory) if benchmark_directory is not None else
+                         Path(__file__).resolve().parents[2] / "benchmarks" / "results")
+
+    @app.get("/runtime/snapshot")
+    async def runtime_snapshot():
+        return {**app.state.runtime.snapshot(), "model": model_name,
+                "device": str(next(app.state.runtime.engine.model.parameters()).device),
+                "engine_commit": ENGINE_COMMIT}
+
+    @app.get("/benchmarks")
+    async def benchmarks():
+        return benchmark_index(results_directory)
+
+    @app.get("/benchmarks/{benchmark_name}")
+    async def benchmark(benchmark_name: str):
+        return read_benchmark(results_directory, benchmark_name)
 
     @app.get("/health")
     async def health():
