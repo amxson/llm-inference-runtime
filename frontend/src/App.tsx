@@ -30,7 +30,12 @@ export function App() {
     return () => window.removeEventListener("hashchange", change);
   }, []);
   useEffect(() => {
-    if (!apiBase) return; // Public static mode never probes a visitor's localhost.
+    // Replay/static pages remain independent and don't wake an inference instance.
+    if (
+      !apiBase ||
+      (route !== "Playground" && !(route === "Runtime" && mode === "live"))
+    )
+      return;
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout>;
     const poll = async () => {
@@ -47,7 +52,7 @@ export function App() {
       controller.abort();
       clearTimeout(timer);
     };
-  }, []);
+  }, [route, mode]);
   const frame =
     displayMode === "replay"
       ? fixture.traces[frameIndex]

@@ -1,2 +1,11 @@
+warning: in the working copy of 'PORTFOLIO-COPY.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
 warning: in the working copy of 'docs/evidence/final/checks/python-tests.txt', LF will be replaced by CRLF the next time Git touches it
-warning: in the working copy of 'frontend/scripts/sync-data.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/portfolio-ui.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/App.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/test/deployment.test.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/test/views.test.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/views/ArchitectureView.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/views/PlaygroundView.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/views/RuntimeView.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vercel.json', LF will be replaced by CRLF the next time Git touches it

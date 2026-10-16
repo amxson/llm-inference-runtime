@@ -278,3 +278,21 @@ test("shell routes remain text-only and skip link does not change route", async 
     "recorded trace",
   );
 });
+
+test("Replay stays independent of the API until Live is explicitly selected", async () => {
+  window.location.hash = "#/runtime";
+  render(<App />);
+  expect(snapshotMock).not.toHaveBeenCalled();
+  expect(
+    screen.getByRole("button", { name: "Select request r2" }),
+  ).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Live" }));
+  expect(snapshotMock).toHaveBeenCalledTimes(1);
+  expect(
+    screen.getByText(/Live profiling is not connected/),
+  ).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Replay" }));
+  expect(
+    screen.getByRole("button", { name: "Select request r2" }),
+  ).toBeInTheDocument();
+});

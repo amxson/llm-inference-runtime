@@ -2,7 +2,9 @@
 
 ## Short portfolio description
 
-An educational AI systems project that makes token generation inspectable below `model.generate()`: explicit decoding, request lifecycle, FIFO continuous batching, real SSE delivery, a logical ownership model and a restrained token-level profiler. The public static demo explores recorded executions and source-derived benchmarks; live profiling requires a connected Python runtime. Cached single-request decoding is a separate path from uncached HTTP serving.
+[Public static demo](https://llm-inference-runtime.vercel.app/#/runtime).
+
+An educational AI systems project that makes token generation inspectable below `model.generate()`: explicit decoding, request lifecycle, FIFO continuous batching, real SSE delivery, a logical ownership model and a restrained token-level profiler. Replay and source-derived benchmarks work independently of the backend; public Live uses a CPU Python function, subject to cold starts and compute quotas. Cached single-request decoding is a separate path from uncached HTTP serving.
 
 ## CV bullets
 

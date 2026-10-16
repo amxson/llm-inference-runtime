@@ -1,0 +1,67 @@
+{
+  "utc": "2026-10-16T22:59:37.3909183Z",
+  "base": "https://llm-inference-runtime.vercel.app",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "type": [
+        "text/html; charset=utf-8"
+      ],
+      "length": 463
+    },
+    {
+      "path": "/runtime",
+      "status": 200,
+      "type": [
+        "text/html; charset=utf-8"
+      ],
+      "length": 463
+    },
+    {
+      "path": "/playground",
+      "status": 200,
+      "type": [
+        "text/html; charset=utf-8"
+      ],
+      "length": 463
+    },
+    {
+      "path": "/benchmarks",
+      "status": 200,
+      "type": [
+        "text/html; charset=utf-8"
+      ],
+      "length": 463
+    },
+    {
+      "path": "/architecture",
+      "status": 200,
+      "type": [
+        "text/html; charset=utf-8"
+      ],
+      "length": 463
+    },
+    {
+      "path": "/data/benchmarks.json",
+      "status": 200,
+      "type": [
+        "application/json; charset=utf-8"
+      ],
+      "length": 813635
+    },
+    {
+      "path": "/data/final_cpu.json",
+      "status": 200,
+      "type": [
+        "application/json; charset=utf-8"
+      ],
+      "length": 1043108
+    }
+  ],
+  "artifact_count": 7,
+  "all_artifact_hashes_verified": true,
+  "production_bundle_loopback_and_credential_scan": "clean",
+  "manual_browser_verification": "pending: browser tool reports disabled",
+  "deployed_revision": "85365edfca78665068d16bd5f653ac719555e518"
+}

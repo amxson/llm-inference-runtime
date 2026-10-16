@@ -98,6 +98,11 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
           Submit a prompt to the real runtime. Each emitted token comes from a
           model forward—not a typewriter animation.
         </p>
+        <p className="caption">
+          Public demo: use non-sensitive prompts. Generated tokens and trace
+          events can be visible to other visitors. A model cold start may delay
+          the first response.
+        </p>
       </div>
       {!snapshot && (
         <p className="caption">
@@ -281,9 +286,10 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
         {snapshot?.model === "distilgpt2" &&
           "The small distilgpt2 demo model uses greedy decoding; repetitive continuations can occur. "}
         Arrival metrics include the browser/HTTP path and are not model-step
-        latency. Batch, queue and forwards are server-wide snapshot values, not
-        per-request work. Zero-token requests have no TTFT. Sampling and
-        KV-cached decoding exist as separate paths, not live controls.
+        latency. Batch, queue and forwards describe the responding worker
+        instance, not per-request work. Zero-token requests have no TTFT.
+        Sampling and KV-cached decoding exist as separate paths, not live
+        controls.
       </p>
       {result && (
         <details className="result-details">

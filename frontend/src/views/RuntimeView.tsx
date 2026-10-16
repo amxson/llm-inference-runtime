@@ -199,7 +199,7 @@ export function RuntimeView({
       ) : (
         <p className="caption">
           {snapshot
-            ? "Continuous uncached greedy HTTP engine. No logical allocator is enabled."
+            ? "Continuous uncached greedy HTTP engine. No logical allocator is enabled. Live snapshots describe the responding worker instance, not an aggregate across replicas."
             : liveUnavailable}
         </p>
       )}

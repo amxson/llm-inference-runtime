@@ -224,7 +224,9 @@ The central choices are explicit forwards over generation helpers; separate cach
 
 ## Portfolio UI
 
-The public deployment is intentionally static: Replay, Benchmarks and Architecture run without Python. Live is explicitly disconnected unless an API is configured; production never falls back to a visitor's localhost. See [final measurement methodology and limitations](docs/finalization.md) and [portfolio/CV copy](PORTFOLIO-COPY.md).
+[Public static demo](https://llm-inference-runtime.vercel.app/#/runtime) · [finalization evidence](docs/evidence/final/INDEX.md).
+
+Replay, Benchmarks and Architecture run without Python. Live requires an explicitly configured API; production never falls back to a visitor's localhost. The public deployment now includes the real CPU FastAPI runtime under `/api`, with one active row per function instance. See [public runtime deployment](docs/public-runtime.md), [final measurement methodology and limitations](docs/finalization.md), and [portfolio/CV copy](PORTFOLIO-COPY.md). Browser signoff remains separate from API smoke checks.
 
 The final quiet-window CPU rerun used two warmups and five alternating measured pairs, 128 output tokens and four CLI threads: mean local latency **11,080.8 ms uncached / 2,032.9 ms cached**, exact token parity, **8,768 / 132** forwarded positions. This is one workload with residual background load, not production or universal speedup. Five separate real SSE requests each delivered 128 contiguous token events, one completion and no errors. Worker-step median/p95/max: **127.34 / 215.34 / 1,404.60 ms**, including dispatch/forward overhead—not pure kernel latency.
 

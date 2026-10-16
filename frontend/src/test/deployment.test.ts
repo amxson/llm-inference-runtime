@@ -27,3 +27,17 @@ test("an explicitly configured backend URL is used unchanged except trailing sla
   const client = await import("../api/client");
   expect(client.apiBase).toBe("https://runtime.example");
 });
+test("an explicit same-origin API prefix routes snapshots to the deployed backend", async () => {
+  vi.stubEnv("DEV", false);
+  vi.stubEnv("VITE_API_BASE_URL", "/api");
+  vi.resetModules();
+  const fetch = vi
+    .fn()
+    .mockResolvedValue({ ok: true, json: async () => ({ traces: [] }) });
+  vi.stubGlobal("fetch", fetch);
+  const client = await import("../api/client");
+  await client.getSnapshot();
+  expect(fetch).toHaveBeenCalledWith("/api/runtime/snapshot", {
+    signal: undefined,
+  });
+});
