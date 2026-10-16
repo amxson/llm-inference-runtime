@@ -4,7 +4,7 @@ Production: [LLM Inference Runtime](https://llm-inference-runtime.vercel.app/#/r
 
 Static-only application revision before backend deployment: `85365edfca78665068d16bd5f653ac719555e518`. Main implementation/measurement commit: `173025c01468e74d24865f96aaca152a394cb550`. The measured runtime baseline was `ffdd08c`; raw measurement source revision identifies that baseline, not a claim that the new harness existed in its parent commit. The subsequent public API change is documented in [public runtime deployment](../../public-runtime.md).
 
-**Not signed off as complete.** Browser access reports `Local browser use is disabled in Work settings`, including after a session reset following the owner's enablement confirmation. No alternative browser automation was used to bypass this restriction. Current final screenshots, connected/offline/replay interaction review, responsive review, public browser console/network review and manual public-site verification are still pending. Historical screenshots are not relabeled as current evidence.
+**Not signed off as complete.** Browser access reports `Local browser use is disabled in Work settings`, including after a session reset following the owner's enablement confirmation. No alternative browser automation was used to bypass this restriction. At the owner's request, non-browser validation continued and an [exact manual checklist](../../public-browser-checklist.md) now covers the remaining public Playground/status/console/network/Replay checks. Current screenshots and interaction/responsive review remain pending. Historical screenshots are not relabeled as current evidence.
 
 ## Verified checks
 
@@ -21,6 +21,7 @@ Static-only application revision before backend deployment: `85365edfca78665068d
 | Exact commands/times/exit codes | [results](checks/results.json) | All exit codes 0 |
 | Historical static-only checks | [old deployment report](deployment-static-only.json) | Retained as static evidence only, not live deployment success |
 | Real public API | [health, CORS and SSE evidence](public-runtime.json) | JSON health; allowed-origin preflight 200, untrusted-origin 400; eight contiguous tokens, one done, no errors |
+| Final production deployment | [deployment record](deployment-public.json) | Application `e0fbe16`; Ready; canonical alias; real Python function; explicit API base in deployed JavaScript |
 
 Logs retain actual test/build output, with user/workspace paths redacted and trailing whitespace normalized. Empty compiler/compile outputs are expected; exit codes are recorded separately. No hosted CI result or browser behavior is inferred from these checks.
 

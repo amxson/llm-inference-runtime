@@ -1,0 +1,32 @@
+{
+  "application_commit": "e0fbe16d7b9617f28cbdf35000d769aa3d63ce61",
+  "deployment_id": "dpl_DW7L52G5JgPUMKhcEF1WTFWfNmMt",
+  "deployment_url": "https://llm-inference-runtime-g3zrwyod1-amxsons-projects.vercel.app",
+  "canonical_url": "https://llm-inference-runtime.vercel.app",
+  "backend_url": "https://llm-inference-runtime.vercel.app/api",
+  "health_url": "https://llm-inference-runtime.vercel.app/api/health",
+  "deployment_state": "READY",
+  "target": "production",
+  "function": "api/index",
+  "function_compressed_mb_reported_by_cli": 335.89,
+  "python_runtime": "3.12",
+  "plan_inspected": "Hobby",
+  "paid_infrastructure_created": false,
+  "production_environment_keys_verified_present": [
+    "VITE_API_BASE_URL",
+    "LLM_RUNTIME_CORS_ORIGINS",
+    "VERCEL_SUPPORT_LARGE_FUNCTIONS"
+  ],
+  "frontend_http_status": 200,
+  "javascript_asset": "/assets/index-CDeovhFJ.js",
+  "javascript_http_status": 200,
+  "canonical_api_base_in_deployed_javascript": true,
+  "public_prompt_warning_in_deployed_javascript": true,
+  "real_public_health_cors_sse_evidence": "public-runtime.json",
+  "browser_playground_verified": false,
+  "browser_connected_status_verified": false,
+  "browser_console_network_verified": false,
+  "browser_replay_verified": false,
+  "manual_browser_checklist": "../../public-browser-checklist.md",
+  "scope": "Deployment and real HTTP inference verified. Browser interaction remains a separate manual check; frontend HTTP and artifact inspection are not end-to-end browser signoff."
+}
