@@ -222,6 +222,34 @@ Download-free tests use deterministic fakes and a locally constructed tiny GPT-2
 
 The central choices are explicit forwards over generation helpers; separate cached and uncached paths over pretending to solve ragged caching; one serving owner over concurrent mutations; request-local state over shared caches; and raw/negative results over blanket speedup claims. Details: [architecture](docs/architecture.md), [postmortem](docs/postmortem.md).
 
+## Portfolio UI
+
+The **Trace** interface presents the runtime as a performance profiler: request lanes, discrete iteration work, linked logical block ownership, real streamed output, source-derived benchmark figures, and separate architecture paths.
+
+With Python dependencies installed, run the backend from the repository root:
+
+```powershell
+.venv\Scripts\Activate.ps1
+$env:LLM_RUNTIME_CORS_ORIGINS="http://127.0.0.1:5173,http://localhost:5173"
+python -m uvicorn llm_runtime.server:app --host 127.0.0.1 --port 8765
+```
+
+In a second terminal, with Node 22.12+ (Node 24 recommended) and current npm:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Open [the local profiler](http://127.0.0.1:5173/#/runtime). Configure `VITE_API_BASE_URL` using the frontend environment example when needed.
+
+Playground and Runtime **Live** use the real uncached greedy HTTP backend. Runtime **Replay** is explicitly labeled: an actual engine-generated recording with optional **logical** block bookkeeping, not physical PagedAttention. Benchmarks are derived from committed JSON; replay and benchmark exploration work without a running model server. No fake KV/sampling controls are exposed.
+
+![Trace Runtime profiler showing recorded request lanes and logical ownership](docs/images/trace-runtime.jpg)
+
+See [portfolio UI details](docs/portfolio-ui.md) for data provenance, telemetry boundaries, tests, responsive/accessibility review, recording regeneration, and the [benchmark screenshot](docs/images/trace-benchmarks.jpg).
+
 ## Known limitations
 
 No custom/fused attention kernels, physical KV paging, memory-aware admission/eviction, tensor-parallel/distributed execution, CUDA graphs, authentication, OpenAI API compatibility or production hardening. HTTP is greedy-only/uncached; sampling, INT8 and speculation are separate experiments. CPU/small-sample measurements do not validate GPU throughput, quality or tail SLAs. Logical allocation does not reduce actual KV bytes; INT8 changes outputs/uses deprecated APIs; zero draft acceptance does not demonstrate speculative acceleration.
