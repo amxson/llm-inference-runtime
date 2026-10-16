@@ -34,7 +34,7 @@ Open [the profiler](http://127.0.0.1:5173/#/runtime). Backend startup loads the 
 | Playground | Real `POST /generate/stream` SSE. Only prompt/token budget are sent. Greedy, continuous **uncached** serving; no fake sampling/cache controls. |
 | Runtime / Live | `GET /runtime/snapshot`, polled every 500 ms. Bounded completed-worker-boundary snapshots; pause freezes the captured frames, not engine execution. |
 | Runtime / Replay | Committed recording from real distilgpt2 CPU forwards through `ContinuousBatcher`, with its optional logical allocator. **Not** an HTTP capture. |
-| Benchmarks | Build-time mirrors of six Git-tracked benchmark JSONs. These are committed historical measurements, not a new live benchmark or a cross-milestone leaderboard. |
+| Benchmarks | Build-time mirrors of seven Git-tracked benchmark JSONs: the final rerun plus six historical artifacts. Not a live benchmark or a cross-milestone leaderboard. |
 | Architecture | An explicit rendering of the paths documented in `docs/architecture.md`, separating uncached HTTP from cached CLI/scheduler execution. |
 
 The top status line identifies replay versus live snapshot. The footer's engine hash identifies the M17 engine baseline, not the current presentation commit. Replay cadence (1×/0.25×) is an exploration control, not measured elapsed time. Keyboard comma/period steps iterations.
@@ -53,6 +53,12 @@ Snapshots are published by the serving owner **between** forwards. Readers never
 Playground output uses actual decoded SSE prefixes. When individual fragments cannot concatenate safely (e.g. split Unicode), it preserves the correct prefix rather than corrupting text for hover wrappers. Browser-observed TTFT/done arrival include HTTP overhead and are separate from worker timing. Zero-token requests have no TTFT.
 
 ## Provenance and regeneration
+
+For the public static build, leave `VITE_API_BASE_URL` unset. No model server runs on Vercel; Replay/Benchmarks/Architecture are intentional standalone experiences. Live explains the disconnected deployment; Playground does not attempt a localhost request. To connect an actual hosted backend, explicitly set its HTTPS URL and configure narrow CORS on that backend. Secrets must never be placed in a `VITE_` variable (they are public build-time values).
+
+`vercel.json` selects the static Vite build from the repository root (`npm --prefix frontend ci`, `npm --prefix frontend run build`, output `frontend/dist`), with SPA fallback excluding asset/data paths. No Python serverless inference function is deployed. Local `.vercel/` and generated auth environments are ignored. `benchmarks/provenance.json` is a generated checksum/source-commit manifest for environments without Git metadata; stale/missing artifact hashes fail the build. Regenerate it after committing changed artifacts using `node frontend/scripts/sync-data.mjs --write-manifest`. The CLI deployment does not claim a working GitHub auto-deploy integration.
+
+Review fixes and final measured distributions: [finalization report](finalization.md). The central accent remains the supplied `#EFA23A`; aliases retain full IDs in details, scheduler rows preserve grouped counts, and unmeasured throughput is omitted.
 
 `frontend/scripts/sync-data.mjs` reads only Git-tracked benchmark files and derives ignored `frontend/public/data/` files, including source commit and content hash. It runs before dev/build/tests. The UI never manually duplicates benchmark values. Raw JSON links point to the derived source copies. Quantized-output drift and slower speculative decoding remain prominent.
 
@@ -91,4 +97,4 @@ Accessibility checks include associated form labels, semantic tables/headings, k
 
 ## Deliberate limits
 
-This layer does not add cached batched serving, physical paging, sampling endpoints, production backpressure/security, new optimization claims or new benchmark measurements. Static data supports backend-free exploration; live generation still requires the Python model server.
+This layer does not add cached batched serving, physical paging, sampling endpoints or production backpressure/security. Finalization adds a scoped rerun using existing decoding mechanisms; historical measurements remain intact. Static data supports backend-free exploration; live generation still requires the Python model server.

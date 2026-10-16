@@ -8,7 +8,7 @@ The service is a bounded, single-owner, **uncached continuous greedy batcher**. 
 
 ## What improved performance
 
-The clearest controlled result is [M7's paired cache experiment](../benchmarks/results/m7_cached_vs_uncached_cpu.json). On the five-token France prompt with ten new tokens, one warmup/mode and three alternating measured pairs, all IDs matched. Forwarded positions fell **95 -> 14** (85.26% reduction); mean latency fell **699.031 -> 381.035 ms**, a **1.835x** ratio. Mean ITL fell 72.084 -> 36.816 ms. TTFT stayed approximately unchanged at 50.271 -> 49.693 ms: prompt prefill still happens.
+The historical [M7 paired cache experiment](../benchmarks/results/m7_cached_vs_uncached_cpu.json) established exact token parity and less repeated work. On the five-token France prompt with ten new tokens, one warmup/mode and three alternating measured pairs, all IDs matched. Forwarded positions fell **95 -> 14** (85.26% reduction); mean latency fell **699.031 -> 381.035 ms**, a **1.835x** ratio. Mean ITL fell 72.084 -> 36.816 ms. TTFT stayed approximately unchanged at 50.271 -> 49.693 ms: prompt prefill still happens. These historical timings may be host-contention affected; this is a hypothesis, not proven causality. They are not the preferred final headline measurement. See [finalization measurements](finalization.md) for the quiet-window rerun and explicit measurement scopes.
 
 Positions are not FLOPs; this is one CPU workload, not a universal speedup. Historical M5 had a different measured baseline and was not M7's denominator. Cache memory grows and attention still reads prior states.
 

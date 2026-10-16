@@ -5,31 +5,76 @@ import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const files = execFileSync("git", ["ls-files", "benchmarks/results/*.json"], {
-  cwd: root,
-  encoding: "utf8",
-})
-  .trim()
-  .split(/\r?\n/)
-  .filter(Boolean);
+let manifest = [];
+try {
+  manifest = JSON.parse(
+    await readFile(path.join(root, "benchmarks/provenance.json"), "utf8"),
+  );
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
+}
+let files;
+try {
+  files = execFileSync("git", ["ls-files", "benchmarks/results/*.json"], {
+    cwd: root,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+  })
+    .trim()
+    .split(/\r?\n/)
+    .filter(Boolean);
+} catch {
+  files = manifest.map((item) => item.source);
+}
+if (!files.length)
+  throw new Error(
+    "No tracked artifacts or checked provenance manifest available.",
+  );
 const artifacts = await Promise.all(
   files.map(async (source) => {
     const text = await readFile(path.join(root, source), "utf8");
+    const hash = createHash("sha256")
+      .update(text.replace(/\r\n/g, "\n"))
+      .digest("hex");
+    let commit;
+    try {
+      commit = execFileSync("git", ["log", "-1", "--format=%H", "--", source], {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }).trim();
+    } catch {
+      const entry = manifest.find((item) => item.source === source);
+      if (!entry || entry.source_sha256 !== hash)
+        throw new Error(`Missing/stale provenance: ${source}`);
+      commit = entry.source_commit;
+    }
     return {
       name: path.basename(source),
       source,
-      source_commit: execFileSync(
-        "git",
-        ["log", "-1", "--format=%H", "--", source],
-        { cwd: root, encoding: "utf8" },
-      ).trim(),
-      source_sha256: createHash("sha256")
-        .update(text.replace(/\r\n/g, "\n"))
-        .digest("hex"),
+      source_commit: commit,
+      source_sha256: hash,
       data: JSON.parse(text),
     };
   }),
 );
+if (process.argv.includes("--write-manifest")) {
+  if (artifacts.some((a) => !a.source_commit))
+    throw new Error("Commit artifacts before recording deployment provenance.");
+  await writeFile(
+    path.join(root, "benchmarks/provenance.json"),
+    JSON.stringify(
+      artifacts.map(({ name, source, source_commit, source_sha256 }) => ({
+        name,
+        source,
+        source_commit,
+        source_sha256,
+      })),
+      null,
+      2,
+    ) + "\n",
+  );
+}
 const out = path.join(root, "frontend/public/data");
 await mkdir(out, { recursive: true });
 await writeFile(

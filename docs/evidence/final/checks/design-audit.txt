@@ -1,0 +1,1 @@
+Trace static design audit passed: 8 visual source files; approved palette, weights, radii, shadows; no decorative UI/icon/chart dependency.

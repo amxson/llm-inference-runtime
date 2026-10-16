@@ -9,6 +9,12 @@ import {
 } from "../runtime/traceAdapter";
 import { replayInterval, stepIndex } from "../runtime/replay";
 import { recordedFrames } from "../runtime/recording";
+import {
+  groupSchedulerEvents,
+  requestAlias,
+  traceTokenText,
+} from "../runtime/presentation";
+import { liveUnavailable } from "../api/client";
 
 export function RuntimeView({
   snapshot,
@@ -26,10 +32,14 @@ export function RuntimeView({
   const [index, setIndex] = useState(initialIndex),
     [playing, setPlaying] = useState(false),
     [speed, setSpeed] = useState(1),
-    [selected, setSelected] = useState("r2");
+    [selection, setSelected] = useState("r2");
   const [frozen, setFrozen] = useState<TraceFrame[] | null>(null);
   const frames: TraceFrame[] =
-    mode === "replay" ? recordedFrames : (frozen ?? snapshot?.traces ?? []);
+    mode === "replay"
+      ? recordedFrames
+      : snapshot?.traces.length
+        ? (frozen ?? snapshot.traces)
+        : [];
   const cursor =
     mode === "live" && !frozen
       ? frames.length - 1
@@ -37,6 +47,9 @@ export function RuntimeView({
   const frame = frames[cursor];
   const ids = requestIds(frames),
     pool = frame?.logical_kv_before_forward;
+  ids.forEach(requestAlias);
+  const selected = ids.includes(selection) ? selection : (ids[0] ?? "");
+  const label = requestAlias;
   const selectedState = stateAt(frames, cursor, selected);
   const chooseIndex = (next: number) => {
     setIndex(next);
@@ -50,8 +63,8 @@ export function RuntimeView({
     } else chooseIndex(stepIndex(cursor, delta, frames.length));
   };
   useEffect(() => {
-    if (!ids.includes(selected) && ids.length) setSelected(ids[0]);
-  }, [ids.join("|"), selected]);
+    if (mode === "live" && !snapshot?.traces.length) setFrozen(null);
+  }, [mode, snapshot]);
   useEffect(() => {
     if (!playing || mode !== "replay") return;
     const timer = setTimeout(() => {
@@ -187,7 +200,7 @@ export function RuntimeView({
         <p className="caption">
           {snapshot
             ? "Continuous uncached greedy HTTP engine. No logical allocator is enabled."
-            : "Backend unavailable. Start the local server or choose Replay; no live data is fabricated."}
+            : liveUnavailable}
         </p>
       )}
       <section className="instrument-section" aria-labelledby="timeline-title">
@@ -260,11 +273,12 @@ export function RuntimeView({
                 >
                   <button
                     className="request-label mono"
-                    aria-label={`Select request ${id}`}
+                    aria-label={`Select request ${label(id)}`}
+                    title={`Request ID: ${id}`}
                     aria-pressed={selected === id}
                     onClick={() => setSelected(id)}
                   >
-                    {id}
+                    {label(id)}
                   </button>
                   {frames.map((item, i) => {
                     const event = item.events.find(
@@ -277,7 +291,7 @@ export function RuntimeView({
                         key={item.tick}
                         className={`lane-cell ${event ? event.phase : waiting ? "waiting" : "empty"} ${completed ? "completed" : ""} ${i > cursor ? "future" : ""} ${i === cursor ? "cursor-cell" : ""}`}
                         disabled={!event && !waiting}
-                        aria-label={`${id}, iteration ${item.tick}, ${event ? event.phase : waiting ? "waiting" : "not observed"}${completed ? ", finishes" : ""}`}
+                        aria-label={`${label(id)}, iteration ${item.tick}, ${event ? event.phase : waiting ? "waiting" : "not observed"}${completed ? ", finishes" : ""}`}
                         onClick={() => {
                           setSelected(id);
                           if (mode === "live") setFrozen(frames);
@@ -302,7 +316,9 @@ export function RuntimeView({
           </div>
         ) : (
           <p className="empty-state">
-            No recorded live iterations yet. Run a request in Playground.
+            {snapshot
+              ? "No live iterations observed yet. Run a request in Playground."
+              : "Choose Replay above to explore an engine recording."}
           </p>
         )}
         <p className="caption">
@@ -314,7 +330,9 @@ export function RuntimeView({
         <div className="section-title">
           <h2>Request state</h2>
           <span className="mono selected-label">
-            {selected || "—"} · {selectedState}
+            {selected
+              ? `${label(selected)} · ${selectedState}`
+              : "No request selected"}
           </span>
         </div>
         <div className="state-machine">
@@ -356,11 +374,11 @@ export function RuntimeView({
                         className={`block ${owner ? "owned" : "free"} ${owner === selected ? "selected-block" : owner ? "is-dimmed" : ""}`}
                         key={block}
                         disabled={!owner}
-                        aria-label={`Pool block ${block}, ${owner ? `owned by ${owner}` : "free"}`}
+                        aria-label={`Pool block ${block}, ${owner ? `owned by ${label(owner)}` : "free"}`}
                         onClick={() => owner && setSelected(owner)}
                       >
                         <span className="block-id">{block}</span>
-                        <span>{owner ?? "free"}</span>
+                        <span>{owner ? label(owner) : "free"}</span>
                       </button>
                     );
                   })}
@@ -379,7 +397,9 @@ export function RuntimeView({
           </div>
           <div>
             <h3 className="minor-title">
-              {selected || "—"} / block table before forward
+              {selected
+                ? `${label(selected)} / block table before forward`
+                : "Block table / no request selected"}
             </h3>
             <table>
               <thead>
@@ -394,7 +414,7 @@ export function RuntimeView({
                   <tr key={block}>
                     <td className="mono">{i}</td>
                     <td className="numeric">{block}</td>
-                    <td className="mono">{selected}</td>
+                    <td className="mono">{label(selected)}</td>
                   </tr>
                 ))}
                 {!ownership.length && (
@@ -415,7 +435,9 @@ export function RuntimeView({
       <section className="instrument-section">
         <div className="section-title">
           <h2>Selected request / token output</h2>
-          <span className="mono">{selected || "—"}</span>
+          <span className="mono">
+            {selected ? label(selected) : "No request selected"}
+          </span>
         </div>
         <div className="runtime-tokens">
           {selectedTokens.length
@@ -427,35 +449,69 @@ export function RuntimeView({
                   }
                   title={`token ${event.token_id} · index ${event.token_index ?? "—"} · ${selected}`}
                 >
-                  {event.token_text ?? "—"}
+                  {traceTokenText(event.token_text ?? "—")}
                 </span>
               ))
             : "—"}
         </div>
+        {selectedTokens.length > 0 && (
+          <p className="caption">
+            Trace inspection escapes control characters as \n, \r and \t. This
+            preserves newline-heavy model output without reserving empty lines;
+            the raw decoded prefix is retained in details.
+          </p>
+        )}
+        {selectedTokens.length > 0 && (
+          <details className="result-details">
+            <summary>Raw selected-request output</summary>
+            <pre>
+              {JSON.stringify(
+                {
+                  request_id: selected,
+                  generated_text: selectedTokens.at(-1)?.generated_text ?? null,
+                  token_ids: selectedTokens.map((event) => event.token_id),
+                },
+                null,
+                2,
+              )}
+            </pre>
+          </details>
+        )}
       </section>
+      {selected && mode === "live" && (
+        <details className="result-details">
+          <summary>{label(selected)} / full request ID</summary>
+          <code>{selected}</code>
+        </details>
+      )}
       <section className="instrument-section scheduler">
         <div className="section-title">
           <h2>Scheduler log</h2>
-          <span className="caption">Newest first · actual tick records</span>
+          <span className="caption">
+            Newest first · consecutive scheduler states grouped · {cursor + 1}{" "}
+            observed ticks in retained window
+          </span>
         </div>
-        {frames
-          .slice(0, cursor + 1)
+        {groupSchedulerEvents(frames.slice(0, cursor + 1))
           .reverse()
-          .slice(0, 8)
-          .map((item) => (
+          .map(({ first, last: item, count }) => (
             <div
               className={`log-line mono ${item.active_request_ids.includes(selected) ? "selected-log" : "is-dimmed"}`}
               key={item.tick}
             >
-              <span>it {String(item.tick).padStart(4, "0")}</span>
               <span>
-                admit {item.admitted.join(", ") || "—"} · batch{" "}
+                it {first.tick}
+                {count > 1 ? `–${item.tick}` : ""}
+              </span>
+              <span>
+                admit {item.admitted.map(label).join(", ") || "—"} · batch{" "}
                 {item.model_request_ids.length}/
                 {mode === "replay"
                   ? fixture.max_active
                   : (snapshot?.max_active ?? "—")}{" "}
                 · queue {metric(item.queue_depth)} · complete{" "}
-                {item.completed.join(", ") || "—"}
+                {item.completed.map(label).join(", ") || "—"}
+                {count > 1 ? ` · ×${count}` : ""}
               </span>
             </div>
           ))}

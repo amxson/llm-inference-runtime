@@ -44,3 +44,8 @@ benchmarks/results/*
 !benchmarks/results/m15_quantization_cpu.json
 !benchmarks/results/m16_speculative_cpu.json
 !benchmarks/results/m17_summary.json
+!benchmarks/results/final_cpu.json
+.vercel/
+
+/.env.local
+/.env.*.local

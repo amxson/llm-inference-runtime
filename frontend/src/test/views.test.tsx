@@ -16,6 +16,8 @@ vi.mock("../api/sse", () => ({ streamGeneration: streamMock }));
 vi.mock("../api/client", () => ({
   getSnapshot: snapshotMock,
   apiBase: "http://127.0.0.1:8765",
+  liveUnavailable:
+    "Live profiling is not connected in this deployment. Use Replay to explore recorded executions; no live data is fabricated.",
 }));
 beforeEach(() => {
   streamMock.mockReset();

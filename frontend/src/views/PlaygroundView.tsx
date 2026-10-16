@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import type { GenerationResult, Snapshot, TokenEvent } from "../api/types";
 import { streamGeneration } from "../api/sse";
 import { metric } from "../runtime/traceAdapter";
+import { requestAlias } from "../runtime/presentation";
+import { apiBase, liveUnavailable } from "../api/client";
 
 export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
   const [prompt, setPrompt] = useState("The capital of France is"),
@@ -97,6 +99,11 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
           model forward—not a typewriter animation.
         </p>
       </div>
+      {!snapshot && (
+        <p className="caption">
+          {liveUnavailable} <a href="#/runtime">Explore Replay</a>
+        </p>
+      )}
       <form onSubmit={run} className="prompt-form">
         <label htmlFor="prompt">Prompt</label>
         <textarea
@@ -131,7 +138,7 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
             <button
               type="submit"
               className="primary"
-              disabled={state === "running" || !prompt.trim()}
+              disabled={!apiBase || state === "running" || !prompt.trim()}
             >
               Run
             </button>
@@ -195,9 +202,15 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
             <>
               token <span className="mono">{selectedToken.token_id}</span> ·
               index <span className="mono">{selectedToken.token_index}</span> ·
-              request <span className="mono">{selectedToken.request_id}</span> ·
-              worker step {metric(workerStep(selectedToken), 2)} ms (dispatch +
-              forward)
+              request{" "}
+              <span
+                className="mono"
+                title={`Request ID: ${selectedToken.request_id}`}
+              >
+                {requestAlias(selectedToken.request_id)}
+              </span>{" "}
+              · worker step {metric(workerStep(selectedToken), 2)} ms (dispatch
+              + forward)
             </>
           ) : (
             "Hover or focus a token to inspect its ID and request. Worker timing appears only when a matching telemetry tick is available."
@@ -265,6 +278,8 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
         </div>
       </dl>
       <p className="caption">
+        {snapshot?.model === "distilgpt2" &&
+          "The small distilgpt2 demo model uses greedy decoding; repetitive continuations can occur. "}
         Arrival metrics include the browser/HTTP path and are not model-step
         latency. Batch, queue and forwards are server-wide snapshot values, not
         per-request work. Zero-token requests have no TTFT. Sampling and

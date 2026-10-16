@@ -36,6 +36,13 @@ export function ArchitectureView() {
           below model.generate().
         </p>
       </div>
+      <p className="caption">
+        Live requires a connected Python runtime and observes worker-boundary
+        snapshots/SSE arrivals. Replay is an engine-generated recording with
+        logical ownership. This public static experience runs neither model
+        inference nor fresh benchmarks; the harness separately measures local
+        selection time and network arrival time.
+      </p>
       <section className="instrument-section">
         <div className="section-title">
           <h2>Live HTTP / uncached continuous greedy</h2>

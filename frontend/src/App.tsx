@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Snapshot } from "./api/types";
-import { getSnapshot } from "./api/client";
+import { apiBase, getSnapshot } from "./api/client";
 import { RuntimeView } from "./views/RuntimeView";
 import { PlaygroundView } from "./views/PlaygroundView";
 import { BenchmarksView } from "./views/BenchmarksView";
@@ -30,6 +30,7 @@ export function App() {
     return () => window.removeEventListener("hashchange", change);
   }, []);
   useEffect(() => {
+    if (!apiBase) return; // Public static mode never probes a visitor's localhost.
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout>;
     const poll = async () => {
@@ -125,7 +126,6 @@ export function App() {
             displayMode === "live" ? snapshot?.queue_depth : frame?.queue_depth,
           )}
         </span>
-        <span>decode — tok/s</span>
       </div>
       <aside className="navigation">
         <nav aria-label="Main navigation">
@@ -157,7 +157,7 @@ export function App() {
             mode={mode}
             onMode={setMode}
             onFrame={setFrameIndex}
-          initialIndex={frameIndex}
+            initialIndex={frameIndex}
           />
         ) : route === "Playground" ? (
           <PlaygroundView snapshot={snapshot} />

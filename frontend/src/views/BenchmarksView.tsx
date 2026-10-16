@@ -7,6 +7,7 @@ import {
   type ModeMetrics,
 } from "../data/benchmarkAdapter";
 import { metric } from "../runtime/traceAdapter";
+import { FinalMeasurement } from "./FinalMeasurement";
 
 function Source({ artifact }: { artifact: Artifact }) {
   return (
@@ -233,6 +234,19 @@ export function BenchmarksView() {
           Each figure links to its source and methodology.
         </p>
       </div>
+      {artifacts.find((a) => a.name === "final_cpu.json") && (
+        <FinalMeasurement
+          artifact={artifacts.find((a) => a.name === "final_cpu.json")!}
+        />
+      )}
+      <h2>Historical experiments / preserved evidence</h2>
+      <p className="caption caveat">
+        The following M5–M17 artifacts are historical, not preferred headline
+        timing. M7 and the M13 concurrency-one anomaly may be affected by host
+        contention; this is a hypothesis, not a proven diagnosis. The final
+        rerun above has a different token budget and is not a causal
+        before/after machine comparison.
+      </p>
       <p className="finding">
         KV caching forwards{" "}
         <span className="mono">{metric(data.cached.positions)}</span> positions
@@ -265,7 +279,9 @@ export function BenchmarksView() {
       <section className="instrument-section">
         <div className="section-title">
           <h2>Fig. 2 / Mean request latency</h2>
-          <span className="caption">Fresh paired modes · milliseconds</span>
+          <span className="caption">
+            Historical M7 paired modes · milliseconds
+          </span>
         </div>
         <svg
           className="latency-figure"

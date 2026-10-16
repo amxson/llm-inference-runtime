@@ -1,4 +1,4 @@
-import { apiBase } from "./client";
+import { apiBase, liveUnavailable } from "./client";
 import type { StreamEvent } from "./types";
 
 export function decodeEvent(event: string, text: string): StreamEvent | null {
@@ -82,6 +82,7 @@ export async function streamGeneration(
   signal: AbortSignal,
   onEvent: (event: StreamEvent) => void,
 ) {
+  if (!apiBase) throw new Error(liveUnavailable);
   const response = await fetch(`${apiBase}/generate/stream`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

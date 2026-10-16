@@ -4,7 +4,7 @@ An LLM inference runtime built from first principles to explore and implement au
 
 The project makes token generation and request execution inspectable: explicit model forwards, visible state transitions, correctness checks, and raw benchmark measurements. Inspired by vLLM, TGI, and llama.cpp, it is not a replacement for those engines. **M0–M17 are complete.** No `model.generate()` or another inference engine's decoding API is used.
 
-The strongest controlled result: single-request KV reuse reduced forwarded input positions **95 -> 14** and mean latency **699.031 -> 381.035 ms**, with identical token IDs. INT8 reduced estimated weight payload but changed the continuation; speculative decoding preserved greedy output but was slower. Negative results are retained.
+Single-request KV reuse avoids repeated input-position work with verified identical token IDs. Final token-level measurements and raw evidence are described below. INT8 reduced estimated weight payload but changed the continuation; speculative decoding preserved greedy output but was slower. Negative results are retained. Historical M7/M13 timing may be affected by host contention; that explanation remains a hypothesis, not an established cause.
 
 ## Implemented capabilities
 
@@ -178,7 +178,7 @@ Five-token France prompt; ten new tokens; one excluded warmup/mode; three altern
 | [M16](benchmarks/results/m16_speculative_cpu.json) | Ordinary target | 375.235 | 27.986 | 26.658 |
 | M16 | Speculative | 517.977 | 34.755 | 19.348 |
 
-M7: exact parity; forwarded positions **95 -> 14** (85.26% fewer); **1.835x** latency ratio; mean ITL **72.084 -> 36.816 ms**. Input lengths `[5,6,7,8,9,10,11,12,13,14]` became `[5,1,1,1,1,1,1,1,1,1]`; both logical contexts reach 14. This is the strongest controlled equivalent-output result.
+Historical M7: exact parity; forwarded positions **95 -> 14** (85.26% fewer); **1.835x** latency ratio; mean ITL **72.084 -> 36.816 ms**. Input lengths `[5,6,7,8,9,10,11,12,13,14]` became `[5,1,1,1,1,1,1,1,1,1]`; both logical contexts reach 14. These preserved timings are not the preferred final headline. Host contention is a possible confound, not proven causality; position counts are deterministic work counts, not FLOPs.
 
 M15: weight payload **327,650,304 -> 200,248,320 bytes** (38.88% reduction); latency down 45.702 ms (1.144x ratio), **outputs different**. M16: exact parity, but latency up **142.743 ms / 38.04%**. Each run proposed 27 tokens, accepted zero, rejected 27: ten target verifications plus 27 draft forwards versus ten ordinary target forwards. Tiny-gpt2 was cheap but poorly aligned with this workload, saving no target calls.
 
@@ -223,6 +223,12 @@ Download-free tests use deterministic fakes and a locally constructed tiny GPT-2
 The central choices are explicit forwards over generation helpers; separate cached and uncached paths over pretending to solve ragged caching; one serving owner over concurrent mutations; request-local state over shared caches; and raw/negative results over blanket speedup claims. Details: [architecture](docs/architecture.md), [postmortem](docs/postmortem.md).
 
 ## Portfolio UI
+
+The public deployment is intentionally static: Replay, Benchmarks and Architecture run without Python. Live is explicitly disconnected unless an API is configured; production never falls back to a visitor's localhost. See [final measurement methodology and limitations](docs/finalization.md) and [portfolio/CV copy](PORTFOLIO-COPY.md).
+
+The final quiet-window CPU rerun used two warmups and five alternating measured pairs, 128 output tokens and four CLI threads: mean local latency **11,080.8 ms uncached / 2,032.9 ms cached**, exact token parity, **8,768 / 132** forwarded positions. This is one workload with residual background load, not production or universal speedup. Five separate real SSE requests each delivered 128 contiguous token events, one completion and no errors. Worker-step median/p95/max: **127.34 / 215.34 / 1,404.60 ms**, including dispatch/forward overhead—not pure kernel latency.
+
+![Final token-gap measurements](docs/images/final-token-gaps.svg)
 
 The **Trace** interface presents the runtime as a performance profiler: request lanes, discrete iteration work, linked logical block ownership, real streamed output, source-derived benchmark figures, and separate architecture paths.
 
