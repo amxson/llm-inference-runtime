@@ -15,4 +15,4 @@ dist/assets/ibm-plex-sans-latin-500-normal-6ng42L7E.woff2   24.18 kB
 dist/assets/index-BktbxpIZ.css                              15.07 kB │ gzip:  3.78 kB
 dist/assets/index-u3t2p_SV.js                              281.78 kB │ gzip: 85.44 kB
 
-✓ built in 403ms
+✓ built in 984ms

@@ -30,4 +30,4 @@ tests/test_benchmark_quantization.py::test_quantized_projections_execute_without
     qweight = torch.quantize_per_tensor(
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-129 passed, 6 warnings in 21.91s
+129 passed, 6 warnings in 10.88s

@@ -1,0 +1,44 @@
+[
+  {
+    "name": "final_cpu.json",
+    "source": "benchmarks/results/final_cpu.json",
+    "source_commit": "173025c01468e74d24865f96aaca152a394cb550",
+    "source_sha256": "5768f92ba1c5d71ec20c1802212f616cf881e4b1b53009727988d14206d4c094"
+  },
+  {
+    "name": "m13_serving_cpu.json",
+    "source": "benchmarks/results/m13_serving_cpu.json",
+    "source_commit": "ca6c170a49b4f0075150fa358e01221acd2c9bc1",
+    "source_sha256": "d5501f1d96538089a8464150f35b13d3502d769bd17c4ce026d25e8f6d913f9a"
+  },
+  {
+    "name": "m15_quantization_cpu.json",
+    "source": "benchmarks/results/m15_quantization_cpu.json",
+    "source_commit": "284d3eb6fabe857a5c1052d8a2f4559e77f0de5a",
+    "source_sha256": "bc9153ffaeaa24e23c0e39a8d9f8154850ac09a318984027bda9db40480488fa"
+  },
+  {
+    "name": "m16_speculative_cpu.json",
+    "source": "benchmarks/results/m16_speculative_cpu.json",
+    "source_commit": "1bcd415ff0f99b11fbc37f70c986329fa7701de1",
+    "source_sha256": "0eb8db45e8ec20d050ea637043a7b426d1f38423fd35f03db97667dfd42165c2"
+  },
+  {
+    "name": "m17_summary.json",
+    "source": "benchmarks/results/m17_summary.json",
+    "source_commit": "dc0f276be63a29fa9a929d3ba39dc864cd29373f",
+    "source_sha256": "1b6e55f24b86846aa34b75d5c4b28b39920dfb46124a2c3dd893ad924fad3024"
+  },
+  {
+    "name": "m5_naive_cpu.json",
+    "source": "benchmarks/results/m5_naive_cpu.json",
+    "source_commit": "6aa937f07e1232c1be81f10d555a52d767ccd2cd",
+    "source_sha256": "53d15173ffb9534b304ca8b056c450275cc57662fc08f57a9dc1cea30a93bb8b"
+  },
+  {
+    "name": "m7_cached_vs_uncached_cpu.json",
+    "source": "benchmarks/results/m7_cached_vs_uncached_cpu.json",
+    "source_commit": "0d818c505f4c8ca9dd8b127fa713c3167dffdb91",
+    "source_sha256": "8937ed0650b410700406cfe80994b660693e5cac2386cd12ca06ceb8cccad5e6"
+  }
+]

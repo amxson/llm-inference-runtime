@@ -26,6 +26,7 @@ try {
 } catch {
   files = manifest.map((item) => item.source);
 }
+if (!files.length) files = manifest.map((item) => item.source);
 if (!files.length)
   throw new Error(
     "No tracked artifacts or checked provenance manifest available.",
@@ -43,7 +44,8 @@ const artifacts = await Promise.all(
         encoding: "utf8",
         stdio: ["ignore", "pipe", "pipe"],
       }).trim();
-    } catch {
+    } catch { /* Git metadata may be absent in uploaded source bundles. */ }
+    if (!commit) {
       const entry = manifest.find((item) => item.source === source);
       if (!entry || entry.source_sha256 !== hash)
         throw new Error(`Missing/stale provenance: ${source}`);
