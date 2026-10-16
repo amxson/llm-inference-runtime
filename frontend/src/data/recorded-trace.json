@@ -1,0 +1,843 @@
+{
+  "label": "Recorded trace",
+  "provenance": "Actual ContinuousBatcher + distilgpt2 CPU greedy forwards; optional logical BlockAllocator; not an HTTP capture or a timing benchmark",
+  "engine_commit": "dc0f276be63a29fa9a929d3ba39dc864cd29373f",
+  "model": "distilgpt2",
+  "device": "cpu",
+  "max_active": 3,
+  "serving_cache": false,
+  "time_axis": "discrete engine ticks; replay cadence is not measured elapsed time",
+  "requests": [
+    {
+      "request_id": "r1",
+      "prompt": "The capital of France is",
+      "max_new_tokens": 3,
+      "prompt_token_ids": [
+        464,
+        3139,
+        286,
+        4881,
+        318
+      ]
+    },
+    {
+      "request_id": "r2",
+      "prompt": "Hello",
+      "max_new_tokens": 6,
+      "prompt_token_ids": [
+        15496
+      ]
+    },
+    {
+      "request_id": "r3",
+      "prompt": "The tallest mountain is",
+      "max_new_tokens": 4,
+      "prompt_token_ids": [
+        464,
+        38760,
+        8598,
+        318
+      ]
+    },
+    {
+      "request_id": "r4",
+      "prompt": "A computer is",
+      "max_new_tokens": 2,
+      "prompt_token_ids": [
+        32,
+        3644,
+        318
+      ]
+    },
+    {
+      "request_id": "r5",
+      "prompt": "The purpose of an operating system is",
+      "max_new_tokens": 5,
+      "prompt_token_ids": [
+        464,
+        4007,
+        286,
+        281,
+        5361,
+        1080,
+        318
+      ]
+    },
+    {
+      "request_id": "r6",
+      "prompt": "In the morning",
+      "max_new_tokens": 3,
+      "prompt_token_ids": [
+        818,
+        262,
+        3329
+      ]
+    }
+  ],
+  "traces": [
+    {
+      "tick": 1,
+      "admitted": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "active_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "model_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "r1",
+          "phase": "prefill",
+          "token_id": 262,
+          "logical_context_length": 5,
+          "model_input_width": 5,
+          "batch_size": 3,
+          "token_index": 1,
+          "token_text": " the",
+          "generated_text": " the"
+        },
+        {
+          "request_id": "r2",
+          "phase": "prefill",
+          "token_id": 383,
+          "logical_context_length": 1,
+          "model_input_width": 5,
+          "batch_size": 3,
+          "token_index": 1,
+          "token_text": " The",
+          "generated_text": " The"
+        },
+        {
+          "request_id": "r3",
+          "phase": "prefill",
+          "token_id": 262,
+          "logical_context_length": 4,
+          "model_input_width": 5,
+          "batch_size": 3,
+          "token_index": 1,
+          "token_text": " the",
+          "generated_text": " the"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 28,
+        "allocated_blocks": 4,
+        "utilization": 0.125,
+        "request_block_tables": {
+          "r1": [
+            0,
+            1
+          ],
+          "r2": [
+            2
+          ],
+          "r3": [
+            3
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 28,
+        "allocated_blocks": 4,
+        "utilization": 0.125,
+        "request_block_tables": {
+          "r1": [
+            0,
+            1
+          ],
+          "r2": [
+            2
+          ],
+          "r3": [
+            3
+          ]
+        }
+      },
+      "waiting_request_ids": [
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "queue_depth": 3
+    },
+    {
+      "tick": 2,
+      "admitted": [],
+      "active_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "model_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "r1",
+          "phase": "decode",
+          "token_id": 3139,
+          "logical_context_length": 6,
+          "model_input_width": 6,
+          "batch_size": 3,
+          "token_index": 2,
+          "token_text": " capital",
+          "generated_text": " the capital"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decode",
+          "token_id": 717,
+          "logical_context_length": 2,
+          "model_input_width": 6,
+          "batch_size": 3,
+          "token_index": 2,
+          "token_text": " first",
+          "generated_text": " The first"
+        },
+        {
+          "request_id": "r3",
+          "phase": "decode",
+          "token_id": 5628,
+          "logical_context_length": 5,
+          "model_input_width": 6,
+          "batch_size": 3,
+          "token_index": 2,
+          "token_text": " Mount",
+          "generated_text": " the Mount"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 27,
+        "allocated_blocks": 5,
+        "utilization": 0.15625,
+        "request_block_tables": {
+          "r1": [
+            0,
+            1
+          ],
+          "r2": [
+            2
+          ],
+          "r3": [
+            3,
+            4
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 27,
+        "allocated_blocks": 5,
+        "utilization": 0.15625,
+        "request_block_tables": {
+          "r1": [
+            0,
+            1
+          ],
+          "r2": [
+            2
+          ],
+          "r3": [
+            3,
+            4
+          ]
+        }
+      },
+      "waiting_request_ids": [
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "queue_depth": 3
+    },
+    {
+      "tick": 3,
+      "admitted": [],
+      "active_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "model_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "completed": [
+        "r1"
+      ],
+      "events": [
+        {
+          "request_id": "r1",
+          "phase": "decode",
+          "token_id": 286,
+          "logical_context_length": 7,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 3,
+          "token_text": " of",
+          "generated_text": " the capital of"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decode",
+          "token_id": 640,
+          "logical_context_length": 3,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 3,
+          "token_text": " time",
+          "generated_text": " The first time"
+        },
+        {
+          "request_id": "r3",
+          "phase": "decode",
+          "token_id": 41336,
+          "logical_context_length": 6,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 3,
+          "token_text": " Everest",
+          "generated_text": " the Mount Everest"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 27,
+        "allocated_blocks": 5,
+        "utilization": 0.15625,
+        "request_block_tables": {
+          "r1": [
+            0,
+            1
+          ],
+          "r2": [
+            2
+          ],
+          "r3": [
+            3,
+            4
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 29,
+        "allocated_blocks": 3,
+        "utilization": 0.09375,
+        "request_block_tables": {
+          "r2": [
+            2
+          ],
+          "r3": [
+            3,
+            4
+          ]
+        }
+      },
+      "waiting_request_ids": [
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "queue_depth": 3
+    },
+    {
+      "tick": 4,
+      "admitted": [
+        "r4"
+      ],
+      "active_request_ids": [
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "model_request_ids": [
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "completed": [
+        "r3"
+      ],
+      "events": [
+        {
+          "request_id": "r2",
+          "phase": "decode",
+          "token_id": 314,
+          "logical_context_length": 4,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 4,
+          "token_text": " I",
+          "generated_text": " The first time I"
+        },
+        {
+          "request_id": "r3",
+          "phase": "decode",
+          "token_id": 11,
+          "logical_context_length": 7,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 4,
+          "token_text": ",",
+          "generated_text": " the Mount Everest,"
+        },
+        {
+          "request_id": "r4",
+          "phase": "prefill",
+          "token_id": 257,
+          "logical_context_length": 3,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 1,
+          "token_text": " a",
+          "generated_text": " a"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 28,
+        "allocated_blocks": 4,
+        "utilization": 0.125,
+        "request_block_tables": {
+          "r2": [
+            2
+          ],
+          "r3": [
+            3,
+            4
+          ],
+          "r4": [
+            5
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 30,
+        "allocated_blocks": 2,
+        "utilization": 0.0625,
+        "request_block_tables": {
+          "r2": [
+            2
+          ],
+          "r4": [
+            5
+          ]
+        }
+      },
+      "waiting_request_ids": [
+        "r5",
+        "r6"
+      ],
+      "queue_depth": 2
+    },
+    {
+      "tick": 5,
+      "admitted": [
+        "r5"
+      ],
+      "active_request_ids": [
+        "r2",
+        "r4",
+        "r5"
+      ],
+      "model_request_ids": [
+        "r2",
+        "r4",
+        "r5"
+      ],
+      "completed": [
+        "r4"
+      ],
+      "events": [
+        {
+          "request_id": "r2",
+          "phase": "decode",
+          "token_id": 2497,
+          "logical_context_length": 5,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 5,
+          "token_text": " saw",
+          "generated_text": " The first time I saw"
+        },
+        {
+          "request_id": "r4",
+          "phase": "decode",
+          "token_id": 3644,
+          "logical_context_length": 4,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 2,
+          "token_text": " computer",
+          "generated_text": " a computer"
+        },
+        {
+          "request_id": "r5",
+          "phase": "prefill",
+          "token_id": 284,
+          "logical_context_length": 7,
+          "model_input_width": 7,
+          "batch_size": 3,
+          "token_index": 1,
+          "token_text": " to",
+          "generated_text": " to"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 27,
+        "allocated_blocks": 5,
+        "utilization": 0.15625,
+        "request_block_tables": {
+          "r2": [
+            2,
+            6
+          ],
+          "r4": [
+            5
+          ],
+          "r5": [
+            7,
+            8
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 28,
+        "allocated_blocks": 4,
+        "utilization": 0.125,
+        "request_block_tables": {
+          "r2": [
+            2,
+            6
+          ],
+          "r5": [
+            7,
+            8
+          ]
+        }
+      },
+      "waiting_request_ids": [
+        "r6"
+      ],
+      "queue_depth": 1
+    },
+    {
+      "tick": 6,
+      "admitted": [
+        "r6"
+      ],
+      "active_request_ids": [
+        "r2",
+        "r5",
+        "r6"
+      ],
+      "model_request_ids": [
+        "r2",
+        "r5",
+        "r6"
+      ],
+      "completed": [
+        "r2"
+      ],
+      "events": [
+        {
+          "request_id": "r2",
+          "phase": "decode",
+          "token_id": 257,
+          "logical_context_length": 6,
+          "model_input_width": 8,
+          "batch_size": 3,
+          "token_index": 6,
+          "token_text": " a",
+          "generated_text": " The first time I saw a"
+        },
+        {
+          "request_id": "r5",
+          "phase": "decode",
+          "token_id": 2148,
+          "logical_context_length": 8,
+          "model_input_width": 8,
+          "batch_size": 3,
+          "token_index": 2,
+          "token_text": " provide",
+          "generated_text": " to provide"
+        },
+        {
+          "request_id": "r6",
+          "phase": "prefill",
+          "token_id": 286,
+          "logical_context_length": 3,
+          "model_input_width": 8,
+          "batch_size": 3,
+          "token_index": 1,
+          "token_text": " of",
+          "generated_text": " of"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 27,
+        "allocated_blocks": 5,
+        "utilization": 0.15625,
+        "request_block_tables": {
+          "r2": [
+            2,
+            6
+          ],
+          "r5": [
+            7,
+            8
+          ],
+          "r6": [
+            9
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 29,
+        "allocated_blocks": 3,
+        "utilization": 0.09375,
+        "request_block_tables": {
+          "r5": [
+            7,
+            8
+          ],
+          "r6": [
+            9
+          ]
+        }
+      },
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    },
+    {
+      "tick": 7,
+      "admitted": [],
+      "active_request_ids": [
+        "r5",
+        "r6"
+      ],
+      "model_request_ids": [
+        "r5",
+        "r6"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "r5",
+          "phase": "decode",
+          "token_id": 257,
+          "logical_context_length": 9,
+          "model_input_width": 9,
+          "batch_size": 2,
+          "token_index": 3,
+          "token_text": " a",
+          "generated_text": " to provide a"
+        },
+        {
+          "request_id": "r6",
+          "phase": "decode",
+          "token_id": 2795,
+          "logical_context_length": 4,
+          "model_input_width": 9,
+          "batch_size": 2,
+          "token_index": 2,
+          "token_text": " June",
+          "generated_text": " of June"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 28,
+        "allocated_blocks": 4,
+        "utilization": 0.125,
+        "request_block_tables": {
+          "r5": [
+            7,
+            8,
+            10
+          ],
+          "r6": [
+            9
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 28,
+        "allocated_blocks": 4,
+        "utilization": 0.125,
+        "request_block_tables": {
+          "r5": [
+            7,
+            8,
+            10
+          ],
+          "r6": [
+            9
+          ]
+        }
+      },
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    },
+    {
+      "tick": 8,
+      "admitted": [],
+      "active_request_ids": [
+        "r5",
+        "r6"
+      ],
+      "model_request_ids": [
+        "r5",
+        "r6"
+      ],
+      "completed": [
+        "r6"
+      ],
+      "events": [
+        {
+          "request_id": "r5",
+          "phase": "decode",
+          "token_id": 835,
+          "logical_context_length": 10,
+          "model_input_width": 10,
+          "batch_size": 2,
+          "token_index": 4,
+          "token_text": " way",
+          "generated_text": " to provide a way"
+        },
+        {
+          "request_id": "r6",
+          "phase": "decode",
+          "token_id": 352,
+          "logical_context_length": 5,
+          "model_input_width": 10,
+          "batch_size": 2,
+          "token_index": 3,
+          "token_text": " 1",
+          "generated_text": " of June 1"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 27,
+        "allocated_blocks": 5,
+        "utilization": 0.15625,
+        "request_block_tables": {
+          "r5": [
+            7,
+            8,
+            10
+          ],
+          "r6": [
+            9,
+            11
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 29,
+        "allocated_blocks": 3,
+        "utilization": 0.09375,
+        "request_block_tables": {
+          "r5": [
+            7,
+            8,
+            10
+          ]
+        }
+      },
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    },
+    {
+      "tick": 9,
+      "admitted": [],
+      "active_request_ids": [
+        "r5"
+      ],
+      "model_request_ids": [
+        "r5"
+      ],
+      "completed": [
+        "r5"
+      ],
+      "events": [
+        {
+          "request_id": "r5",
+          "phase": "decode",
+          "token_id": 284,
+          "logical_context_length": 11,
+          "model_input_width": 11,
+          "batch_size": 1,
+          "token_index": 5,
+          "token_text": " to",
+          "generated_text": " to provide a way to"
+        }
+      ],
+      "logical_kv_before_forward": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 29,
+        "allocated_blocks": 3,
+        "utilization": 0.09375,
+        "request_block_tables": {
+          "r5": [
+            7,
+            8,
+            10
+          ]
+        }
+      },
+      "logical_kv_after_completion": {
+        "total_blocks": 32,
+        "block_size": 4,
+        "free_blocks": 32,
+        "allocated_blocks": 0,
+        "utilization": 0.0,
+        "request_block_tables": {}
+      },
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    }
+  ]
+}

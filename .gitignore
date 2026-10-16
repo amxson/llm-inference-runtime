@@ -19,6 +19,12 @@ htmlcov/
 *.swp
 .DS_Store
 Thumbs.db
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/public/data/
+frontend/.env.local
+frontend/.env.*.local
 
 # Large local ML artifacts and caches
 .cache/
