@@ -1,0 +1,50 @@
+[
+  {
+    "name": "python-tests",
+    "utc": "2026-10-20T19:48:50.3323582Z",
+    "command": "python -m pytest -q",
+    "exit_code": 0
+  },
+  {
+    "name": "python-compile",
+    "utc": "2026-10-20T19:50:04.4476741Z",
+    "command": "python -m compileall -q src scripts tests",
+    "exit_code": 0
+  },
+  {
+    "name": "git-diff-check",
+    "utc": "2026-10-20T19:50:04.8344367Z",
+    "command": "git diff --check",
+    "exit_code": 0
+  },
+  {
+    "name": "benchmark-sync",
+    "utc": "2026-10-20T19:50:04.9474070Z",
+    "command": "node scripts/sync-data.mjs",
+    "exit_code": 0
+  },
+  {
+    "name": "frontend-tests",
+    "utc": "2026-10-20T19:50:05.7564133Z",
+    "command": "vitest run",
+    "exit_code": 0
+  },
+  {
+    "name": "typecheck",
+    "utc": "2026-10-20T19:50:17.8152768Z",
+    "command": "tsc --noEmit",
+    "exit_code": 0
+  },
+  {
+    "name": "design-audit",
+    "utc": "2026-10-20T19:50:24.0430773Z",
+    "command": "node scripts/design-audit.mjs",
+    "exit_code": 0
+  },
+  {
+    "name": "production-build",
+    "utc": "2026-10-20T19:50:24.1177148Z",
+    "command": "vite build",
+    "exit_code": 0
+  }
+]

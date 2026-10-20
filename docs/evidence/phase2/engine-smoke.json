@@ -1,0 +1,649 @@
+{
+  "model": "distilgpt2",
+  "device": "cpu",
+  "exact_token_parity": true,
+  "results": [
+    {
+      "request_id": "A",
+      "prompt": "The capital of France is",
+      "status": "finished",
+      "prompt_token_ids": [
+        464,
+        3139,
+        286,
+        4881,
+        318
+      ],
+      "generated_token_ids": [
+        262,
+        3139
+      ],
+      "full_token_ids": [
+        464,
+        3139,
+        286,
+        4881,
+        318,
+        262,
+        3139
+      ],
+      "generated_text": " the capital",
+      "full_text": "The capital of France is the capital",
+      "generated_token_count": 2,
+      "model_execution_count": 2,
+      "stop_reason": "max_new_tokens"
+    },
+    {
+      "request_id": "B",
+      "prompt": "An operating system manages",
+      "status": "finished",
+      "prompt_token_ids": [
+        2025,
+        5361,
+        1080,
+        15314
+      ],
+      "generated_token_ids": [
+        262,
+        1366,
+        287,
+        257,
+        2060
+      ],
+      "full_token_ids": [
+        2025,
+        5361,
+        1080,
+        15314,
+        262,
+        1366,
+        287,
+        257,
+        2060
+      ],
+      "generated_text": " the data in a single",
+      "full_text": "An operating system manages the data in a single",
+      "generated_token_count": 5,
+      "model_execution_count": 5,
+      "stop_reason": "max_new_tokens"
+    },
+    {
+      "request_id": "C",
+      "prompt": "In the early morning, the city",
+      "status": "finished",
+      "prompt_token_ids": [
+        818,
+        262,
+        1903,
+        3329,
+        11,
+        262,
+        1748
+      ],
+      "generated_token_ids": [
+        447,
+        247,
+        82,
+        1644,
+        5011
+      ],
+      "full_token_ids": [
+        818,
+        262,
+        1903,
+        3329,
+        11,
+        262,
+        1748,
+        447,
+        247,
+        82,
+        1644,
+        5011
+      ],
+      "generated_text": "\u2019s police department",
+      "full_text": "In the early morning, the city\u2019s police department",
+      "generated_token_count": 5,
+      "model_execution_count": 5,
+      "stop_reason": "max_new_tokens"
+    },
+    {
+      "request_id": "D",
+      "prompt": "A computer network connects",
+      "status": "finished",
+      "prompt_token_ids": [
+        32,
+        3644,
+        3127,
+        20417
+      ],
+      "generated_token_ids": [
+        284,
+        257,
+        3644,
+        3127
+      ],
+      "full_token_ids": [
+        32,
+        3644,
+        3127,
+        20417,
+        284,
+        257,
+        3644,
+        3127
+      ],
+      "generated_text": " to a computer network",
+      "full_text": "A computer network connects to a computer network",
+      "generated_token_count": 4,
+      "model_execution_count": 4,
+      "stop_reason": "max_new_tokens"
+    }
+  ],
+  "traces": [
+    {
+      "tick": 1,
+      "admitted": [
+        "A",
+        "B"
+      ],
+      "active_request_ids": [
+        "A",
+        "B"
+      ],
+      "model_request_ids": [
+        "A",
+        "B"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "A",
+          "phase": "prefill",
+          "token_id": 262,
+          "logical_context_length": 5,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 5,
+          "model_input_width": 5,
+          "batch_size": 2,
+          "serving_cache": true
+        },
+        {
+          "request_id": "B",
+          "phase": "prefill",
+          "token_id": 262,
+          "logical_context_length": 4,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 4,
+          "model_input_width": 5,
+          "batch_size": 2,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "A": 0,
+        "B": 0
+      },
+      "logical_cache_lengths_after": {
+        "A": 5,
+        "B": 4
+      },
+      "prefill_request_ids": [
+        "A",
+        "B"
+      ],
+      "prefill_input_shape": [
+        2,
+        5
+      ],
+      "decode_request_ids": [],
+      "decode_input_shape": null
+    },
+    {
+      "tick": 2,
+      "admitted": [],
+      "active_request_ids": [
+        "A",
+        "B"
+      ],
+      "model_request_ids": [
+        "A",
+        "B"
+      ],
+      "completed": [
+        "A"
+      ],
+      "events": [
+        {
+          "request_id": "A",
+          "phase": "decode",
+          "token_id": 3139,
+          "logical_context_length": 6,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        },
+        {
+          "request_id": "B",
+          "phase": "decode",
+          "token_id": 1366,
+          "logical_context_length": 5,
+          "logical_cache_length_before": 4,
+          "logical_cache_length_after": 5,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "A": 5,
+        "B": 4
+      },
+      "logical_cache_lengths_after": {
+        "A": 6,
+        "B": 5
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "A",
+        "B"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ]
+    },
+    {
+      "tick": 3,
+      "admitted": [
+        "C"
+      ],
+      "active_request_ids": [
+        "B",
+        "C"
+      ],
+      "model_request_ids": [
+        "C",
+        "B"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "C",
+          "phase": "prefill",
+          "token_id": 447,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 7,
+          "model_input_width": 7,
+          "batch_size": 1,
+          "serving_cache": true
+        },
+        {
+          "request_id": "B",
+          "phase": "decode",
+          "token_id": 287,
+          "logical_context_length": 6,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
+          "batch_size": 1,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 2,
+      "logical_cache_lengths_before": {
+        "C": 0,
+        "B": 5
+      },
+      "logical_cache_lengths_after": {
+        "C": 7,
+        "B": 6
+      },
+      "prefill_request_ids": [
+        "C"
+      ],
+      "prefill_input_shape": [
+        1,
+        7
+      ],
+      "decode_request_ids": [
+        "B"
+      ],
+      "decode_input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "tick": 4,
+      "admitted": [],
+      "active_request_ids": [
+        "B",
+        "C"
+      ],
+      "model_request_ids": [
+        "B",
+        "C"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "B",
+          "phase": "decode",
+          "token_id": 257,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 6,
+          "logical_cache_length_after": 7,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        },
+        {
+          "request_id": "C",
+          "phase": "decode",
+          "token_id": 247,
+          "logical_context_length": 8,
+          "logical_cache_length_before": 7,
+          "logical_cache_length_after": 8,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "B": 6,
+        "C": 7
+      },
+      "logical_cache_lengths_after": {
+        "B": 7,
+        "C": 8
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "B",
+        "C"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ]
+    },
+    {
+      "tick": 5,
+      "admitted": [],
+      "active_request_ids": [
+        "B",
+        "C"
+      ],
+      "model_request_ids": [
+        "B",
+        "C"
+      ],
+      "completed": [
+        "B"
+      ],
+      "events": [
+        {
+          "request_id": "B",
+          "phase": "decode",
+          "token_id": 2060,
+          "logical_context_length": 8,
+          "logical_cache_length_before": 7,
+          "logical_cache_length_after": 8,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        },
+        {
+          "request_id": "C",
+          "phase": "decode",
+          "token_id": 82,
+          "logical_context_length": 9,
+          "logical_cache_length_before": 8,
+          "logical_cache_length_after": 9,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "B": 7,
+        "C": 8
+      },
+      "logical_cache_lengths_after": {
+        "B": 8,
+        "C": 9
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "B",
+        "C"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ]
+    },
+    {
+      "tick": 6,
+      "admitted": [
+        "D"
+      ],
+      "active_request_ids": [
+        "C",
+        "D"
+      ],
+      "model_request_ids": [
+        "D",
+        "C"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "D",
+          "phase": "prefill",
+          "token_id": 284,
+          "logical_context_length": 4,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 4,
+          "model_input_width": 4,
+          "batch_size": 1,
+          "serving_cache": true
+        },
+        {
+          "request_id": "C",
+          "phase": "decode",
+          "token_id": 1644,
+          "logical_context_length": 10,
+          "logical_cache_length_before": 9,
+          "logical_cache_length_after": 10,
+          "model_input_width": 1,
+          "batch_size": 1,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 2,
+      "logical_cache_lengths_before": {
+        "D": 0,
+        "C": 9
+      },
+      "logical_cache_lengths_after": {
+        "D": 4,
+        "C": 10
+      },
+      "prefill_request_ids": [
+        "D"
+      ],
+      "prefill_input_shape": [
+        1,
+        4
+      ],
+      "decode_request_ids": [
+        "C"
+      ],
+      "decode_input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "tick": 7,
+      "admitted": [],
+      "active_request_ids": [
+        "C",
+        "D"
+      ],
+      "model_request_ids": [
+        "C",
+        "D"
+      ],
+      "completed": [
+        "C"
+      ],
+      "events": [
+        {
+          "request_id": "C",
+          "phase": "decode",
+          "token_id": 5011,
+          "logical_context_length": 11,
+          "logical_cache_length_before": 10,
+          "logical_cache_length_after": 11,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        },
+        {
+          "request_id": "D",
+          "phase": "decode",
+          "token_id": 257,
+          "logical_context_length": 5,
+          "logical_cache_length_before": 4,
+          "logical_cache_length_after": 5,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "C": 10,
+        "D": 4
+      },
+      "logical_cache_lengths_after": {
+        "C": 11,
+        "D": 5
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "C",
+        "D"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ]
+    },
+    {
+      "tick": 8,
+      "admitted": [],
+      "active_request_ids": [
+        "D"
+      ],
+      "model_request_ids": [
+        "D"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "D",
+          "phase": "decode",
+          "token_id": 3644,
+          "logical_context_length": 6,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
+          "batch_size": 1,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "D": 5
+      },
+      "logical_cache_lengths_after": {
+        "D": 6
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "D"
+      ],
+      "decode_input_shape": [
+        1,
+        1
+      ]
+    },
+    {
+      "tick": 9,
+      "admitted": [],
+      "active_request_ids": [
+        "D"
+      ],
+      "model_request_ids": [
+        "D"
+      ],
+      "completed": [
+        "D"
+      ],
+      "events": [
+        {
+          "request_id": "D",
+          "phase": "decode",
+          "token_id": 3127,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 6,
+          "logical_cache_length_after": 7,
+          "model_input_width": 1,
+          "batch_size": 1,
+          "serving_cache": true
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "D": 6
+      },
+      "logical_cache_lengths_after": {
+        "D": 7
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "D"
+      ],
+      "decode_input_shape": [
+        1,
+        1
+      ]
+    }
+  ]
+}

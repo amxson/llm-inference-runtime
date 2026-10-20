@@ -1,0 +1,20 @@
+{
+  "utc": "2026-10-20T19:47:47.1821267Z",
+  "settings": [
+    {
+      "key": "LLM_RUNTIME_CORS_ORIGINS",
+      "present": true,
+      "value_available": false,
+      "note": "Value not returned; verify effective URL/CORS through public browser and preflight checks."
+    },
+    {
+      "key": "VITE_API_BASE_URL",
+      "present": true,
+      "value_available": false,
+      "note": "Value not returned; verify effective URL/CORS through public browser and preflight checks."
+    }
+  ],
+  "plan": "hobby",
+  "plan_status": "active",
+  "changes": "none"
+}

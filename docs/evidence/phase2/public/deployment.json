@@ -1,0 +1,11 @@
+{
+  "id": "dpl_6JcM3G7XHySsJgYPM8dQmA7fowCE",
+  "url": "https://llm-inference-runtime-jckk1x1bk-amxsons-projects.vercel.app",
+  "ready_state": "READY",
+  "source_commit": "f432410202df01af66765972fe3ae57e8d902833",
+  "canonical_frontend": "https://llm-inference-runtime.vercel.app",
+  "backend_url": "https://llm-inference-runtime.vercel.app/api",
+  "plan": "hobby",
+  "public_max_active": 1,
+  "utc": "2026-10-20T19:53:00.5475036Z"
+}

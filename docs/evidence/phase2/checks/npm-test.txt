@@ -1,0 +1,13 @@
+
+> llm-runtime-trace@1.0.0 test
+> node scripts/sync-data.mjs && vitest run
+
+Derived 9 benchmark artifacts from Git-tracked JSON
+
+ RUN  v4.1.12 <repo>/frontend
+
+
+ Test Files  8 passed (8)
+      Tests  38 passed (38)
+   Start at  22:50:27
+   Duration  8.82s (transform 3.03s, setup 4.52s, import 4.80s, tests 13.02s, environment 15.03s)

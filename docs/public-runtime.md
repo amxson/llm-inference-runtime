@@ -22,7 +22,7 @@ Preview uses `/api` as its same-origin base. The production hostname is an expli
 
 ## Actual compute, not a proxy to another engine
 
-`api/index.py` uses the existing model loader and `create_app` runtime. It loads real distilgpt2 FP32 weights on CPU and uses the existing manual uncached greedy token loop—no provider API, fake stream or `model.generate()`. The deployment package pins CPU-only torch 2.14.0 and Transformers 5.17.0, with Python 3.12 for the platform runtime. Local core development still supports Python 3.11+.
+`api/index.py` uses the existing model loader and `create_app` runtime. It loads real distilgpt2 FP32 weights on CPU and uses the manual cached continuous greedy engine by default—no provider API, fake stream or `model.generate()`. Health/snapshot identify the actual configured engine. The uncached reference remains selectable through `LLM_RUNTIME_ENGINE`. The deployment package pins CPU-only torch 2.14.0 and Transformers 5.17.0, with Python 3.12 for the platform runtime. Local core development still supports Python 3.11+.
 
 The Vercel Hobby account was inspected before deployment. No paid host, plan upgrade or local-machine tunnel was provisioned. The runtime uses one CPU thread and one active request row per instance to bound the small public demo; other requests wait under the existing request-capacity policy. This does not remove the engine's separate continuous-batching implementation or imply a throughput claim for public hosting.
 
@@ -40,8 +40,17 @@ Download-free tests verify the deployment prefix, actual app health/snapshot con
 python scripts/check_public_runtime.py --base-url https://llm-inference-runtime.vercel.app/api --origin https://llm-inference-runtime.vercel.app --output benchmark_results/public-runtime/production.json
 ```
 
-It requires JSON health, correct uncached backend identity, allowed-origin preflight, rejection of an untrusted origin, eight contiguous generated token events, exactly one done, no errors, and matching token/completion IDs. It records actual arrival timestamps and output. An HTML 200 or static artifact checksum cannot satisfy it.
+It requires JSON health, the expected backend/cache identity (cached by default), allowed-origin preflight, rejection of an untrusted origin, eight contiguous generated token events, exactly one done, no errors, and matching token/completion IDs. It records actual arrival timestamps and output. Pass `--expected-engine continuous_uncached_greedy` only when deliberately checking that reference. An HTML 200 or static artifact checksum cannot satisfy it.
 
 The initial preview and production HTTP checks are preserved in [earlier evidence](evidence/final/public-runtime.json). On 20 October 2026 the Phase 1 application was redeployed and verified in a fresh headless Edge browser: the public Playground streamed eight real tokens, output was visible before completion, status returned to `idle`, and Console/Network recorded no errors or failed requests. Replay controls worked with API access blocked and issued no API calls. [Current public deployment and browser evidence](evidence/phase1/INDEX.md#public-deployment--verified-after-the-seventh-push) includes the actual stream transcript, screenshots, health/CORS results and source revision. These are functional checks, not network benchmark claims or production-capacity certification. The [manual checklist](public-browser-checklist.md) remains useful for owner review on another browser/device; it is no longer the only way to finish the earlier tooling-blocked verification.
+
+Phase 2 then deployed application source `f432410` on the same Hobby plan with
+capacity one and no configuration changes. JSON health identified the actual
+cached engine; public SSE produced eight matching token events and one done.
+The public browser observed output while running, cache status on, matching
+request selection in Runtime Live, zero console/network failures and independent
+Replay with the API blocked. All four routes passed at 1440/1024/768.
+[Current Phase 2 deployment/transcripts/screenshots](evidence/phase2/INDEX.md#public-deployment--functionally-verified)
+supersede the Phase 1 application verification, which remains historical.
 
 Platform references: [Python runtime and streaming](https://vercel.com/docs/functions/runtimes/python), [large Python functions](https://vercel.com/changelog/vercel-functions-can-now-be-up-to-5-gb-in-package-size). Support for these features is not proof this application is healthy; the actual inference checks are required.

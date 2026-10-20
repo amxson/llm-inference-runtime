@@ -6,7 +6,7 @@ An LLM inference runtime with a token-generation loop written directly in Python
 
 [Open the profiler](https://llm-inference-runtime.vercel.app/#/runtime).
 
-Playground runs real SSE inference. Live serving currently uses **uncached greedy batching**. Replay, Benchmarks and Architecture also work without the model server.
+Playground runs real SSE inference. HTTP serving supports **cached continuous greedy batching**, the local default; health/snapshot identify the selected backend. Replay, Benchmarks and Architecture also work without the model server.
 
 The public CPU demo can be slow on a cold start. Runtime counters belong to the responding server instance.
 
@@ -16,7 +16,7 @@ The public CPU demo can be slow on a cold start. Runtime counters belong to the 
 - Manual greedy decoding and temperature/top-k/top-p sampling.
 - Single-request KV-cache reuse with exact token-ID comparisons.
 - Request lifecycle, FIFO admission and round-robin cached scheduling.
-- Static and continuous multi-row greedy batching.
+- Static uncached and continuous cached/uncached multi-row greedy batching.
 - FastAPI endpoints and streamed token events over SSE.
 - Logical block allocation, ownership and reuse.
 - CPU INT8 and greedy draft/verify experiments, including negative results.
@@ -38,15 +38,17 @@ Both paths still make one model call per generated token and do prompt prefill. 
 
 The [old ten-token comparison](benchmarks/results/m7_cached_vs_uncached_cpu.json) remains available as historical evidence.
 
+The separate [cached continuous batching comparison](benchmarks/results/cached_continuous_batching_cpu.json) uses eight varied prompts, budgets 16/24/32 and capacities 1/2/4. It compares whole cohorts, not the single-request timing above. See the [cache design and invariants](docs/cached-continuous-batching.md).
+
 ## Architecture
 
 ```text
-HTTP -> RequestState -> continuous batcher -> model forward -> token -> SSE
-                              | next tick admits waiting requests
-Cached CLI / scheduler -> prompt prefill -> request-local KV -> token forwards
+HTTP -> FIFO admission -> prompt prefill -> request-local KV
+Later ticks: retained KV -> padded collation -> [B,1] decode -> split/update -> SSE
+Completion -> release KV; the next tick admits waiting requests into vacancies
 ```
 
-Cached single-request/scheduler execution is separate from uncached HTTP batching. [Architecture and API details](docs/architecture.md).
+The uncached HTTP engine and independent cached decoder remain references. [Architecture and API details](docs/architecture.md).
 
 ## Run it
 
@@ -92,9 +94,9 @@ npm run build
 
 ## Limits
 
-- HTTP batching does not use KV cache yet. Sampling is a separate CLI path.
+- Cache collation copies padded K/V every tick; GPT-2 full-attention DynamicCache is the tested format. Sampling is a separate CLI path.
 - The logical allocator tracks capacity and ownership; it is not PagedAttention.
-- CPU timings from one model/prompt are not GPU performance or production capacity claims.
+- CPU timings from one small model and fixed workloads are not GPU performance or production capacity claims.
 - INT8 changed the recorded output. Only selected attention/MLP projections were quantized; embeddings, layer norms and the tied output head stayed FP32. Weight-payload reduction is not total RSS.
 - The tested speculative draft produced zero accepted proposals on the recorded workload. The experiment checks draft/verify and parity behavior; it did not demonstrate acceleration.
 - Public serving has cold starts, usage limits and instance-local telemetry. Authentication, shared multi-worker scheduling and production backpressure remain future work.

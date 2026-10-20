@@ -2,19 +2,26 @@
 
 The runtime contains several explicit execution paths, not one fully optimized engine. Transformers supplies model/attention operations; this repository supplies token loops, request state, scheduling/batching, serving ownership, capacity modeling and measurement. No path uses `model.generate()`.
 
-## HTTP data path (currently uncached)
+## HTTP data path (cached continuous greedy by default)
 
 ```mermaid
 flowchart TD
     HTTP[HTTP prompt + token budget] --> Validation[Validate prompt/context/capacity]
     Validation --> Request[RequestState + bounded client channel]
     Request --> Commands[Worker command queue]
-    Commands --> Admission[ContinuousBatcher FIFO admission]
+    Commands --> Admission[CachedContinuousBatcher FIFO admission]
     Admission --> Active[Changing active batch]
-    Active --> Tokenize[Tokenize new rows once: initial prefill state]
-    Tokenize --> Collate[Full contexts: left padding + masks + positions]
-    Collate --> Model[One multi-row model forward: use_cache=False]
-    Model --> Logits[Final real-position logits per row]
+    Active --> Kind{New or continuing row?}
+    Kind -->|New| Tokenize[Tokenize new rows once: initial prefill state]
+    Kind -->|Continuing| Local
+    Tokenize --> Prefill[New prompt batch: masks + logical positions; use_cache=True]
+    Prefill --> Local[Compact request-local KV]
+    Local --> Collate[Left-pad history: masked temporary KV collation]
+    Collate --> Model[Continuing rows: one-token batched decode; use_cache=True]
+    Model --> Split[Split rows; trim synthetic padding; clone compact KV]
+    Split --> Local
+    Prefill --> Logits[Final real-position logits per row]
+    Model --> Logits
     Logits --> Select[Per-row greedy argmax]
     Select --> Update[Record IDs; apply EOS/budget stopping]
     Update --> SSE[Live token SSE; final done or error+done]
@@ -24,7 +31,11 @@ flowchart TD
     Disconnect[Client disconnect/shutdown] --> Commands
 ```
 
-There is deliberately **no KV-cache node between this HTTP model and logits**: `batch_step` passes `use_cache=False`. A mixed active batch can contain a newly admitted prefill row and continuing decode rows, but continuing rows still recompute their complete contexts. Adding a cached box to this diagram would misrepresent the implemented backend.
+`CachedContinuousBatcher` partitions newcomers and continuing rows before either forward. A tick may run one prefill batch plus one decode batch, but each request selects at most one token. Newcomers join incumbent cached decode rows on subsequent ticks. Continuing model inputs are exactly `[B, 1]`, not full contexts. The selected output is excluded from stored KV until the next forward. Completion releases it immediately.
+
+The [cache adapter design](cached-continuous-batching.md) records the inspected Transformers 5.17.0 API, padding/mask/position rules and ownership invariants. Ragged caches are copied into a padded batch, then split and cloned back into compact request-local caches. This is real KV reuse with copying overhead, not physical paging or an optimized kernel.
+
+`create_app(engine="continuous_cached_greedy")` selects this path explicitly. `LLM_RUNTIME_ENGINE` selects it when no argument is given; the default is cached. `continuous_uncached_greedy` retains the original `ContinuousBatcher` and `batch_step(use_cache=False)` reference, where full contexts are recollated. Selection is centralized at app construction. `/health` and `/runtime/snapshot` report actual `engine` and `serving_cache`; tests inject modes explicitly. The public entrypoint still caps capacity at one row, independently of local capacity four.
 
 `server.create_app` loads once per lifespan (or accepts model/tokenizer injection for tests). `ServingRuntime` alone owns engine commands and mutations. An async worker processes admission/cancellation commands between forwards; `asyncio.to_thread(engine.step)` keeps model work off the event loop. Only one model forward is in flight per worker. It publishes row tokens before starting the next tick. Defaults: four active rows, 64 pending clients, 128 new tokens/request, 130 events/client channel. Validation precedes streaming headers.
 
@@ -107,12 +118,13 @@ Local benchmark CLIs measure token selection availability; the server CLI measur
 | Model/logits | `model_loader.py`, `forward_inspect.py` |
 | Token loops | `greedy_decode.py`, `sample_decode.py`, `cached_decode.py`, `speculative_decode.py` |
 | Filters | `sampling.py` |
-| Execution ownership | `request.py`, `scheduler.py`, `batching.py`, `continuous_batcher.py` |
+| Execution ownership | `request.py`, `scheduler.py`, `batching.py`, `continuous_batcher.py`, `cached_continuous_batcher.py` |
+| Ragged cache adapter | `cache_batch.py` |
 | Logical capacity | `block_allocator.py` |
 | HTTP/event ownership | `server.py` |
 | Measurements/aggregation | `benchmark_*.py`, `benchmarks/results/*.json` |
 
-Connecting uncached batching to real ragged cached storage requires another design/correctness milestone, not a documentation rename.
+Phase 2 connects continuous admission to real ragged cached storage. There is still no PagedAttention, physical block paging, custom CUDA kernel, tensor parallelism, or memory-aware eviction/swapping.
 
 ## CLI and API reference
 
@@ -136,7 +148,7 @@ Forward inspection reports token pieces/IDs, tensor shapes, logits and final-pos
 | `POST /generate` | Final IDs/text/stop reason |
 | `POST /generate/stream` | Live SSE `token` then `done`; failure emits `error` then `done` |
 
-Request JSON accepts only `prompt` (non-whitespace, up to 4,096 characters) and `max_new_tokens` (0–128, default 10). Context budget is checked before streaming headers. Sampling fields and unknown fields are rejected. This API is greedy/uncached and is not OpenAI-compatible. Zero-token streams emit only `done`, with no forward or TTFT. Token events contain IDs, individual text and the decoded generated prefix; use the prefix/final text for Unicode safety because token fragments need not concatenate correctly.
+Request JSON accepts only `prompt` (non-whitespace, up to 4,096 characters) and `max_new_tokens` (0–128, default 10). Context budget is checked before streaming headers. Sampling fields and unknown fields are rejected. This API is greedy-only (cached by default) and is not OpenAI-compatible. Zero-token streams emit only `done`, with no forward or TTFT. Token events contain IDs, individual text and the decoded generated prefix; use the prefix/final text for Unicode safety because token fragments need not concatenate correctly.
 
 ```powershell
 $body = @{prompt="The capital of France is"; max_new_tokens=4} | ConvertTo-Json -Compress

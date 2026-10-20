@@ -1,0 +1,43 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Loading weights:   0%|          | 0/76 [00:00<?, ?it/s]
+Loading weights:  11%|#         | 8/76 [00:00<00:00, 71.04it/s]
+Loading weights:  21%|##1       | 16/76 [00:00<00:03, 19.08it/s]
+Loading weights: 100%|##########| 76/76 [00:00<00:00, 94.39it/s]
+max_active=1: warmup 1/2 complete
+max_active=1: warmup 2/2 complete
+max_active=1: pair 1/10; uncached=23621.0ms cached=8066.6ms; exact IDs
+max_active=1: pair 2/10; uncached=40824.0ms cached=9859.3ms; exact IDs
+max_active=1: pair 3/10; uncached=48854.3ms cached=9639.4ms; exact IDs
+max_active=1: pair 4/10; uncached=24219.2ms cached=8740.1ms; exact IDs
+max_active=1: pair 5/10; uncached=19291.1ms cached=5195.0ms; exact IDs
+max_active=1: pair 6/10; uncached=23790.5ms cached=6565.7ms; exact IDs
+max_active=1: pair 7/10; uncached=23072.5ms cached=6066.5ms; exact IDs
+max_active=1: pair 8/10; uncached=21616.6ms cached=5450.0ms; exact IDs
+max_active=1: pair 9/10; uncached=13331.6ms cached=4960.7ms; exact IDs
+max_active=1: pair 10/10; uncached=14169.9ms cached=5821.4ms; exact IDs
+max_active=2: warmup 1/2 complete
+max_active=2: warmup 2/2 complete
+max_active=2: pair 1/10; uncached=11358.8ms cached=3091.5ms; exact IDs
+max_active=2: pair 2/10; uncached=11757.5ms cached=3193.6ms; exact IDs
+max_active=2: pair 3/10; uncached=11449.9ms cached=4514.1ms; exact IDs
+max_active=2: pair 4/10; uncached=19210.8ms cached=5107.1ms; exact IDs
+max_active=2: pair 5/10; uncached=19624.6ms cached=5371.2ms; exact IDs
+max_active=2: pair 6/10; uncached=19974.8ms cached=5062.4ms; exact IDs
+max_active=2: pair 7/10; uncached=19137.8ms cached=4575.5ms; exact IDs
+max_active=2: pair 8/10; uncached=18464.9ms cached=4914.1ms; exact IDs
+max_active=2: pair 9/10; uncached=7490.0ms cached=2573.5ms; exact IDs
+max_active=2: pair 10/10; uncached=7258.4ms cached=2009.4ms; exact IDs
+max_active=4: warmup 1/2 complete
+max_active=4: warmup 2/2 complete
+max_active=4: pair 1/10; uncached=7230.4ms cached=1849.1ms; exact IDs
+max_active=4: pair 2/10; uncached=6584.1ms cached=1847.5ms; exact IDs
+max_active=4: pair 3/10; uncached=6619.6ms cached=2019.7ms; exact IDs
+max_active=4: pair 4/10; uncached=7252.3ms cached=1970.8ms; exact IDs
+max_active=4: pair 5/10; uncached=6987.4ms cached=2010.2ms; exact IDs
+max_active=4: pair 6/10; uncached=6495.1ms cached=1819.7ms; exact IDs
+max_active=4: pair 7/10; uncached=7211.0ms cached=1969.4ms; exact IDs
+max_active=4: pair 8/10; uncached=6657.5ms cached=2059.5ms; exact IDs
+max_active=4: pair 9/10; uncached=6960.7ms cached=1826.1ms; exact IDs
+max_active=4: pair 10/10; uncached=9455.3ms cached=2320.1ms; exact IDs
+Saved benchmarks\results\cached_continuous_batching_cpu.json; all measured pairs passed exact token parity.

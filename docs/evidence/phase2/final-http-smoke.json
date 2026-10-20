@@ -1,0 +1,1080 @@
+{
+  "model": "distilgpt2",
+  "health": {
+    "status": "ok",
+    "model": "distilgpt2",
+    "device": "cpu",
+    "engine": "continuous_cached_greedy",
+    "serving_cache": true,
+    "max_active": 2,
+    "model_forward_calls": 11,
+    "last_batch_size": 1,
+    "max_observed_batch_size": 2
+  },
+  "exact_token_parity": true,
+  "streams": [
+    [
+      {
+        "event": "token",
+        "data": {
+          "request_id": "9424e651673149f2b430ffa5f74edadc",
+          "token_id": 262,
+          "token_index": 1,
+          "token_text": " the",
+          "generated_text": " the",
+          "tick": 7,
+          "phase": "prefill"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "9424e651673149f2b430ffa5f74edadc",
+          "token_id": 3139,
+          "token_index": 2,
+          "token_text": " capital",
+          "generated_text": " the capital",
+          "tick": 8,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "9424e651673149f2b430ffa5f74edadc",
+          "token_id": 286,
+          "token_index": 3,
+          "token_text": " of",
+          "generated_text": " the capital of",
+          "tick": 9,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "done",
+        "data": {
+          "request_id": "9424e651673149f2b430ffa5f74edadc",
+          "prompt": "The capital of France is",
+          "status": "finished",
+          "prompt_token_ids": [
+            464,
+            3139,
+            286,
+            4881,
+            318
+          ],
+          "generated_token_ids": [
+            262,
+            3139,
+            286
+          ],
+          "full_token_ids": [
+            464,
+            3139,
+            286,
+            4881,
+            318,
+            262,
+            3139,
+            286
+          ],
+          "generated_text": " the capital of",
+          "full_text": "The capital of France is the capital of",
+          "generated_token_count": 3,
+          "model_execution_count": 3,
+          "stop_reason": "max_new_tokens"
+        }
+      }
+    ],
+    [
+      {
+        "event": "token",
+        "data": {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "token_id": 262,
+          "token_index": 1,
+          "token_text": " the",
+          "generated_text": " the",
+          "tick": 1,
+          "phase": "prefill"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "token_id": 1366,
+          "token_index": 2,
+          "token_text": " data",
+          "generated_text": " the data",
+          "tick": 2,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "token_id": 287,
+          "token_index": 3,
+          "token_text": " in",
+          "generated_text": " the data in",
+          "tick": 3,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "token_id": 257,
+          "token_index": 4,
+          "token_text": " a",
+          "generated_text": " the data in a",
+          "tick": 4,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "token_id": 2060,
+          "token_index": 5,
+          "token_text": " single",
+          "generated_text": " the data in a single",
+          "tick": 5,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "token_id": 2393,
+          "token_index": 6,
+          "token_text": " file",
+          "generated_text": " the data in a single file",
+          "tick": 6,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "done",
+        "data": {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "prompt": "An operating system manages",
+          "status": "finished",
+          "prompt_token_ids": [
+            2025,
+            5361,
+            1080,
+            15314
+          ],
+          "generated_token_ids": [
+            262,
+            1366,
+            287,
+            257,
+            2060,
+            2393
+          ],
+          "full_token_ids": [
+            2025,
+            5361,
+            1080,
+            15314,
+            262,
+            1366,
+            287,
+            257,
+            2060,
+            2393
+          ],
+          "generated_text": " the data in a single file",
+          "full_text": "An operating system manages the data in a single file",
+          "generated_token_count": 6,
+          "model_execution_count": 6,
+          "stop_reason": "max_new_tokens"
+        }
+      }
+    ],
+    [
+      {
+        "event": "token",
+        "data": {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "token_id": 447,
+          "token_index": 1,
+          "token_text": "\ufffd",
+          "generated_text": "\ufffd",
+          "tick": 2,
+          "phase": "prefill"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "token_id": 247,
+          "token_index": 2,
+          "token_text": "\ufffd",
+          "generated_text": "\u2019",
+          "tick": 3,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "token_id": 82,
+          "token_index": 3,
+          "token_text": "s",
+          "generated_text": "\u2019s",
+          "tick": 4,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "token_id": 1644,
+          "token_index": 4,
+          "token_text": " police",
+          "generated_text": "\u2019s police",
+          "tick": 5,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "token_id": 5011,
+          "token_index": 5,
+          "token_text": " department",
+          "generated_text": "\u2019s police department",
+          "tick": 6,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "done",
+        "data": {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "prompt": "In the early morning, the city",
+          "status": "finished",
+          "prompt_token_ids": [
+            818,
+            262,
+            1903,
+            3329,
+            11,
+            262,
+            1748
+          ],
+          "generated_token_ids": [
+            447,
+            247,
+            82,
+            1644,
+            5011
+          ],
+          "full_token_ids": [
+            818,
+            262,
+            1903,
+            3329,
+            11,
+            262,
+            1748,
+            447,
+            247,
+            82,
+            1644,
+            5011
+          ],
+          "generated_text": "\u2019s police department",
+          "full_text": "In the early morning, the city\u2019s police department",
+          "generated_token_count": 5,
+          "model_execution_count": 5,
+          "stop_reason": "max_new_tokens"
+        }
+      }
+    ],
+    [
+      {
+        "event": "token",
+        "data": {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "token_id": 284,
+          "token_index": 1,
+          "token_text": " to",
+          "generated_text": " to",
+          "tick": 7,
+          "phase": "prefill"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "token_id": 257,
+          "token_index": 2,
+          "token_text": " a",
+          "generated_text": " to a",
+          "tick": 8,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "token_id": 3644,
+          "token_index": 3,
+          "token_text": " computer",
+          "generated_text": " to a computer",
+          "tick": 9,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "token",
+        "data": {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "token_id": 3127,
+          "token_index": 4,
+          "token_text": " network",
+          "generated_text": " to a computer network",
+          "tick": 10,
+          "phase": "decode"
+        }
+      },
+      {
+        "event": "done",
+        "data": {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "prompt": "A computer network connects",
+          "status": "finished",
+          "prompt_token_ids": [
+            32,
+            3644,
+            3127,
+            20417
+          ],
+          "generated_token_ids": [
+            284,
+            257,
+            3644,
+            3127
+          ],
+          "full_token_ids": [
+            32,
+            3644,
+            3127,
+            20417,
+            284,
+            257,
+            3644,
+            3127
+          ],
+          "generated_text": " to a computer network",
+          "full_text": "A computer network connects to a computer network",
+          "generated_token_count": 4,
+          "model_execution_count": 4,
+          "stop_reason": "max_new_tokens"
+        }
+      }
+    ]
+  ],
+  "concurrent_traces": [
+    {
+      "tick": 1,
+      "admitted": [
+        "2f1b1a5e49af40a78ac5179931cef654"
+      ],
+      "active_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654"
+      ],
+      "model_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "phase": "prefill",
+          "token_id": 262,
+          "logical_context_length": 4,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 4,
+          "model_input_width": 4,
+          "batch_size": 1,
+          "serving_cache": true,
+          "token_index": 1,
+          "token_text": " the",
+          "generated_text": " the",
+          "tick": 1
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "2f1b1a5e49af40a78ac5179931cef654": 0
+      },
+      "logical_cache_lengths_after": {
+        "2f1b1a5e49af40a78ac5179931cef654": 4
+      },
+      "prefill_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654"
+      ],
+      "prefill_input_shape": [
+        1,
+        4
+      ],
+      "decode_request_ids": [],
+      "decode_input_shape": null,
+      "observed_at_ms": 742.0701000010013,
+      "worker_step_ms": 34.88330000254791,
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    },
+    {
+      "tick": 2,
+      "admitted": [
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "active_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "model_request_ids": [
+        "4180e60af7164e78b567dc83bcf8a6d4",
+        "2f1b1a5e49af40a78ac5179931cef654"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "phase": "prefill",
+          "token_id": 447,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 7,
+          "model_input_width": 7,
+          "batch_size": 1,
+          "serving_cache": true,
+          "token_index": 1,
+          "token_text": "\ufffd",
+          "generated_text": "\ufffd",
+          "tick": 2
+        },
+        {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "phase": "decode",
+          "token_id": 1366,
+          "logical_context_length": 5,
+          "logical_cache_length_before": 4,
+          "logical_cache_length_after": 5,
+          "model_input_width": 1,
+          "batch_size": 1,
+          "serving_cache": true,
+          "token_index": 2,
+          "token_text": " data",
+          "generated_text": " the data",
+          "tick": 2
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 2,
+      "logical_cache_lengths_before": {
+        "4180e60af7164e78b567dc83bcf8a6d4": 0,
+        "2f1b1a5e49af40a78ac5179931cef654": 4
+      },
+      "logical_cache_lengths_after": {
+        "4180e60af7164e78b567dc83bcf8a6d4": 7,
+        "2f1b1a5e49af40a78ac5179931cef654": 5
+      },
+      "prefill_request_ids": [
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "prefill_input_shape": [
+        1,
+        7
+      ],
+      "decode_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654"
+      ],
+      "decode_input_shape": [
+        1,
+        1
+      ],
+      "observed_at_ms": 794.5007000016631,
+      "worker_step_ms": 52.03250000340631,
+      "waiting_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "queue_depth": 2
+    },
+    {
+      "tick": 3,
+      "admitted": [],
+      "active_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "model_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "phase": "decode",
+          "token_id": 287,
+          "logical_context_length": 6,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 3,
+          "token_text": " in",
+          "generated_text": " the data in",
+          "tick": 3
+        },
+        {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "phase": "decode",
+          "token_id": 247,
+          "logical_context_length": 8,
+          "logical_cache_length_before": 7,
+          "logical_cache_length_after": 8,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 2,
+          "token_text": "\ufffd",
+          "generated_text": "\u2019",
+          "tick": 3
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "2f1b1a5e49af40a78ac5179931cef654": 5,
+        "4180e60af7164e78b567dc83bcf8a6d4": 7
+      },
+      "logical_cache_lengths_after": {
+        "2f1b1a5e49af40a78ac5179931cef654": 6,
+        "4180e60af7164e78b567dc83bcf8a6d4": 8
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
+      "observed_at_ms": 815.3636999995797,
+      "worker_step_ms": 20.150000003923196,
+      "waiting_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "queue_depth": 2
+    },
+    {
+      "tick": 4,
+      "admitted": [],
+      "active_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "model_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "phase": "decode",
+          "token_id": 257,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 6,
+          "logical_cache_length_after": 7,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 4,
+          "token_text": " a",
+          "generated_text": " the data in a",
+          "tick": 4
+        },
+        {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "phase": "decode",
+          "token_id": 82,
+          "logical_context_length": 9,
+          "logical_cache_length_before": 8,
+          "logical_cache_length_after": 9,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 3,
+          "token_text": "s",
+          "generated_text": "\u2019s",
+          "tick": 4
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "2f1b1a5e49af40a78ac5179931cef654": 6,
+        "4180e60af7164e78b567dc83bcf8a6d4": 8
+      },
+      "logical_cache_lengths_after": {
+        "2f1b1a5e49af40a78ac5179931cef654": 7,
+        "4180e60af7164e78b567dc83bcf8a6d4": 9
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
+      "observed_at_ms": 836.2314999976661,
+      "worker_step_ms": 20.24119999987306,
+      "waiting_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "queue_depth": 2
+    },
+    {
+      "tick": 5,
+      "admitted": [],
+      "active_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "model_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "phase": "decode",
+          "token_id": 2060,
+          "logical_context_length": 8,
+          "logical_cache_length_before": 7,
+          "logical_cache_length_after": 8,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 5,
+          "token_text": " single",
+          "generated_text": " the data in a single",
+          "tick": 5
+        },
+        {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "phase": "decode",
+          "token_id": 1644,
+          "logical_context_length": 10,
+          "logical_cache_length_before": 9,
+          "logical_cache_length_after": 10,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 4,
+          "token_text": " police",
+          "generated_text": "\u2019s police",
+          "tick": 5
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "2f1b1a5e49af40a78ac5179931cef654": 7,
+        "4180e60af7164e78b567dc83bcf8a6d4": 9
+      },
+      "logical_cache_lengths_after": {
+        "2f1b1a5e49af40a78ac5179931cef654": 8,
+        "4180e60af7164e78b567dc83bcf8a6d4": 10
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
+      "observed_at_ms": 854.929599998286,
+      "worker_step_ms": 17.8992000001017,
+      "waiting_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "queue_depth": 2
+    },
+    {
+      "tick": 6,
+      "admitted": [],
+      "active_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "model_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "completed": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "events": [
+        {
+          "request_id": "2f1b1a5e49af40a78ac5179931cef654",
+          "phase": "decode",
+          "token_id": 2393,
+          "logical_context_length": 9,
+          "logical_cache_length_before": 8,
+          "logical_cache_length_after": 9,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 6,
+          "token_text": " file",
+          "generated_text": " the data in a single file",
+          "tick": 6
+        },
+        {
+          "request_id": "4180e60af7164e78b567dc83bcf8a6d4",
+          "phase": "decode",
+          "token_id": 5011,
+          "logical_context_length": 11,
+          "logical_cache_length_before": 10,
+          "logical_cache_length_after": 11,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 5,
+          "token_text": " department",
+          "generated_text": "\u2019s police department",
+          "tick": 6
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "2f1b1a5e49af40a78ac5179931cef654": 8,
+        "4180e60af7164e78b567dc83bcf8a6d4": 10
+      },
+      "logical_cache_lengths_after": {
+        "2f1b1a5e49af40a78ac5179931cef654": 9,
+        "4180e60af7164e78b567dc83bcf8a6d4": 11
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "2f1b1a5e49af40a78ac5179931cef654",
+        "4180e60af7164e78b567dc83bcf8a6d4"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
+      "observed_at_ms": 873.6797000019578,
+      "worker_step_ms": 18.270900000061374,
+      "waiting_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "queue_depth": 2
+    },
+    {
+      "tick": 7,
+      "admitted": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "active_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "model_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "9424e651673149f2b430ffa5f74edadc",
+          "phase": "prefill",
+          "token_id": 262,
+          "logical_context_length": 5,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 5,
+          "model_input_width": 5,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 1,
+          "token_text": " the",
+          "generated_text": " the",
+          "tick": 7
+        },
+        {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "phase": "prefill",
+          "token_id": 284,
+          "logical_context_length": 4,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 4,
+          "model_input_width": 5,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 1,
+          "token_text": " to",
+          "generated_text": " to",
+          "tick": 7
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "9424e651673149f2b430ffa5f74edadc": 0,
+        "1285553bbe784750acb7116ed0fb5a34": 0
+      },
+      "logical_cache_lengths_after": {
+        "9424e651673149f2b430ffa5f74edadc": 5,
+        "1285553bbe784750acb7116ed0fb5a34": 4
+      },
+      "prefill_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "prefill_input_shape": [
+        2,
+        5
+      ],
+      "decode_request_ids": [],
+      "decode_input_shape": null,
+      "observed_at_ms": 908.6175999982515,
+      "worker_step_ms": 34.09470000042347,
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    },
+    {
+      "tick": 8,
+      "admitted": [],
+      "active_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "model_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "completed": [],
+      "events": [
+        {
+          "request_id": "9424e651673149f2b430ffa5f74edadc",
+          "phase": "decode",
+          "token_id": 3139,
+          "logical_context_length": 6,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 2,
+          "token_text": " capital",
+          "generated_text": " the capital",
+          "tick": 8
+        },
+        {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "phase": "decode",
+          "token_id": 257,
+          "logical_context_length": 5,
+          "logical_cache_length_before": 4,
+          "logical_cache_length_after": 5,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 2,
+          "token_text": " a",
+          "generated_text": " to a",
+          "tick": 8
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "9424e651673149f2b430ffa5f74edadc": 5,
+        "1285553bbe784750acb7116ed0fb5a34": 4
+      },
+      "logical_cache_lengths_after": {
+        "9424e651673149f2b430ffa5f74edadc": 6,
+        "1285553bbe784750acb7116ed0fb5a34": 5
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
+      "observed_at_ms": 927.7774000001955,
+      "worker_step_ms": 18.534499999077525,
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    },
+    {
+      "tick": 9,
+      "admitted": [],
+      "active_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "model_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "completed": [
+        "9424e651673149f2b430ffa5f74edadc"
+      ],
+      "events": [
+        {
+          "request_id": "9424e651673149f2b430ffa5f74edadc",
+          "phase": "decode",
+          "token_id": 286,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 6,
+          "logical_cache_length_after": 7,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 3,
+          "token_text": " of",
+          "generated_text": " the capital of",
+          "tick": 9
+        },
+        {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "phase": "decode",
+          "token_id": 3644,
+          "logical_context_length": 6,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
+          "token_index": 3,
+          "token_text": " computer",
+          "generated_text": " to a computer",
+          "tick": 9
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "9424e651673149f2b430ffa5f74edadc": 6,
+        "1285553bbe784750acb7116ed0fb5a34": 5
+      },
+      "logical_cache_lengths_after": {
+        "9424e651673149f2b430ffa5f74edadc": 7,
+        "1285553bbe784750acb7116ed0fb5a34": 6
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "9424e651673149f2b430ffa5f74edadc",
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
+      "observed_at_ms": 946.2615000011283,
+      "worker_step_ms": 17.876099998829886,
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    },
+    {
+      "tick": 10,
+      "admitted": [],
+      "active_request_ids": [
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "model_request_ids": [
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "completed": [
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "events": [
+        {
+          "request_id": "1285553bbe784750acb7116ed0fb5a34",
+          "phase": "decode",
+          "token_id": 3127,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 6,
+          "logical_cache_length_after": 7,
+          "model_input_width": 1,
+          "batch_size": 1,
+          "serving_cache": true,
+          "token_index": 4,
+          "token_text": " network",
+          "generated_text": " to a computer network",
+          "tick": 10
+        }
+      ],
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "1285553bbe784750acb7116ed0fb5a34": 6
+      },
+      "logical_cache_lengths_after": {
+        "1285553bbe784750acb7116ed0fb5a34": 7
+      },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "1285553bbe784750acb7116ed0fb5a34"
+      ],
+      "decode_input_shape": [
+        1,
+        1
+      ],
+      "observed_at_ms": 963.8609999965411,
+      "worker_step_ms": 16.92899999761721,
+      "waiting_request_ids": [],
+      "queue_depth": 0
+    }
+  ],
+  "zero_tokens": "done only",
+  "disconnect_request_released": "abeb6c05ac2f41ef9014efc157d5afcb"
+}

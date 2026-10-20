@@ -4,7 +4,7 @@
 
 M0–M17 developed an inspectable inference runtime: model/tokenizer loading, logits inspection, explicit greedy/sampled loops, request-local KV reuse, paired measurements, lifecycle/scheduling, static/continuous multi-row batching, HTTP/SSE, logical block ownership, native CPU INT8 and greedy draft/verify experiments. Separate milestone commits preserve the progression instead of replacing reference paths with an opaque final engine.
 
-The service is a bounded, single-owner, **uncached continuous greedy batcher**. Cached CLI/scheduler execution, sampling, quantization and speculation are separate paths. This is a scope boundary, not a claim that all optimizations run together.
+The service is a bounded, single-owner, **cached continuous greedy batcher** by default after Phase 2, with the original uncached engine retained for comparison. Sampling, quantization and speculation remain separate paths. This is not a claim that all optimizations run together.
 
 ## What improved performance
 
@@ -39,7 +39,7 @@ Draft/target had matching vocabulary/core BPE but different postprocessor/added-
 ## Design compromises
 
 - Explicit loops preserve reference behavior instead of relying on generation helpers.
-- Separate cached execution from uncached batching instead of pretending independent variable-length HF caches automatically form one ragged batch.
+- Preserve the uncached reference; explicitly collate/split variable-length KV histories in an isolated adapter for cached continuous execution.
 - Masks/positions make padded GPT-2 rows match independent decoding without tokenizer mutation.
 - One serving owner processes disconnect commands between forwards, favoring correctness/responsive HTTP over parallel engine complexity.
 - A logical pool models allocation without inventing a kernel/address translation. Exhaustion is failure, not an unimplemented admission policy.
@@ -48,14 +48,40 @@ Draft/target had matching vocabulary/core BPE but different postprocessor/added-
 
 Download-free tests and real model/network checks complement each other. Version bounds are simple, not a lockfile. Recorded Python/PyTorch/Transformers/thread counts matter. Deprecation warnings remain visible; passing now does not guarantee all future dependencies behave identically. No hosted CI result is claimed.
 
+## Phase 2: connecting caches to continuous admission
+
+Variable-length cache histories were the missing tensor problem: a shared GPT-2
+forward has one physical cache width, but each row needs its own logical next
+position. The adapter left-pads K/V, masks synthetic history, passes per-row
+position IDs, and clones trimmed rows after the forward. Compact storage is
+simple to inspect but copies history every tick; it is not an optimized layout.
+
+The off-by-one test mattered: prefill T selects an output but leaves cache T,
+not T+1. Other checks cover distinct prompt lengths, row order/aliasing, padding,
+EOS/removal, cancellation and A+B → B+C → C+D sharing actual one-token decode
+forwards. Separately captured real TCP SSE checks verify concurrent clients,
+decoded prefixes and disconnect cleanup; direct-engine tests alone would not
+prove serving behavior. A telemetry regression ensures a mixed tick reports
+the final actual batch size, not the combined row count.
+
+Cached execution was faster in this eight-prompt CPU run: median paired cohort
+ratios 3.67×/3.68×/3.62× at capacities 1/2/4. This includes collation overhead and
+more model calls at capacities two/four. However, host power telemetry changed
+despite AC confirmation, charge fell 52% → 46%, and timings varied. This is a
+qualified measurement, not a rigorously power-controlled causal result. The
+[design/results note](cached-continuous-batching.md#cpu-comparison) and raw runs
+retain that caveat. No memory savings, GPU behavior or broad model compatibility
+were measured. There is still no paging, memory-aware eviction or distributed
+scheduler. Phase 3 has not started.
+
 ## Why this is not vLLM or a production replacement
 
-No physical KV paging, custom/fused attention kernels, distributed/tensor-parallel executor, CUDA graphs, memory-aware admission/eviction/swapping or optimized cached continuous batching exists here. HTTP has no authentication, OpenAI API compatibility, durable queue, delivery acknowledgments, multi-process coordination or validated backpressure policy. GPU performance was not measured; serving samples are small/CPU-specific.
+No physical KV paging, custom/fused attention kernels, distributed/tensor-parallel executor, CUDA graphs or memory-aware admission/eviction/swapping exists here. Cached continuous batching uses explicit padded copies, not a production cache layout. HTTP has no authentication, OpenAI API compatibility, durable queue, delivery acknowledgments, multi-process coordination or validated backpressure policy. GPU performance was not measured; serving samples are small/CPU-specific.
 
 Production engines additionally need integrated cache layouts/kernels, high-utilization prompt/decode scheduling, overload controls, cancellation/backpressure guarantees, observability, security, fault handling, broad model compatibility, and representative hardware/performance/quality validation. Those require engineering and measurement, not renaming bookkeeping classes.
 
 ## What to build next with more time
 
-First design physically cached variable-length continuous batching with ownership/parity tests. Then memory-aware admission, repeated controlled load/multi-prompt sweeps and actual memory measurements. Evaluate quantization quality/migrate deprecated APIs; choose a better draft and implement cache rollback before expecting speculative acceleration. Add serving authentication, delivery/backpressure policy, observability and shutdown/disconnect stress tests.
+Memory-aware admission and actual memory measurements remain possible extensions, not implemented features. Evaluate quantization quality/migrate deprecated APIs; choose a better draft and implement cache rollback before expecting speculative acceleration. Serving authentication, delivery/backpressure policy and multi-process coordination remain open.
 
 These are proposals only. M17 finalizes documentation/results; no stretch mechanisms are started.

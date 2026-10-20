@@ -1,0 +1,211 @@
+{
+  "utc": "2026-10-20T19:53:38.837Z",
+  "base_url": "https://llm-inference-runtime.vercel.app",
+  "engine": "continuous_cached_greedy",
+  "serving_cache": true,
+  "intermediate": {
+    "status": "running",
+    "output": "Output the capital of thetoken 262 · index 4 · request r1 · worker step 27.09 ms (dispatch + forward)"
+  },
+  "events": [
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 262,
+        "token_index": 1,
+        "token_text": " the",
+        "generated_text": " the",
+        "tick": 1,
+        "phase": "prefill"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 3139,
+        "token_index": 2,
+        "token_text": " capital",
+        "generated_text": " the capital",
+        "tick": 2,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 286,
+        "token_index": 3,
+        "token_text": " of",
+        "generated_text": " the capital of",
+        "tick": 3,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 262,
+        "token_index": 4,
+        "token_text": " the",
+        "generated_text": " the capital of the",
+        "tick": 4,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 4141,
+        "token_index": 5,
+        "token_text": " French",
+        "generated_text": " the capital of the French",
+        "tick": 5,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 2066,
+        "token_index": 6,
+        "token_text": " Republic",
+        "generated_text": " the capital of the French Republic",
+        "tick": 6,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 13,
+        "token_index": 7,
+        "token_text": ".",
+        "generated_text": " the capital of the French Republic.",
+        "tick": 7,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "token_id": 383,
+        "token_index": 8,
+        "token_text": " The",
+        "generated_text": " the capital of the French Republic. The",
+        "tick": 8,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "done",
+      "data": {
+        "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+        "prompt": "The capital of France is",
+        "status": "finished",
+        "prompt_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318
+        ],
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383
+        ],
+        "full_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383
+        ],
+        "generated_text": " the capital of the French Republic. The",
+        "full_text": "The capital of France is the capital of the French Republic. The",
+        "generated_token_count": 8,
+        "model_execution_count": 8,
+        "stop_reason": "max_new_tokens"
+      }
+    }
+  ],
+  "network_chunks": [
+    {
+      "arrival_ms": 88.60000000149012,
+      "bytes": 185
+    },
+    {
+      "arrival_ms": 119.19999999552965,
+      "bytes": 197
+    },
+    {
+      "arrival_ms": 150.29999999701977,
+      "bytes": 194
+    },
+    {
+      "arrival_ms": 166,
+      "bytes": 199
+    },
+    {
+      "arrival_ms": 220.60000000149012,
+      "bytes": 210
+    },
+    {
+      "arrival_ms": 230.10000000149012,
+      "bytes": 221
+    },
+    {
+      "arrival_ms": 261.19999999552965,
+      "bytes": 212
+    },
+    {
+      "arrival_ms": 276.1000000014901,
+      "bytes": 787
+    }
+  ],
+  "request_id": "08c54fa8284f44c7812b9663ca9b96c8",
+  "console_errors": [],
+  "failed_requests": [],
+  "responses": [
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/generate/stream",
+      "status": 200
+    },
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+      "status": 200
+    }
+  ],
+  "observation": "Cloned actual frontend response; returned original unchanged. No mock inference or status; not a latency benchmark.",
+  "replay_api_requests": [],
+  "replay_interaction_passed": true
+}

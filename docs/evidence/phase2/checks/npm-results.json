@@ -1,0 +1,30 @@
+[
+  {
+    "name": "npm-test",
+    "command": "npm test",
+    "utc": "2026-10-20T19:50:26.1161679Z",
+    "exit_code": 0,
+    "build_api_base": "http://127.0.0.1:8765"
+  },
+  {
+    "name": "npm-typecheck",
+    "command": "npm run typecheck",
+    "utc": "2026-10-20T19:50:36.7003844Z",
+    "exit_code": 0,
+    "build_api_base": "http://127.0.0.1:8765"
+  },
+  {
+    "name": "npm-design-audit",
+    "command": "npm run audit:design",
+    "utc": "2026-10-20T19:50:39.4900223Z",
+    "exit_code": 0,
+    "build_api_base": "http://127.0.0.1:8765"
+  },
+  {
+    "name": "npm-build",
+    "command": "npm run build",
+    "utc": "2026-10-20T19:50:39.8124763Z",
+    "exit_code": 0,
+    "build_api_base": "http://127.0.0.1:8765"
+  }
+]

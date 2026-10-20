@@ -1,0 +1,148 @@
+{
+  "utc": "2026-10-20T19:54:18.124Z",
+  "base_url": "https://llm-inference-runtime.vercel.app",
+  "scope": "Headless Edge; real backend for Playground, static pages do not poll; screenshots separately inspected",
+  "results": [
+    {
+      "route": "playground",
+      "width": 1440,
+      "geometry": {
+        "viewport": 1440,
+        "documentWidth": 1440
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": [
+        "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+        "https://llm-inference-runtime.vercel.app/api/runtime/snapshot"
+      ]
+    },
+    {
+      "route": "runtime",
+      "width": 1440,
+      "geometry": {
+        "viewport": 1440,
+        "documentWidth": 1440
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "benchmarks",
+      "width": 1440,
+      "geometry": {
+        "viewport": 1440,
+        "documentWidth": 1440
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "architecture",
+      "width": 1440,
+      "geometry": {
+        "viewport": 1440,
+        "documentWidth": 1440
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "playground",
+      "width": 1024,
+      "geometry": {
+        "viewport": 1024,
+        "documentWidth": 1024
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": [
+        "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+        "https://llm-inference-runtime.vercel.app/api/runtime/snapshot"
+      ]
+    },
+    {
+      "route": "runtime",
+      "width": 1024,
+      "geometry": {
+        "viewport": 1024,
+        "documentWidth": 1024
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "benchmarks",
+      "width": 1024,
+      "geometry": {
+        "viewport": 1024,
+        "documentWidth": 1024
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "architecture",
+      "width": 1024,
+      "geometry": {
+        "viewport": 1024,
+        "documentWidth": 1024
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "playground",
+      "width": 768,
+      "geometry": {
+        "viewport": 768,
+        "documentWidth": 768
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": [
+        "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+        "https://llm-inference-runtime.vercel.app/api/runtime/snapshot"
+      ]
+    },
+    {
+      "route": "runtime",
+      "width": 768,
+      "geometry": {
+        "viewport": 768,
+        "documentWidth": 768
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "benchmarks",
+      "width": 768,
+      "geometry": {
+        "viewport": 768,
+        "documentWidth": 768
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    },
+    {
+      "route": "architecture",
+      "width": 768,
+      "geometry": {
+        "viewport": 768,
+        "documentWidth": 768
+      },
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": []
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+warning: in the working copy of 'PORTFOLIO-COPY.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/architecture.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/cached-continuous-batching.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/portfolio-ui.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/postmortem.md', LF will be replaced by CRLF the next time Git touches it

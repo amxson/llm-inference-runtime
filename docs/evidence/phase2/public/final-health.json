@@ -1,0 +1,11 @@
+{
+  "status": "ok",
+  "model": "distilgpt2",
+  "device": "cpu",
+  "engine": "continuous_cached_greedy",
+  "serving_cache": true,
+  "max_active": 1,
+  "model_forward_calls": 0,
+  "last_batch_size": 0,
+  "max_observed_batch_size": 0
+}

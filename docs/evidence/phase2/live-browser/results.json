@@ -1,0 +1,227 @@
+{
+  "utc": "2026-10-20T19:43:18.893Z",
+  "base_url": "http://127.0.0.1:4173",
+  "engine": "continuous_cached_greedy",
+  "serving_cache": true,
+  "intermediate": {
+    "status": "running",
+    "output": "Output thetoken 262 · index 1 · request r1 · worker step — ms (dispatch + forward)"
+  },
+  "events": [
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 262,
+        "token_index": 1,
+        "token_text": " the",
+        "generated_text": " the",
+        "tick": 9,
+        "phase": "prefill"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 3139,
+        "token_index": 2,
+        "token_text": " capital",
+        "generated_text": " the capital",
+        "tick": 10,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 286,
+        "token_index": 3,
+        "token_text": " of",
+        "generated_text": " the capital of",
+        "tick": 11,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 262,
+        "token_index": 4,
+        "token_text": " the",
+        "generated_text": " the capital of the",
+        "tick": 12,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 4141,
+        "token_index": 5,
+        "token_text": " French",
+        "generated_text": " the capital of the French",
+        "tick": 13,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 2066,
+        "token_index": 6,
+        "token_text": " Republic",
+        "generated_text": " the capital of the French Republic",
+        "tick": 14,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 13,
+        "token_index": 7,
+        "token_text": ".",
+        "generated_text": " the capital of the French Republic.",
+        "tick": 15,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "token_id": 383,
+        "token_index": 8,
+        "token_text": " The",
+        "generated_text": " the capital of the French Republic. The",
+        "tick": 16,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "done",
+      "data": {
+        "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+        "prompt": "The capital of France is",
+        "status": "finished",
+        "prompt_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318
+        ],
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383
+        ],
+        "full_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383
+        ],
+        "generated_text": " the capital of the French Republic. The",
+        "full_text": "The capital of France is the capital of the French Republic. The",
+        "generated_token_count": 8,
+        "model_execution_count": 8,
+        "stop_reason": "max_new_tokens"
+      }
+    }
+  ],
+  "network_chunks": [
+    {
+      "arrival_ms": 301.20000000298023,
+      "bytes": 185
+    },
+    {
+      "arrival_ms": 561.3999999985099,
+      "bytes": 198
+    },
+    {
+      "arrival_ms": 629.7000000029802,
+      "bytes": 195
+    },
+    {
+      "arrival_ms": 672.5,
+      "bytes": 200
+    },
+    {
+      "arrival_ms": 703.7999999970198,
+      "bytes": 211
+    },
+    {
+      "arrival_ms": 735.2000000029802,
+      "bytes": 222
+    },
+    {
+      "arrival_ms": 770.3999999985099,
+      "bytes": 213
+    },
+    {
+      "arrival_ms": 817.3999999985099,
+      "bytes": 221
+    },
+    {
+      "arrival_ms": 821.7999999970198,
+      "bytes": 567
+    }
+  ],
+  "request_id": "9e3bb4bf3c034a358f7fd43792ac2dc2",
+  "console_errors": [],
+  "failed_requests": [],
+  "responses": [
+    {
+      "url": "http://127.0.0.1:8765/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8765/generate/stream",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8765/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8765/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8765/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8765/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8765/runtime/snapshot",
+      "status": 200
+    }
+  ],
+  "observation": "Cloned actual frontend response; returned original unchanged. No mock inference or status; not a latency benchmark.",
+  "replay_api_requests": [],
+  "replay_interaction_passed": true
+}

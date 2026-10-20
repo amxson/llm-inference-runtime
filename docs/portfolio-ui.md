@@ -31,15 +31,15 @@ Open [the profiler](http://127.0.0.1:5173/#/runtime). Backend startup loads the 
 
 | View | Source and scope |
 | --- | --- |
-| Playground | Real `POST /generate/stream` SSE. Only prompt/token budget are sent. Greedy, continuous **uncached** serving; no fake sampling/cache controls. |
+| Playground | Real `POST /generate/stream` SSE. Only prompt/token budget are sent. Cached continuous greedy by default; serving cache status comes from the backend, not a browser toggle. |
 | Runtime / Live | `GET /runtime/snapshot`, polled every 500 ms. Bounded completed-worker-boundary snapshots; pause freezes the captured frames, not engine execution. |
-| Runtime / Replay | Committed recording from real distilgpt2 CPU forwards through `ContinuousBatcher`, with its optional logical allocator. **Not** an HTTP capture. |
-| Benchmarks | Build-time mirrors of eight Git-tracked benchmark JSONs: the cache-length sweep, the earlier final rerun and six historical artifacts. Not a live benchmark or a cross-milestone leaderboard. |
-| Architecture | An explicit rendering of the paths documented in `docs/architecture.md`, separating uncached HTTP from cached CLI/scheduler execution. |
+| Runtime / Replay | Committed recording from real distilgpt2 CPU forwards through `CachedContinuousBatcher`, with request-local KV reuse and changing membership. **Not** an HTTP capture. |
+| Benchmarks | Build-time mirrors of nine Git-tracked benchmark JSONs: the cache-length sweep, cached continuous comparison, earlier final rerun and six historical artifacts. Not a live benchmark or cross-milestone leaderboard. |
+| Architecture | Cached HTTP admission/prefill/collation/decode/split, uncached reference and independent cached CLI/scheduler execution, matching the source. |
 
-The top status line identifies replay versus live snapshot. The footer's engine hash identifies the M17 engine baseline, not the current presentation commit. Replay cadence (1×/0.25×) is an exploration control, not measured elapsed time. Keyboard comma/period steps iterations.
+The top status line identifies replay versus live snapshot and actual cache mode. The footer's engine hash identifies the committed engine baseline used to generate the recording, not the current presentation commit. Replay cadence (1×/0.25×) is an exploration control, not measured elapsed time. Keyboard comma/period steps iterations.
 
-The recording has no invented timestamps. Its allocator snapshots are **before forward** and after completion; the grid/table display the before-forward ownership. State/token updates reflect that tick's completed work. Blocks are logical pool IDs, not tensor addresses; no shared-prefix reference counts, copy-on-write, preemption or physical paging is implied. HTTP leaves the allocator disabled and shows “—”.
+The recording has no invented timestamps. Its cache table shows true logical lengths before/after forwarding and release/retention after the tick. Prefill and cached decode groups are explicit; decode widths are one. Cache tensors are not serialized. The earlier logical allocator remains a separate reference mechanism, not physical paging; the cached view does not draw a fictitious block pool.
 
 ## Observability additions
 
@@ -56,7 +56,7 @@ Playground output uses actual decoded SSE prefixes. When individual fragments ca
 
 For a static-only build, leave `VITE_API_BASE_URL` unset. Replay/Benchmarks/Architecture are standalone experiences, and disconnected Live does not attempt localhost. The public production configuration instead sets `VITE_API_BASE_URL=https://llm-inference-runtime.vercel.app/api` and deploys the real runtime with `api/index.py`. Set `LLM_RUNTIME_CORS_ORIGINS=https://llm-inference-runtime.vercel.app` on that API. Secrets must never be placed in a `VITE_` variable (they are public build-time values). See [deployment details](public-runtime.md).
 
-`vercel.json` builds Vite from the repository root (`npm --prefix frontend ci`, `npm --prefix frontend run build`, output `frontend/dist`). API rewrites precede the SPA fallback; API failures cannot turn into HTML-200 health responses. A Python function hosts actual uncached greedy inference; static assets are not served through the model. Local `.vercel/` and generated auth environments are ignored. `benchmarks/provenance.json` is a generated checksum/source-commit manifest for environments without Git metadata; stale/missing artifact hashes fail the build. Regenerate it after committing changed artifacts using `node frontend/scripts/sync-data.mjs --write-manifest`. The CLI deployment does not claim a working GitHub auto-deploy integration.
+`vercel.json` builds Vite from the repository root (`npm --prefix frontend ci`, `npm --prefix frontend run build`, output `frontend/dist`). API rewrites precede the SPA fallback; API failures cannot turn into HTML-200 health responses. A Python function hosts the actual selected greedy engine; static assets are not served through the model. Local `.vercel/` and generated auth environments are ignored. `benchmarks/provenance.json` is a generated checksum/source-commit manifest for environments without Git metadata; stale/missing artifact hashes fail the build. Regenerate it after committing changed artifacts using `node frontend/scripts/sync-data.mjs --write-manifest`. The CLI deployment does not claim a working GitHub auto-deploy integration.
 
 Review fixes and final measured distributions: [finalization report](finalization.md). The central accent remains the supplied `#EFA23A`; aliases retain full IDs in details, scheduler rows preserve grouped counts, and unmeasured throughput is omitted.
 
@@ -71,7 +71,7 @@ python scripts/record_portfolio_trace.py
 python -m pytest tests/test_portfolio_recording.py -q
 ```
 
-The provenance test verifies FIFO admission, token counts, request stopping and allocator ownership/reuse using real runtime classes, without downloading models. The generator and fixture are not a performance benchmark.
+The provenance test verifies FIFO admission, token counts, stopping, logical cache-length invariants and one-token decode widths using real request lifecycle classes, without downloading models. Separate real-model checks verify independent token parity. The generator and fixture are not a performance benchmark.
 
 ## Verification
 
@@ -89,16 +89,26 @@ npm run preview
 
 Frontend tests cover split-byte Unicode/CRLF SSE, terminal/error handling, token updates, cancellation, trace validation/stepping, linked selection, benchmark derivation, missing values, labels and major views. The static audit guards palette, heavy weights, excessive radii, gradients, blur, shadows and forbidden dependencies. It complements—not replaces—visual inspection.
 
-The original UI was browser-reviewed at **1440, 1280, 1024 and 768 CSS pixels**, including full-page captures. Document-wide overflow was checked; dense instruments/paths retain local horizontal scrolling. The narrow layout uses text navigation, not stacked KPI cards. Live generation, cancellation, zero-token completion, live/pause/step, and replay/benchmark exploration with the backend stopped were checked at that revision. These historical captures do not verify the new sweep section. Its requested 1440/1024/768 review must be recorded separately; automated view tests and design audit are not screenshots.
+The original UI was browser-reviewed at **1440, 1280, 1024 and 768 CSS pixels**, including full-page captures. Document-wide overflow was checked; dense instruments/paths retain local horizontal scrolling. The narrow layout uses text navigation, not stacked KPI cards. Live generation, cancellation, zero-token completion, live/pause/step, and replay/benchmark exploration with the backend stopped were checked at that revision. Historical captures do not verify later changes; automated view tests and design audit are not screenshots.
 
 Phase 1's new Benchmarks page was reviewed on 20 October 2026 using a fresh headless Edge browser against the production build at **1440, 1024 and 768 CSS pixels**. [Current captures and browser results](evidence/phase1/browser/results.json) include the full page, work columns, horizontally scrolled latency columns and expanded spread table. The document stayed within each viewport; the dense table uses local scrolling at 1024/768. All three reviews had zero console errors, failed requests or API calls. This is a local production-build review, not public Playground signoff. The desktop browser connection was unavailable; no browser settings were changed.
 
 Accessibility checks include associated form labels, semantic tables/headings, keyboard controls and skip link, visible focus, text alongside status colors, a non-token-chattering status announcement, focusable scrollers, and reduced-motion rules. The exact supplied low-emphasis palette is retained; this is not a claim of a comprehensive WCAG certification.
 
+Phase 2 captured all four routes at **1440/1024/768**, plus real cached SSE in
+Playground, matching-request Runtime Live selection, and replay interaction with
+the API blocked. [Phase 2 evidence](evidence/phase2/INDEX.md#local-browserui)
+separates actual screenshots/transcripts from the automated test/build output.
+The new continuous comparison follows the length sweep and includes the observed
+power-telemetry caveat; the historical results are still visible below both.
+
 ## Screenshots
 
-[Runtime recording](images/trace-runtime.jpg) · [Benchmark report](images/trace-benchmarks.jpg). Both are actual browser captures, not mockups. Additional local responsive-review captures are ignored under `benchmark_results/portfolio-review/`.
+[Cached runtime recording](evidence/phase2/browser/runtime-1440.png) ·
+[Benchmark report](evidence/phase2/browser/benchmarks-1440.png). These are actual
+browser captures, not mockups. The older [M17 runtime](images/trace-runtime.jpg)
+and [benchmark](images/trace-benchmarks.jpg) screenshots remain historical.
 
 ## Deliberate limits
 
-This layer does not add cached batched serving, physical paging, sampling endpoints or production backpressure/security. Finalization adds a scoped rerun using existing decoding mechanisms; historical measurements remain intact. Static data supports backend-free exploration; live generation still requires the Python model server.
+Phase 2 adds real cached batched serving and visualizes its actual traces; it does not add physical paging, sampling endpoints or production backpressure/security. Historical measurements remain intact. Static data supports backend-free exploration; live generation still requires the Python model server.
