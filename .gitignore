@@ -47,6 +47,7 @@ benchmarks/results/*
 !benchmarks/results/m17_summary.json
 !benchmarks/results/final_cpu.json
 !benchmarks/results/cache_length_sweep_cpu.json
+!benchmarks/results/cached_continuous_batching_cpu.json
 .vercel/
 
 /.env.local
