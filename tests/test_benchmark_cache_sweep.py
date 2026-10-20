@@ -1,6 +1,7 @@
 """Download-free checks for sweep math, pairing, parity and raw-artifact integrity."""
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 
@@ -129,16 +130,33 @@ def test_cli_requires_confirmation_before_loading_or_writing(monkeypatch, tmp_pa
     assert not output.exists()
 
 
+def test_cli_writes_nothing_when_measured_parity_fails(monkeypatch, tmp_path):
+    output = tmp_path / "invalid.json"
+    monkeypatch.setattr("sys.argv", ["sweep", "--confirm-ac-quiet", "--output", str(output)])
+    monkeypatch.setattr(sweep, "load_model_and_tokenizer", lambda *a: (FakeModel(), FakeTokenizer()))
+    monkeypatch.setattr(sweep, "host_observation", lambda: {})
+    monkeypatch.setattr(sweep.torch, "set_num_threads", lambda n: None)
+    def mismatch(*args):
+        raise ValueError("Token parity failed; no speedup may be published.")
+    monkeypatch.setattr(sweep, "run_sweep", mismatch)
+    with pytest.raises(ValueError, match="parity"):
+        sweep.main()
+    assert not output.exists()
+
+
 def test_committed_sweep_can_be_recomputed_from_raw_pairs():
     path = Path(__file__).parents[1] / "benchmarks/results/cache_length_sweep_cpu.json"
-    if not path.exists():
-        pytest.skip("Real sweep not yet recorded; helper tests remain download-free")
     data = json.loads(path.read_text(encoding="utf8"))
     assert data["schema_version"] == 1 and data["benchmark"] == "cache_length_sweep_cpu"
     assert data["environment"]["device"] == "cpu"
     assert data["config"]["warmup_runs_per_mode_per_length"] >= 2
     assert data["config"]["measured_pairs_per_length"] >= 10
     assert data["exact_token_id_parity"]
+    assert len(data["source_revision"]) == 40
+    assert data["host"]["user_confirmed_ac_quiet"]
+    for name, expected_hash in data["source_file_sha256"].items():
+        source = path.parents[2] / "src/llm_runtime" / name
+        assert hashlib.sha256(source.read_bytes().replace(b"\r\n", b"\n")).hexdigest() == expected_hash
     assert [level["requested_tokens"] for level in data["levels"]] == [32, 128, 512]
     for level in data["levels"]:
         assert len(level["pairs"]) >= 10
