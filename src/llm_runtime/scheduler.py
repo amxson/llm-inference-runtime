@@ -5,6 +5,7 @@ from collections import deque
 import torch
 
 from llm_runtime.request import RequestState, RequestStatus
+from llm_runtime.model_adapter import model_adapter, eos_token_ids
 
 
 def prepare_request(state: RequestState, tokenizer, device: torch.device) -> None:
@@ -56,7 +57,8 @@ class DecodeScheduler:
             if not state.is_finished:
                 input_length = state.runtime_inputs["input_ids"].shape[1]
                 with torch.inference_mode():
-                    outputs = self.model(**state.runtime_inputs, past_key_values=state.kv_cache, use_cache=True)
+                    outputs = self.model(**model_adapter(self.model).forward_inputs(state.runtime_inputs),
+                                         past_key_values=state.kv_cache, use_cache=True)
                     state.kv_cache = outputs.past_key_values
                     if state.kv_cache is None:
                         raise RuntimeError("The model did not return a KV cache.")
@@ -68,7 +70,7 @@ class DecodeScheduler:
                         state.runtime_inputs["attention_mask"] = torch.cat([mask, torch.ones_like(mask[:, :1])], dim=-1)
                     if "token_type_ids" in state.runtime_inputs:
                         state.runtime_inputs["token_type_ids"] = state.runtime_inputs["token_type_ids"][:, -1:]
-                    state.record_token(selected, self.tokenizer.eos_token_id)
+                    state.record_token(selected, eos_token_ids(self.model, self.tokenizer))
         except Exception:
             if not state.is_finished:
                 state.finish("error")

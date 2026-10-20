@@ -2,6 +2,25 @@
 
 The runtime contains several explicit execution paths, not one fully optimized engine. Transformers supplies model/attention operations; this repository supplies token loops, request state, scheduling/batching, serving ownership, capacity modeling and measurement. No path uses `model.generate()`.
 
+## Model forward policy (Phase 3 preparation)
+
+`model_adapter.py` preserves GPT-2 inputs and adds a focused Qwen2 policy: no
+token-type embeddings, logical per-row RoPE positions, final-position logits,
+and model generation-config EOS IDs. Cache collation still owns temporary
+left-padding and compact request-local full-attention DynamicCache tensors.
+Sliding-window Qwen caches are rejected, not silently compacted. The scheduler
+and admission algorithm are unchanged. The loader accepts explicit device,
+dtype, revision and attention implementation; the public app still defaults to
+distilgpt2 on CPU.
+
+This was inspected against installed Transformers 5.17.0: Qwen2's forward accepts
+`position_ids` and `past_key_values`; it has no explicit `cache_position` argument.
+RoPE is applied before cache insertion. A cached decode therefore uses each
+row's logical history length, not the padded batch width. Tiny randomly
+initialized Qwen2/GQA CPU tests exercise these mechanics; they are **not** proof
+that the real Qwen2.5-0.5B checkpoint works on a T4. That execution and its exact
+internal greedy parity gate remain pending the Colab run.
+
 ## HTTP data path (cached continuous greedy by default)
 
 ```mermaid

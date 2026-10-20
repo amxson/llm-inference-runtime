@@ -6,6 +6,7 @@ from typing import Any
 import torch
 
 from llm_runtime.model_loader import DEFAULT_MODEL_NAME, load_model_and_tokenizer
+from llm_runtime.model_adapter import model_adapter, eos_token_ids
 
 DEFAULT_PROMPT = "The capital of France is"
 
@@ -34,12 +35,13 @@ def greedy_decode(
     generated_token_ids = []
     steps = []
     stopped_on_eos = False
+    adapter, eos_ids = model_adapter(model), eos_token_ids(model, tokenizer)
 
     with torch.inference_mode():
         for step in range(max_new_tokens):
             sequence_length = input_ids.shape[1]
             # Recompute the entire growing sequence; do not create or reuse a cache.
-            outputs = model(**model_inputs, use_cache=False)
+            outputs = model(**adapter.forward_inputs(model_inputs), use_cache=False)
             next_token_logits = outputs.logits[:, -1, :]
             next_token_id = torch.argmax(next_token_logits, dim=-1)
 
@@ -65,7 +67,7 @@ def greedy_decode(
                 "token_id": selected_id,
                 "token_text": tokenizer.decode([selected_id], skip_special_tokens=True),
             })
-            if tokenizer.eos_token_id is not None and selected_id == tokenizer.eos_token_id:
+            if selected_id in eos_ids:
                 stopped_on_eos = True
                 break
 

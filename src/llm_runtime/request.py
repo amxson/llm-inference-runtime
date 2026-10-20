@@ -55,13 +55,14 @@ class RequestState:
         if self.max_new_tokens == 0:
             self.finish("max_new_tokens")
 
-    def record_token(self, token_id: int, eos_token_id: int | None = None) -> None:
+    def record_token(self, token_id: int, eos_token_id: int | tuple[int, ...] | None = None) -> None:
         """Record one model execution's selected token and apply stopping rules."""
         if self.status not in {RequestStatus.PREFILL, RequestStatus.DECODING}:
             raise ValueError("Tokens can only be recorded during prefill or decoding.")
         self.generated_token_ids.append(int(token_id))
         self.model_execution_count += 1
-        if eos_token_id is not None and token_id == eos_token_id:
+        eos_ids = (eos_token_id,) if isinstance(eos_token_id, int) else (eos_token_id or ())
+        if token_id in eos_ids:
             self.finish("eos")
         elif self.generated_token_count >= self.max_new_tokens:
             self.finish("max_new_tokens")

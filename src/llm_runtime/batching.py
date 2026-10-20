@@ -4,6 +4,7 @@ import torch
 
 from llm_runtime.request import RequestState, RequestStatus
 from llm_runtime.scheduler import prepare_request
+from llm_runtime.model_adapter import model_adapter, eos_token_ids
 
 
 def batch_step(model, tokenizer, states: list[RequestState]) -> list[dict]:
@@ -45,12 +46,12 @@ def batch_step(model, tokenizer, states: list[RequestState]) -> list[dict]:
     if has_token_types:
         inputs["token_type_ids"] = token_types
     with torch.inference_mode():
-        outputs = model(**inputs, use_cache=False)
+        outputs = model(**model_adapter(model).forward_inputs(inputs), use_cache=False)
         selected = torch.argmax(outputs.logits[:, -1, :], dim=-1).tolist()
     events = []
     for state, token_id, ids in zip(active, selected, contexts):
         phase = "prefill" if state.status is RequestStatus.PREFILL else "decode"
-        state.record_token(token_id, tokenizer.eos_token_id)
+        state.record_token(token_id, eos_token_ids(model, tokenizer))
         events.append({
             "request_id": state.request_id, "phase": phase, "token_id": token_id,
             "logical_context_length": len(ids), "model_input_width": width,

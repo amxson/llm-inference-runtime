@@ -1,10 +1,11 @@
-"""FIFO continuous greedy batching with compact request-local GPT-2 KV caches."""
+"""FIFO continuous greedy batching with compact full-attention KV caches."""
 
 from collections import deque
 
 import torch
 
 from llm_runtime.cache_batch import collate_caches, split_cache
+from llm_runtime.model_adapter import model_adapter, eos_token_ids
 from llm_runtime.request import RequestState, RequestStatus
 from llm_runtime.scheduler import prepare_request
 
@@ -14,6 +15,8 @@ class CachedContinuousBatcher:
         if max_active < 1:
             raise ValueError("max_active must be >= 1.")
         self.model, self.tokenizer = model, tokenizer
+        self.adapter = model_adapter(model)
+        self.eos_ids = eos_token_ids(model, tokenizer)
         self.device = next(model.parameters()).device
         self.max_active = max_active
         self.waiting, self.active, self.requests = deque(), [], {}
@@ -89,13 +92,13 @@ class CachedContinuousBatcher:
                     s.runtime_inputs["token_type_ids"][:, -1:] for s in states])
         self.model_forward_count += 1
         with torch.inference_mode():
-            output = self.model(**inputs, use_cache=True)
+            output = self.model(**self.adapter.forward_inputs(inputs), use_cache=True)
             caches = split_cache(output.past_key_values, lengths)
             selected = output.logits[:, -1].argmax(-1).tolist()
         events = []
         for state, token, cache, length in zip(states, selected, caches, lengths):
             state.kv_cache = cache
-            state.record_token(token, self.tokenizer.eos_token_id)  # finish releases cache
+            state.record_token(token, self.eos_ids)  # finish releases cache
             events.append({"request_id": state.request_id, "phase": phase, "token_id": token,
                            "logical_context_length": length,
                            "logical_cache_length_before": before[state.request_id],

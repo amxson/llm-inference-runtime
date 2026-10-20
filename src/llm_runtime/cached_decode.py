@@ -6,6 +6,7 @@ from typing import Any
 import torch
 
 from llm_runtime.model_loader import DEFAULT_MODEL_NAME, load_model_and_tokenizer
+from llm_runtime.model_adapter import model_adapter, eos_token_ids
 
 DEFAULT_PROMPT = "The capital of France is"
 
@@ -34,12 +35,13 @@ def cached_greedy_decode(
     steps = []
     cache = None  # A fresh cache for each request; no cache on prefill.
     stopped_on_eos = False
+    adapter, eos_ids = model_adapter(model), eos_token_ids(model, tokenizer)
 
     with torch.inference_mode():
         for step in range(max_new_tokens):
             input_length = model_inputs["input_ids"].shape[1]
             logical_length = full_input_ids.shape[1]
-            outputs = model(**model_inputs, past_key_values=cache, use_cache=True)
+            outputs = model(**adapter.forward_inputs(model_inputs), past_key_values=cache, use_cache=True)
             cache = outputs.past_key_values
             if cache is None:
                 raise RuntimeError("The model did not return a KV cache with use_cache=True.")
@@ -68,7 +70,7 @@ def cached_greedy_decode(
                 "token_id": selected_id,
                 "token_text": tokenizer.decode([selected_id], skip_special_tokens=True),
             })
-            if tokenizer.eos_token_id is not None and selected_id == tokenizer.eos_token_id:
+            if selected_id in eos_ids:
                 stopped_on_eos = True
                 break
 

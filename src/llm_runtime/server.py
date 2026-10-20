@@ -196,7 +196,8 @@ def encode_sse(event: str, data: dict) -> str:
 
 def create_app(model=None, tokenizer=None, *, loader=load_model_and_tokenizer,
                model_name=DEFAULT_MODEL_NAME, device="cpu", max_active=4,
-               cors_origins=None, benchmark_directory=None, engine=None) -> FastAPI:
+               cors_origins=None, benchmark_directory=None, engine=None,
+               dtype=None, revision=None) -> FastAPI:
     if (model is None) != (tokenizer is None) or max_active < 1:
         raise ValueError("Inject both model and tokenizer; max_active must be >= 1.")
     engine = engine if engine is not None else os.getenv("LLM_RUNTIME_ENGINE", DEFAULT_ENGINE)
@@ -205,7 +206,12 @@ def create_app(model=None, tokenizer=None, *, loader=load_model_and_tokenizer,
 
     @asynccontextmanager
     async def lifespan(app):
-        loaded_model, loaded_tokenizer = (loader(model_name, device) if model is None else (model, tokenizer))
+        options = {}
+        if dtype is not None:
+            options["dtype"] = dtype
+        if revision is not None:
+            options["revision"] = revision
+        loaded_model, loaded_tokenizer = (loader(model_name, device, **options) if model is None else (model, tokenizer))
         runtime = ServingRuntime(loaded_model, loaded_tokenizer, max_active, engine=engine)
         app.state.runtime = runtime
         await runtime.start()

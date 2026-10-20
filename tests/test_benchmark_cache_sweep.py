@@ -3,6 +3,7 @@
 import copy
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -155,8 +156,11 @@ def test_committed_sweep_can_be_recomputed_from_raw_pairs():
     assert len(data["source_revision"]) == 40
     assert data["host"]["user_confirmed_ac_quiet"]
     for name, expected_hash in data["source_file_sha256"].items():
-        source = path.parents[2] / "src/llm_runtime" / name
-        assert hashlib.sha256(source.read_bytes().replace(b"\r\n", b"\n")).hexdigest() == expected_hash
+        # Historical evidence describes Phase 1, not today's evolving loader.
+        # The harness/loader were published with this artifact in 8981ae2.
+        published = subprocess.check_output([
+            "git", "show", f"8981ae2:src/llm_runtime/{name}"], cwd=path.parents[2])
+        assert hashlib.sha256(published.replace(b"\r\n", b"\n")).hexdigest() == expected_hash
     assert [level["requested_tokens"] for level in data["levels"]] == [32, 128, 512]
     for level in data["levels"]:
         assert len(level["pairs"]) >= 10
