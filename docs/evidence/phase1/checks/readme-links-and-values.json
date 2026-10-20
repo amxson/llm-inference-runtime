@@ -1,0 +1,59 @@
+{
+  "utc": "2026-10-20T15:10:08.482Z",
+  "readme_lines": 108,
+  "verified_rows": [
+    "| 32 / 32 | 2,237.90 | 706.37 | 3.10× | 656 | 36 | 18.22× |",
+    "| 128 / 128 | 19,198.77 | 2,843.37 | 6.44× | 8,768 | 132 | 66.42× |",
+    "| 512 / 512 | 169,055.99 | 10,144.94 | 18.09× | 133,376 | 516 | 258.48× |"
+  ],
+  "links": [
+    {
+      "target": "https://llm-inference-runtime.vercel.app/#/runtime",
+      "status": 200
+    },
+    {
+      "target": "benchmarks/results/cache_length_sweep_cpu.json",
+      "exists": true
+    },
+    {
+      "target": "docs/finalization.md#cache-length-sweep",
+      "exists": true
+    },
+    {
+      "target": "benchmarks/results/m7_cached_vs_uncached_cpu.json",
+      "exists": true
+    },
+    {
+      "target": "docs/architecture.md",
+      "exists": true
+    },
+    {
+      "target": "http://127.0.0.1:5173/#/runtime",
+      "status": 200
+    },
+    {
+      "target": "docs/portfolio-ui.md",
+      "exists": true
+    },
+    {
+      "target": "docs/architecture.md",
+      "exists": true
+    },
+    {
+      "target": "docs/postmortem.md",
+      "exists": true
+    },
+    {
+      "target": "docs/portfolio-ui.md",
+      "exists": true
+    },
+    {
+      "target": "docs/finalization.md",
+      "exists": true
+    },
+    {
+      "target": "benchmarks/results",
+      "exists": true
+    }
+  ]
+}

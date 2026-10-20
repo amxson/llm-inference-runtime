@@ -1,0 +1,70 @@
+{
+  "utc": "2026-10-20T15:07:56.723Z",
+  "base_url": "http://127.0.0.1:4173",
+  "scope": "Headless Edge benchmark QA; screenshots require visual inspection; not Playground signoff.",
+  "results": [
+    {
+      "width": 1440,
+      "geometry": {
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "tableViewport": 1180,
+        "tableWidth": 1180
+      },
+      "primary_sweep_first": true,
+      "timing_spread_rows": 9,
+      "historical_concurrency_one_visible": true,
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": [],
+      "screenshots": [
+        "benchmarks-1440.png",
+        "work-columns-1440.png",
+        "spread-1440.png",
+        "latency-columns-1440.png"
+      ]
+    },
+    {
+      "width": 1024,
+      "geometry": {
+        "viewport": 1024,
+        "documentWidth": 1024,
+        "tableViewport": 796,
+        "tableWidth": 916
+      },
+      "primary_sweep_first": true,
+      "timing_spread_rows": 9,
+      "historical_concurrency_one_visible": true,
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": [],
+      "screenshots": [
+        "benchmarks-1024.png",
+        "work-columns-1024.png",
+        "spread-1024.png",
+        "latency-columns-1024.png"
+      ]
+    },
+    {
+      "width": 768,
+      "geometry": {
+        "viewport": 768,
+        "documentWidth": 768,
+        "tableViewport": 736,
+        "tableWidth": 916
+      },
+      "primary_sweep_first": true,
+      "timing_spread_rows": 9,
+      "historical_concurrency_one_visible": true,
+      "console_errors": [],
+      "failed_requests": [],
+      "api_requests": [],
+      "screenshots": [
+        "benchmarks-768.png",
+        "work-columns-768.png",
+        "spread-768.png",
+        "latency-columns-768.png"
+      ]
+    }
+  ]
+}

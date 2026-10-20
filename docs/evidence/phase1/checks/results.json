@@ -1,0 +1,44 @@
+[
+  {
+    "name": "benchmark-helpers",
+    "utc": "2026-10-20T15:09:57.1274329Z",
+    "command": "python.exe -m pytest tests/test_benchmark_cache_sweep.py -q",
+    "exit_code": 0
+  },
+  {
+    "name": "python-tests",
+    "utc": "2026-10-20T15:10:08.3410547Z",
+    "command": "python.exe -m pytest -q",
+    "exit_code": 0
+  },
+  {
+    "name": "frontend-tests",
+    "utc": "2026-10-20T15:10:30.7790431Z",
+    "command": "node.exe npm-cli.js test",
+    "exit_code": 0
+  },
+  {
+    "name": "typecheck",
+    "utc": "2026-10-20T15:10:44.9661947Z",
+    "command": "node.exe npm-cli.js run typecheck",
+    "exit_code": 0
+  },
+  {
+    "name": "design-audit",
+    "utc": "2026-10-20T15:10:49.4567013Z",
+    "command": "node.exe npm-cli.js run audit:design",
+    "exit_code": 0
+  },
+  {
+    "name": "production-build",
+    "utc": "2026-10-20T15:10:49.8167150Z",
+    "command": "node.exe npm-cli.js run build",
+    "exit_code": 0
+  },
+  {
+    "name": "diff-check",
+    "utc": "2026-10-20T15:10:54.7613442Z",
+    "command": "git diff --check",
+    "exit_code": 0
+  }
+]
