@@ -15,7 +15,7 @@ def test_public_prefix_health_cors_snapshot_and_stream(monkeypatch):
     def loader(name, device):
         loads.append((name, device))
         return FakeModel(), FakeTokenizer()
-    with TestClient(entrypoint.create_public_app(loader=loader)) as client:
+    with TestClient(entrypoint.create_public_app(loader=loader, engine="continuous_uncached_greedy")) as client:
         health = client.get("/api/health")
         assert health.headers["content-type"].startswith("application/json")
         assert health.json()["status"] == "ok"

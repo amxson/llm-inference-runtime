@@ -26,7 +26,7 @@ def test_health_validation_generation_sse_and_lifespan_model_reuse():
     def loader(name, device):
         loads.append((name, device))
         return model, tokenizer
-    app = create_app(loader=loader)
+    app = create_app(loader=loader, engine="continuous_uncached_greedy")
     with TestClient(app) as client:
         assert client.get("/health").json()["status"] == "ok"
         first = client.post("/generate", json={"prompt": "a", "max_new_tokens": 3})
@@ -57,7 +57,7 @@ def test_token_event_is_available_before_generation_completes_and_cancel_is_seri
 
     async def scenario():
         model = GatedModel()
-        runtime = ServingRuntime(model, FakeTokenizer())
+        runtime = ServingRuntime(model, FakeTokenizer(), engine="continuous_uncached_greedy")
         await runtime.start()
         state, channel = runtime.submit(GenerateBody(prompt="a", max_new_tokens=5))
         try:
@@ -82,7 +82,7 @@ def test_model_error_emits_error_and_done_and_worker_keeps_serving(caplog):
                 raise RuntimeError("private diagnostic should not reach clients")
             return super().__call__(**kwargs)
     model = BrokenModel()
-    app = create_app(model, FakeTokenizer())
+    app = create_app(model, FakeTokenizer(), engine="continuous_uncached_greedy")
     with caplog.at_level(logging.ERROR, logger="llm_runtime.server"), TestClient(app) as client:
         response = client.post("/generate/stream", json={"prompt": "a"})
         events = parse_events(response.text)
@@ -128,7 +128,7 @@ def test_health_polls_published_state_during_actual_inference():
             assert not active.is_set(), "Reader indexed live inference trace"
             return super().__getitem__(key)
 
-    app = create_app(GatedModel(), FakeTokenizer())
+    app = create_app(GatedModel(), FakeTokenizer(), engine="continuous_uncached_greedy")
     with TestClient(app) as client, ThreadPoolExecutor(max_workers=1) as pool:
         app.state.runtime.engine.trace = OwnerTrace(maxlen=1024)
         request = pool.submit(client.post, "/generate", json={"prompt": "a", "max_new_tokens": 3})

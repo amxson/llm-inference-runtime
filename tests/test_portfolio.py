@@ -11,7 +11,7 @@ from runtime_fakes import FakeModel, FakeTokenizer
 
 
 def test_read_only_snapshot_and_benchmark_allowlist():
-    with TestClient(create_app(FakeModel(), FakeTokenizer())) as client:
+    with TestClient(create_app(FakeModel(), FakeTokenizer(), engine="continuous_uncached_greedy")) as client:
         before = client.get("/runtime/snapshot").json()
         assert before["tick"] == 0 and before["serving_cache"] is False
         assert before["logical_allocator"] is None
@@ -33,7 +33,7 @@ def test_read_only_snapshot_and_benchmark_allowlist():
 
 def test_explicit_cors_configuration(monkeypatch):
     monkeypatch.setenv("LLM_RUNTIME_CORS_ORIGINS", "http://localhost:5173")
-    with TestClient(create_app(FakeModel(), FakeTokenizer())) as client:
+    with TestClient(create_app(FakeModel(), FakeTokenizer(), engine="continuous_uncached_greedy")) as client:
         headers = {"Origin": "http://localhost:5173", "Access-Control-Request-Method": "POST"}
         assert client.options("/generate/stream", headers=headers).headers["access-control-allow-origin"] == headers["Origin"]
         headers["Origin"] = "https://untrusted.example"
@@ -50,7 +50,7 @@ def test_snapshot_during_forward_is_a_stable_published_boundary():
             assert release.wait(5)
             return super().__call__(**kwargs)
     async def scenario():
-        runtime = ServingRuntime(Gated(), FakeTokenizer())
+        runtime = ServingRuntime(Gated(), FakeTokenizer(), engine="continuous_uncached_greedy")
         await runtime.start()
         state, channel = runtime.submit(GenerateBody(prompt="a", max_new_tokens=1))
         try:
@@ -71,13 +71,13 @@ def test_snapshot_during_forward_is_a_stable_published_boundary():
 
 
 def test_missing_benchmark_installation_returns_empty_index(tmp_path):
-    with TestClient(create_app(FakeModel(), FakeTokenizer(), benchmark_directory=tmp_path)) as client:
+    with TestClient(create_app(FakeModel(), FakeTokenizer(), benchmark_directory=tmp_path, engine="continuous_uncached_greedy")) as client:
         assert client.get("/benchmarks").json()["artifacts"] == []
         assert client.get("/benchmarks/m7_cached_vs_uncached_cpu.json").status_code == 404
 
 
 def test_telemetry_history_is_bounded_and_completed_requests_are_released():
-    with TestClient(create_app(FakeModel(), FakeTokenizer())) as client:
+    with TestClient(create_app(FakeModel(), FakeTokenizer(), engine="continuous_uncached_greedy")) as client:
         for _ in range(45):
             assert client.post("/generate", json={"prompt": "a", "max_new_tokens": 3}).status_code == 200
         snapshot = client.get("/runtime/snapshot").json()

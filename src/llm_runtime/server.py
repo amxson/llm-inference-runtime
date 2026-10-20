@@ -16,11 +16,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field
 
 from llm_runtime.continuous_batcher import ContinuousBatcher
+from llm_runtime.cached_continuous_batcher import CachedContinuousBatcher
 from llm_runtime.model_loader import DEFAULT_MODEL_NAME, load_model_and_tokenizer
 from llm_runtime.request import RequestState
 from llm_runtime.portfolio import ENGINE_COMMIT, benchmark_index, read_benchmark
 
 logger = logging.getLogger(__name__)
+ENGINES = {"continuous_uncached_greedy": ContinuousBatcher,
+           "continuous_cached_greedy": CachedContinuousBatcher}
+DEFAULT_ENGINE = "continuous_cached_greedy"
 
 
 class GenerateBody(BaseModel):
@@ -31,8 +35,12 @@ class GenerateBody(BaseModel):
 
 class ServingRuntime:
     """One worker owns engine mutations; clients communicate through commands."""
-    def __init__(self, model, tokenizer, max_active=4, max_pending=64):
-        self.engine = ContinuousBatcher(model, tokenizer, max_active)
+    def __init__(self, model, tokenizer, max_active=4, max_pending=64, *, engine=DEFAULT_ENGINE):
+        if engine not in ENGINES:
+            raise ValueError(f"Unknown engine: {engine}. Choose one of {tuple(ENGINES)}.")
+        self.engine_name = engine
+        self.serving_cache = engine == "continuous_cached_greedy"
+        self.engine = ENGINES[engine](model, tokenizer, max_active)
         self.tokenizer = tokenizer
         self.max_pending = max_pending
         self.commands = asyncio.Queue()
@@ -57,12 +65,13 @@ class ServingRuntime:
             "queue_depth": len(self.engine.waiting),
             "batch_size": len(self.engine.active), "max_active": self.engine.max_active,
             "model_forward_count": self.engine.model_forward_count,
-            "last_batch_size": len(self.engine.trace[-1]["model_request_ids"]) if self.engine.trace else 0,
+            "last_batch_size": max((e["batch_size"] for e in self.engine.trace[-1]["events"]), default=0) if self.engine.trace else 0,
             "max_observed_batch_size": max(
-                (len(item["model_request_ids"]) for item in self.engine.trace), default=0),
+                (e["batch_size"] for item in self.engine.trace for e in item["events"]), default=0),
             "logical_allocator": None,
             "requests": [{"request_id": state.request_id, "status": state.status.value,
-                          "generated_token_count": state.generated_token_count}
+                          "generated_token_count": state.generated_token_count,
+                          "logical_cache_length": state.kv_cache.get_seq_length() if state.kv_cache is not None else 0}
                          for state in self.engine.requests.values()],
             "traces": list(self.recent_traces),
         }
@@ -71,7 +80,7 @@ class ServingRuntime:
         # No await: only already-published plain data is read, even during a forward.
         return {**copy.deepcopy(self._published), "in_flight": self.in_flight,
                 "snapshot_boundary": "last completed worker boundary",
-                "engine": "continuous_uncached_greedy", "serving_cache": False}
+                "engine": self.engine_name, "serving_cache": self.serving_cache}
 
     async def start(self):
         self.worker = asyncio.create_task(self._run())
@@ -187,14 +196,17 @@ def encode_sse(event: str, data: dict) -> str:
 
 def create_app(model=None, tokenizer=None, *, loader=load_model_and_tokenizer,
                model_name=DEFAULT_MODEL_NAME, device="cpu", max_active=4,
-               cors_origins=None, benchmark_directory=None) -> FastAPI:
+               cors_origins=None, benchmark_directory=None, engine=None) -> FastAPI:
     if (model is None) != (tokenizer is None) or max_active < 1:
         raise ValueError("Inject both model and tokenizer; max_active must be >= 1.")
+    engine = engine if engine is not None else os.getenv("LLM_RUNTIME_ENGINE", DEFAULT_ENGINE)
+    if engine not in ENGINES:
+        raise ValueError(f"Unknown engine: {engine}. Choose one of {tuple(ENGINES)}.")
 
     @asynccontextmanager
     async def lifespan(app):
         loaded_model, loaded_tokenizer = (loader(model_name, device) if model is None else (model, tokenizer))
-        runtime = ServingRuntime(loaded_model, loaded_tokenizer, max_active)
+        runtime = ServingRuntime(loaded_model, loaded_tokenizer, max_active, engine=engine)
         app.state.runtime = runtime
         await runtime.start()
         try:
@@ -234,7 +246,7 @@ def create_app(model=None, tokenizer=None, *, loader=load_model_and_tokenizer,
         return {
             "status": "ok", "model": model_name,
             "device": str(next(runtime.engine.model.parameters()).device),
-            "engine": "continuous_uncached_greedy", "max_active": max_active,
+            "engine": published["engine"], "serving_cache": published["serving_cache"], "max_active": max_active,
             "model_forward_calls": published["model_forward_count"],
             "last_batch_size": published["last_batch_size"],
             "max_observed_batch_size": published["max_observed_batch_size"],

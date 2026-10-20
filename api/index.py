@@ -17,9 +17,9 @@ from llm_runtime.model_loader import load_model_and_tokenizer
 from llm_runtime.server import create_app
 
 
-def create_public_app(*, loader=load_model_and_tokenizer):
+def create_public_app(*, loader=load_model_and_tokenizer, engine=None):
     # One CPU row for this small public demo; engine algorithms are unchanged.
-    runtime_app = create_app(loader=loader, model_name="distilgpt2", device="cpu", max_active=1)
+    runtime_app = create_app(loader=loader, model_name="distilgpt2", device="cpu", max_active=1, engine=engine)
     runtime_app.root_path = "/api"
     return runtime_app
 
