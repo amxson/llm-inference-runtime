@@ -5,6 +5,7 @@ from collections import deque
 import copy
 from contextlib import asynccontextmanager
 import json
+import logging
 import os
 from pathlib import Path
 import time
@@ -18,6 +19,8 @@ from llm_runtime.continuous_batcher import ContinuousBatcher
 from llm_runtime.model_loader import DEFAULT_MODEL_NAME, load_model_and_tokenizer
 from llm_runtime.request import RequestState
 from llm_runtime.portfolio import ENGINE_COMMIT, benchmark_index, read_benchmark
+
+logger = logging.getLogger(__name__)
 
 
 class GenerateBody(BaseModel):
@@ -54,6 +57,9 @@ class ServingRuntime:
             "queue_depth": len(self.engine.waiting),
             "batch_size": len(self.engine.active), "max_active": self.engine.max_active,
             "model_forward_count": self.engine.model_forward_count,
+            "last_batch_size": len(self.engine.trace[-1]["model_request_ids"]) if self.engine.trace else 0,
+            "max_observed_batch_size": max(
+                (len(item["model_request_ids"]) for item in self.engine.trace), default=0),
             "logical_allocator": None,
             "requests": [{"request_id": state.request_id, "status": state.status.value,
                           "generated_token_count": state.generated_token_count}
@@ -158,6 +164,7 @@ class ServingRuntime:
                     self._complete(self.engine.requests[request_id])
             except Exception:
                 self.in_flight = False
+                logger.exception("Inference worker forward failed; failing active requests.")
                 # A failed shared forward fails its active rows, not the worker/process.
                 for state in list(self.engine.active):
                     if not state.is_finished:
@@ -223,13 +230,14 @@ def create_app(model=None, tokenizer=None, *, loader=load_model_and_tokenizer,
     @app.get("/health")
     async def health():
         runtime = app.state.runtime
+        published = runtime.snapshot()
         return {
             "status": "ok", "model": model_name,
             "device": str(next(runtime.engine.model.parameters()).device),
             "engine": "continuous_uncached_greedy", "max_active": max_active,
-            "model_forward_calls": runtime.engine.model_forward_count,
-            "last_batch_size": len(runtime.engine.trace[-1]["model_request_ids"]) if runtime.engine.trace else 0,
-            "max_observed_batch_size": max((len(item["model_request_ids"]) for item in runtime.engine.trace), default=0),
+            "model_forward_calls": published["model_forward_count"],
+            "last_batch_size": published["last_batch_size"],
+            "max_observed_batch_size": published["max_observed_batch_size"],
         }
 
     @app.post("/generate")
