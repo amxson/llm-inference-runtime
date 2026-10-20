@@ -27,6 +27,9 @@ def test_read_only_snapshot_and_benchmark_allowlist():
         assert "runtime_inputs" not in serialized and "kv_cache" not in serialized
         assert {item["name"] for item in client.get("/benchmarks").json()["artifacts"]} == set(BENCHMARK_FILES)
         assert client.get("/benchmarks/m7_cached_vs_uncached_cpu.json").json()["comparison"]["exact_token_id_parity"]
+        cached = client.get("/benchmarks/cached_continuous_batching_cpu.json")
+        assert cached.status_code == 200 and cached.json()["exact_token_id_parity"]
+        assert cached.json()["benchmark"] == "cached_continuous_batching_cpu"
         assert client.get("/benchmarks/pyproject.toml").status_code == 404
         assert client.get("/benchmarks/not-installed.json").status_code == 404
 
