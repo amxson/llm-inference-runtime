@@ -126,10 +126,10 @@ export function FinalMeasurement({ artifact }: { artifact: Artifact }) {
   return (
     <section
       className="instrument-section"
-      aria-label="Final controlled measurement"
+      aria-label="Earlier controlled measurement"
     >
       <div className="section-title">
-        <h2>Final rerun / token-level timing</h2>
+        <h2>Earlier 128-token rerun / token-level timing</h2>
         <span className="caption">
           Single-request CPU · separate CLI and HTTP scopes
         </span>

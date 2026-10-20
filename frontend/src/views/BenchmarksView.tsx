@@ -8,6 +8,7 @@ import {
 } from "../data/benchmarkAdapter";
 import { metric } from "../runtime/traceAdapter";
 import { FinalMeasurement } from "./FinalMeasurement";
+import { CacheLengthSweep } from "./CacheLengthSweep";
 
 function Source({ artifact }: { artifact: Artifact }) {
   return (
@@ -234,18 +235,32 @@ export function BenchmarksView() {
           Each figure links to its source and methodology.
         </p>
       </div>
-      {artifacts.find((a) => a.name === "final_cpu.json") && (
-        <FinalMeasurement
-          artifact={artifacts.find((a) => a.name === "final_cpu.json")!}
+      {artifacts.find((a) => a.name === "cache_length_sweep_cpu.json") ? (
+        <CacheLengthSweep
+          artifact={artifacts.find(
+            (a) => a.name === "cache_length_sweep_cpu.json",
+          )!}
         />
+      ) : (
+        <p role="alert">
+          Controlled cache-length sweep artifact is unavailable.
+        </p>
+      )}
+      {artifacts.find((a) => a.name === "final_cpu.json") && (
+        <details className="result-details">
+          <summary>Earlier 128-token rerun / CLI and network timing</summary>
+          <FinalMeasurement
+            artifact={artifacts.find((a) => a.name === "final_cpu.json")!}
+          />
+        </details>
       )}
       <h2>Historical experiments / preserved evidence</h2>
       <p className="caption caveat">
         The following M5–M17 artifacts are historical, not preferred headline
         timing. M7 and the M13 concurrency-one anomaly may be affected by host
-        contention; this is a hypothesis, not a proven diagnosis. The final
-        rerun above has a different token budget and is not a causal
-        before/after machine comparison.
+        contention; this is a hypothesis, not a proven diagnosis. The length
+        sweep above has different token budgets and is not a causal before/after
+        machine comparison.
       </p>
       <p className="finding">
         KV caching forwards{" "}
@@ -336,7 +351,7 @@ export function BenchmarksView() {
       </section>
       <section className="instrument-section">
         <div className="section-title">
-          <h2>Serving / concurrency</h2>
+          <h2>Exploratory serving / concurrency result</h2>
           <span className="caption">M13 · actual network HTTP/SSE</span>
         </div>
         <div className="table-scroll">
