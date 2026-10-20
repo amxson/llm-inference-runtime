@@ -136,8 +136,11 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
           </label>
           <span className="caption">greedy serving</span>
           <span className="caption">
-            serving cache: off{" "}
-            <span className="muted">(uncached continuous batcher)</span>
+            serving cache:{" "}
+            {snapshot ? (snapshot.serving_cache ? "on" : "off") : "unknown"}{" "}
+            <span className="muted">
+              ({snapshot?.engine ?? "backend unavailable"})
+            </span>
           </span>
           <div className="run-actions">
             <button
@@ -288,8 +291,8 @@ export function PlaygroundView({ snapshot }: { snapshot: Snapshot | null }) {
         Arrival metrics include the browser/HTTP path and are not model-step
         latency. Batch, queue and forwards describe the responding worker
         instance, not per-request work. Zero-token requests have no TTFT.
-        Sampling and KV-cached decoding exist as separate paths, not live
-        controls.
+        Sampling remains a separate path. Cache mode is server configuration,
+        reported above—not a browser toggle.
       </p>
       {result && (
         <details className="result-details">

@@ -28,7 +28,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-test("linked selection updates lane, block ownership, table and token output", async () => {
+test("linked selection updates lane, compact cache row and token output", async () => {
   const user = userEvent.setup();
   render(
     <RuntimeView
@@ -39,15 +39,12 @@ test("linked selection updates lane, block ownership, table and token output", a
     />,
   );
   expect(
-    screen.getByRole("heading", { name: "r2 / block table before forward" }),
+    screen.getByRole("table", { name: "Logical cache lengths this iteration" }),
   ).toBeInTheDocument();
   await user.click(screen.getByRole("button", { name: "Select request r4" }));
   expect(
-    screen.getByRole("heading", { name: "r4 / block table before forward" }),
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole("button", { name: "Pool block 5, owned by r4" }),
-  ).toHaveClass("selected-block");
+    screen.getByRole("button", { name: "Inspect cache r4" }).closest("tr"),
+  ).toHaveClass("selected-log");
   expect(
     screen.getByRole("button", { name: "Select request r4" }),
   ).toHaveAttribute("aria-pressed", "true");
@@ -218,11 +215,14 @@ test("position figure draws one actual cell for each forwarded position", () => 
   expect(groups[1].querySelectorAll("[data-kind=forwarded]")).toHaveLength(7);
   expect(groups[1].querySelectorAll("[data-kind=reused]")).toHaveLength(11);
 });
-test("architecture visibly separates HTTP from cached decoding", () => {
+test("architecture separates cached HTTP, uncached reference and independent cached decoding", () => {
   render(<ArchitectureView />);
   expect(
     screen.getByRole("list", { name: "Live uncached HTTP data path" }),
   ).toHaveTextContent("cache=False");
+  expect(
+    screen.getByRole("list", { name: "Live cached HTTP data path" }),
+  ).toHaveTextContent("[B, 1]");
   expect(
     screen.getByRole("list", { name: "Separate cached decoding data path" }),
   ).toHaveTextContent("HF DynamicCache");

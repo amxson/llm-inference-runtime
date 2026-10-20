@@ -1,11 +1,12 @@
 {
   "label": "Recorded trace",
-  "provenance": "Actual ContinuousBatcher + distilgpt2 CPU greedy forwards; optional logical BlockAllocator; not an HTTP capture or a timing benchmark",
-  "engine_commit": "dc0f276be63a29fa9a929d3ba39dc864cd29373f",
+  "provenance": "Actual CachedContinuousBatcher + distilgpt2 CPU greedy forwards; compact request-local DynamicCache; not an HTTP capture or a timing benchmark",
+  "engine_commit": "59a9c8885e579815cd5f1193c45035fba5e95fab",
+  "engine": "continuous_cached_greedy",
   "model": "distilgpt2",
   "device": "cpu",
   "max_active": 3,
-  "serving_cache": false,
+  "serving_cache": true,
   "time_axis": "discrete engine ticks; replay cadence is not measured elapsed time",
   "requests": [
     {
@@ -99,8 +100,11 @@
           "phase": "prefill",
           "token_id": 262,
           "logical_context_length": 5,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 5,
           "model_input_width": 5,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 1,
           "token_text": " the",
           "generated_text": " the"
@@ -110,8 +114,11 @@
           "phase": "prefill",
           "token_id": 383,
           "logical_context_length": 1,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 1,
           "model_input_width": 5,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 1,
           "token_text": " The",
           "generated_text": " The"
@@ -121,51 +128,39 @@
           "phase": "prefill",
           "token_id": 262,
           "logical_context_length": 4,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 4,
           "model_input_width": 5,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 1,
           "token_text": " the",
           "generated_text": " the"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 28,
-        "allocated_blocks": 4,
-        "utilization": 0.125,
-        "request_block_tables": {
-          "r1": [
-            0,
-            1
-          ],
-          "r2": [
-            2
-          ],
-          "r3": [
-            3
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "r1": 0,
+        "r2": 0,
+        "r3": 0
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 28,
-        "allocated_blocks": 4,
-        "utilization": 0.125,
-        "request_block_tables": {
-          "r1": [
-            0,
-            1
-          ],
-          "r2": [
-            2
-          ],
-          "r3": [
-            3
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r1": 5,
+        "r2": 1,
+        "r3": 4
       },
+      "prefill_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "prefill_input_shape": [
+        3,
+        5
+      ],
+      "decode_request_ids": [],
+      "decode_input_shape": null,
       "waiting_request_ids": [
         "r4",
         "r5",
@@ -193,8 +188,11 @@
           "phase": "decode",
           "token_id": 3139,
           "logical_context_length": 6,
-          "model_input_width": 6,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 2,
           "token_text": " capital",
           "generated_text": " the capital"
@@ -204,8 +202,11 @@
           "phase": "decode",
           "token_id": 717,
           "logical_context_length": 2,
-          "model_input_width": 6,
+          "logical_cache_length_before": 1,
+          "logical_cache_length_after": 2,
+          "model_input_width": 1,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 2,
           "token_text": " first",
           "generated_text": " The first"
@@ -215,53 +216,39 @@
           "phase": "decode",
           "token_id": 5628,
           "logical_context_length": 5,
-          "model_input_width": 6,
+          "logical_cache_length_before": 4,
+          "logical_cache_length_after": 5,
+          "model_input_width": 1,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 2,
           "token_text": " Mount",
           "generated_text": " the Mount"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 27,
-        "allocated_blocks": 5,
-        "utilization": 0.15625,
-        "request_block_tables": {
-          "r1": [
-            0,
-            1
-          ],
-          "r2": [
-            2
-          ],
-          "r3": [
-            3,
-            4
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "r1": 5,
+        "r2": 1,
+        "r3": 4
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 27,
-        "allocated_blocks": 5,
-        "utilization": 0.15625,
-        "request_block_tables": {
-          "r1": [
-            0,
-            1
-          ],
-          "r2": [
-            2
-          ],
-          "r3": [
-            3,
-            4
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r1": 6,
+        "r2": 2,
+        "r3": 5
       },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "decode_input_shape": [
+        3,
+        1
+      ],
       "waiting_request_ids": [
         "r4",
         "r5",
@@ -291,8 +278,11 @@
           "phase": "decode",
           "token_id": 286,
           "logical_context_length": 7,
-          "model_input_width": 7,
+          "logical_cache_length_before": 6,
+          "logical_cache_length_after": 7,
+          "model_input_width": 1,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 3,
           "token_text": " of",
           "generated_text": " the capital of"
@@ -302,8 +292,11 @@
           "phase": "decode",
           "token_id": 640,
           "logical_context_length": 3,
-          "model_input_width": 7,
+          "logical_cache_length_before": 2,
+          "logical_cache_length_after": 3,
+          "model_input_width": 1,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 3,
           "token_text": " time",
           "generated_text": " The first time"
@@ -313,49 +306,39 @@
           "phase": "decode",
           "token_id": 41336,
           "logical_context_length": 6,
-          "model_input_width": 7,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
           "batch_size": 3,
+          "serving_cache": true,
           "token_index": 3,
           "token_text": " Everest",
           "generated_text": " the Mount Everest"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 27,
-        "allocated_blocks": 5,
-        "utilization": 0.15625,
-        "request_block_tables": {
-          "r1": [
-            0,
-            1
-          ],
-          "r2": [
-            2
-          ],
-          "r3": [
-            3,
-            4
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "r1": 6,
+        "r2": 2,
+        "r3": 5
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 29,
-        "allocated_blocks": 3,
-        "utilization": 0.09375,
-        "request_block_tables": {
-          "r2": [
-            2
-          ],
-          "r3": [
-            3,
-            4
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r1": 7,
+        "r2": 3,
+        "r3": 6
       },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "decode_input_shape": [
+        3,
+        1
+      ],
       "waiting_request_ids": [
         "r4",
         "r5",
@@ -374,21 +357,38 @@
         "r4"
       ],
       "model_request_ids": [
+        "r4",
         "r2",
-        "r3",
-        "r4"
+        "r3"
       ],
       "completed": [
         "r3"
       ],
       "events": [
         {
+          "request_id": "r4",
+          "phase": "prefill",
+          "token_id": 257,
+          "logical_context_length": 3,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 3,
+          "model_input_width": 3,
+          "batch_size": 1,
+          "serving_cache": true,
+          "token_index": 1,
+          "token_text": " a",
+          "generated_text": " a"
+        },
+        {
           "request_id": "r2",
           "phase": "decode",
           "token_id": 314,
           "logical_context_length": 4,
-          "model_input_width": 7,
-          "batch_size": 3,
+          "logical_cache_length_before": 3,
+          "logical_cache_length_after": 4,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
           "token_index": 4,
           "token_text": " I",
           "generated_text": " The first time I"
@@ -398,58 +398,43 @@
           "phase": "decode",
           "token_id": 11,
           "logical_context_length": 7,
-          "model_input_width": 7,
-          "batch_size": 3,
+          "logical_cache_length_before": 6,
+          "logical_cache_length_after": 7,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
           "token_index": 4,
           "token_text": ",",
           "generated_text": " the Mount Everest,"
-        },
-        {
-          "request_id": "r4",
-          "phase": "prefill",
-          "token_id": 257,
-          "logical_context_length": 3,
-          "model_input_width": 7,
-          "batch_size": 3,
-          "token_index": 1,
-          "token_text": " a",
-          "generated_text": " a"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 28,
-        "allocated_blocks": 4,
-        "utilization": 0.125,
-        "request_block_tables": {
-          "r2": [
-            2
-          ],
-          "r3": [
-            3,
-            4
-          ],
-          "r4": [
-            5
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 2,
+      "logical_cache_lengths_before": {
+        "r4": 0,
+        "r2": 3,
+        "r3": 6
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 30,
-        "allocated_blocks": 2,
-        "utilization": 0.0625,
-        "request_block_tables": {
-          "r2": [
-            2
-          ],
-          "r4": [
-            5
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r4": 3,
+        "r2": 4,
+        "r3": 7
       },
+      "prefill_request_ids": [
+        "r4"
+      ],
+      "prefill_input_shape": [
+        1,
+        3
+      ],
+      "decode_request_ids": [
+        "r2",
+        "r3"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
       "waiting_request_ids": [
         "r5",
         "r6"
@@ -467,21 +452,38 @@
         "r5"
       ],
       "model_request_ids": [
+        "r5",
         "r2",
-        "r4",
-        "r5"
+        "r4"
       ],
       "completed": [
         "r4"
       ],
       "events": [
         {
+          "request_id": "r5",
+          "phase": "prefill",
+          "token_id": 284,
+          "logical_context_length": 7,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 7,
+          "model_input_width": 7,
+          "batch_size": 1,
+          "serving_cache": true,
+          "token_index": 1,
+          "token_text": " to",
+          "generated_text": " to"
+        },
+        {
           "request_id": "r2",
           "phase": "decode",
           "token_id": 2497,
           "logical_context_length": 5,
-          "model_input_width": 7,
-          "batch_size": 3,
+          "logical_cache_length_before": 4,
+          "logical_cache_length_after": 5,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
           "token_index": 5,
           "token_text": " saw",
           "generated_text": " The first time I saw"
@@ -491,61 +493,43 @@
           "phase": "decode",
           "token_id": 3644,
           "logical_context_length": 4,
-          "model_input_width": 7,
-          "batch_size": 3,
+          "logical_cache_length_before": 3,
+          "logical_cache_length_after": 4,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
           "token_index": 2,
           "token_text": " computer",
           "generated_text": " a computer"
-        },
-        {
-          "request_id": "r5",
-          "phase": "prefill",
-          "token_id": 284,
-          "logical_context_length": 7,
-          "model_input_width": 7,
-          "batch_size": 3,
-          "token_index": 1,
-          "token_text": " to",
-          "generated_text": " to"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 27,
-        "allocated_blocks": 5,
-        "utilization": 0.15625,
-        "request_block_tables": {
-          "r2": [
-            2,
-            6
-          ],
-          "r4": [
-            5
-          ],
-          "r5": [
-            7,
-            8
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 2,
+      "logical_cache_lengths_before": {
+        "r5": 0,
+        "r2": 4,
+        "r4": 3
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 28,
-        "allocated_blocks": 4,
-        "utilization": 0.125,
-        "request_block_tables": {
-          "r2": [
-            2,
-            6
-          ],
-          "r5": [
-            7,
-            8
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r5": 7,
+        "r2": 5,
+        "r4": 4
       },
+      "prefill_request_ids": [
+        "r5"
+      ],
+      "prefill_input_shape": [
+        1,
+        7
+      ],
+      "decode_request_ids": [
+        "r2",
+        "r4"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
       "waiting_request_ids": [
         "r6"
       ],
@@ -562,21 +546,38 @@
         "r6"
       ],
       "model_request_ids": [
+        "r6",
         "r2",
-        "r5",
-        "r6"
+        "r5"
       ],
       "completed": [
         "r2"
       ],
       "events": [
         {
+          "request_id": "r6",
+          "phase": "prefill",
+          "token_id": 286,
+          "logical_context_length": 3,
+          "logical_cache_length_before": 0,
+          "logical_cache_length_after": 3,
+          "model_input_width": 3,
+          "batch_size": 1,
+          "serving_cache": true,
+          "token_index": 1,
+          "token_text": " of",
+          "generated_text": " of"
+        },
+        {
           "request_id": "r2",
           "phase": "decode",
           "token_id": 257,
           "logical_context_length": 6,
-          "model_input_width": 8,
-          "batch_size": 3,
+          "logical_cache_length_before": 5,
+          "logical_cache_length_after": 6,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
           "token_index": 6,
           "token_text": " a",
           "generated_text": " The first time I saw a"
@@ -586,60 +587,43 @@
           "phase": "decode",
           "token_id": 2148,
           "logical_context_length": 8,
-          "model_input_width": 8,
-          "batch_size": 3,
+          "logical_cache_length_before": 7,
+          "logical_cache_length_after": 8,
+          "model_input_width": 1,
+          "batch_size": 2,
+          "serving_cache": true,
           "token_index": 2,
           "token_text": " provide",
           "generated_text": " to provide"
-        },
-        {
-          "request_id": "r6",
-          "phase": "prefill",
-          "token_id": 286,
-          "logical_context_length": 3,
-          "model_input_width": 8,
-          "batch_size": 3,
-          "token_index": 1,
-          "token_text": " of",
-          "generated_text": " of"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 27,
-        "allocated_blocks": 5,
-        "utilization": 0.15625,
-        "request_block_tables": {
-          "r2": [
-            2,
-            6
-          ],
-          "r5": [
-            7,
-            8
-          ],
-          "r6": [
-            9
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 2,
+      "logical_cache_lengths_before": {
+        "r6": 0,
+        "r2": 5,
+        "r5": 7
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 29,
-        "allocated_blocks": 3,
-        "utilization": 0.09375,
-        "request_block_tables": {
-          "r5": [
-            7,
-            8
-          ],
-          "r6": [
-            9
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r6": 3,
+        "r2": 6,
+        "r5": 8
       },
+      "prefill_request_ids": [
+        "r6"
+      ],
+      "prefill_input_shape": [
+        1,
+        3
+      ],
+      "decode_request_ids": [
+        "r2",
+        "r5"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
       "waiting_request_ids": [],
       "queue_depth": 0
     },
@@ -661,8 +645,11 @@
           "phase": "decode",
           "token_id": 257,
           "logical_context_length": 9,
-          "model_input_width": 9,
+          "logical_cache_length_before": 8,
+          "logical_cache_length_after": 9,
+          "model_input_width": 1,
           "batch_size": 2,
+          "serving_cache": true,
           "token_index": 3,
           "token_text": " a",
           "generated_text": " to provide a"
@@ -672,47 +659,36 @@
           "phase": "decode",
           "token_id": 2795,
           "logical_context_length": 4,
-          "model_input_width": 9,
+          "logical_cache_length_before": 3,
+          "logical_cache_length_after": 4,
+          "model_input_width": 1,
           "batch_size": 2,
+          "serving_cache": true,
           "token_index": 2,
           "token_text": " June",
           "generated_text": " of June"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 28,
-        "allocated_blocks": 4,
-        "utilization": 0.125,
-        "request_block_tables": {
-          "r5": [
-            7,
-            8,
-            10
-          ],
-          "r6": [
-            9
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "r5": 8,
+        "r6": 3
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 28,
-        "allocated_blocks": 4,
-        "utilization": 0.125,
-        "request_block_tables": {
-          "r5": [
-            7,
-            8,
-            10
-          ],
-          "r6": [
-            9
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r5": 9,
+        "r6": 4
       },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "r5",
+        "r6"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
       "waiting_request_ids": [],
       "queue_depth": 0
     },
@@ -736,8 +712,11 @@
           "phase": "decode",
           "token_id": 835,
           "logical_context_length": 10,
-          "model_input_width": 10,
+          "logical_cache_length_before": 9,
+          "logical_cache_length_after": 10,
+          "model_input_width": 1,
           "batch_size": 2,
+          "serving_cache": true,
           "token_index": 4,
           "token_text": " way",
           "generated_text": " to provide a way"
@@ -747,45 +726,36 @@
           "phase": "decode",
           "token_id": 352,
           "logical_context_length": 5,
-          "model_input_width": 10,
+          "logical_cache_length_before": 4,
+          "logical_cache_length_after": 5,
+          "model_input_width": 1,
           "batch_size": 2,
+          "serving_cache": true,
           "token_index": 3,
           "token_text": " 1",
           "generated_text": " of June 1"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 27,
-        "allocated_blocks": 5,
-        "utilization": 0.15625,
-        "request_block_tables": {
-          "r5": [
-            7,
-            8,
-            10
-          ],
-          "r6": [
-            9,
-            11
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "r5": 9,
+        "r6": 4
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 29,
-        "allocated_blocks": 3,
-        "utilization": 0.09375,
-        "request_block_tables": {
-          "r5": [
-            7,
-            8,
-            10
-          ]
-        }
+      "logical_cache_lengths_after": {
+        "r5": 10,
+        "r6": 5
       },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "r5",
+        "r6"
+      ],
+      "decode_input_shape": [
+        2,
+        1
+      ],
       "waiting_request_ids": [],
       "queue_depth": 0
     },
@@ -807,35 +777,33 @@
           "phase": "decode",
           "token_id": 284,
           "logical_context_length": 11,
-          "model_input_width": 11,
+          "logical_cache_length_before": 10,
+          "logical_cache_length_after": 11,
+          "model_input_width": 1,
           "batch_size": 1,
+          "serving_cache": true,
           "token_index": 5,
           "token_text": " to",
           "generated_text": " to provide a way to"
         }
       ],
-      "logical_kv_before_forward": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 29,
-        "allocated_blocks": 3,
-        "utilization": 0.09375,
-        "request_block_tables": {
-          "r5": [
-            7,
-            8,
-            10
-          ]
-        }
+      "serving_cache": true,
+      "model_forward_count_this_tick": 1,
+      "logical_cache_lengths_before": {
+        "r5": 10
       },
-      "logical_kv_after_completion": {
-        "total_blocks": 32,
-        "block_size": 4,
-        "free_blocks": 32,
-        "allocated_blocks": 0,
-        "utilization": 0.0,
-        "request_block_tables": {}
+      "logical_cache_lengths_after": {
+        "r5": 11
       },
+      "prefill_request_ids": [],
+      "prefill_input_shape": null,
+      "decode_request_ids": [
+        "r5"
+      ],
+      "decode_input_shape": [
+        1,
+        1
+      ],
       "waiting_request_ids": [],
       "queue_depth": 0
     }

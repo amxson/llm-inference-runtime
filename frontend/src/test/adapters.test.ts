@@ -36,7 +36,7 @@ test("missing metrics render as em dashes, never invented zeroes", () => {
   expect(data.cached.latency).toBeNull();
   expect(metric(data.cached.latency)).toBe("—");
 });
-test("fixture encodes actual admission, per-row work, completion and logical block reuse", () => {
+test("fixture encodes actual admission, per-row work, completion and compact cache reuse", () => {
   const frames = parseTraceFrames(fixture.traces);
   expect(requestIds(frames)).toHaveLength(6);
   expect(stateAt(frames, 0, "r4")).toBe("waiting");
@@ -46,8 +46,20 @@ test("fixture encodes actual admission, per-row work, completion and logical blo
   const work = positionWork(frames[0]);
   expect(work.decode).toBe(0);
   expect(work.prefill).toBe(frames[0].events[0].model_input_width * 3);
-  const final = frames.at(-1)!.logical_kv_after_completion!;
-  expect(final.free_blocks).toBe(final.total_blocks);
+  expect(fixture.serving_cache).toBe(true);
+  expect(frames[1].decode_input_shape).toEqual([3, 1]);
+  expect(frames[1].logical_cache_lengths_before?.r1).toBe(
+    fixture.requests[0].prompt_token_ids.length,
+  );
+  expect(frames[1].logical_cache_lengths_after?.r1).toBe(
+    fixture.requests[0].prompt_token_ids.length + 1,
+  );
+  expect(
+    frames.some(
+      (f) => f.admitted.length > 0 && (f.decode_request_ids?.length ?? 0) > 0,
+    ),
+  ).toBe(true);
+  expect(frames.at(-1)).not.toHaveProperty("logical_kv_before_forward");
   expect(fixture).not.toHaveProperty("observed_at_ms");
 });
 test("trace adapter rejects unsupported phases and incomplete events", () => {

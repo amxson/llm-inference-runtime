@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Snapshot } from "./api/types";
+import type { Snapshot, TraceFrame } from "./api/types";
 import { apiBase, getSnapshot } from "./api/client";
 import { RuntimeView } from "./views/RuntimeView";
 import { PlaygroundView } from "./views/PlaygroundView";
@@ -7,6 +7,7 @@ import { BenchmarksView } from "./views/BenchmarksView";
 import { ArchitectureView } from "./views/ArchitectureView";
 import fixture from "./data/recorded-trace.json";
 import { metric } from "./runtime/traceAdapter";
+import { recordedFrames } from "./runtime/recording";
 
 export const projectUrl = "https://github.com/amxson/llm-inference-runtime";
 const routes = ["Playground", "Runtime", "Benchmarks", "Architecture"] as const;
@@ -53,9 +54,9 @@ export function App() {
       clearTimeout(timer);
     };
   }, [route, mode]);
-  const frame =
+  const frame: TraceFrame | undefined =
     displayMode === "replay"
-      ? fixture.traces[frameIndex]
+      ? recordedFrames[frameIndex]
       : snapshot?.traces.at(-1);
   const allocator =
     frame && "logical_kv_before_forward" in frame
@@ -120,10 +121,9 @@ export function App() {
           /{metric(max)}
         </span>
         <span>
-          logical blocks{" "}
           {allocator
-            ? `${allocator.allocated_blocks}/${allocator.total_blocks}`
-            : "—"}
+            ? `logical blocks ${allocator.allocated_blocks}/${allocator.total_blocks}`
+            : `serving cache ${displayMode === "replay" ? (fixture.serving_cache ? "on" : "off") : snapshot ? (snapshot.serving_cache ? "on" : "off") : "unknown"}`}
         </span>
         <span>
           queue{" "}

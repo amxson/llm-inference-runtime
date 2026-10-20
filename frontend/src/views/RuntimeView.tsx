@@ -45,6 +45,10 @@ export function RuntimeView({
       ? frames.length - 1
       : Math.min(index, frames.length - 1);
   const frame = frames[cursor];
+  const cached =
+    mode === "replay"
+      ? fixture.serving_cache
+      : snapshot?.serving_cache === true;
   const ids = requestIds(frames),
     pool = frame?.logical_kv_before_forward;
   ids.forEach(requestAlias);
@@ -192,14 +196,14 @@ export function RuntimeView({
       </div>
       {mode === "replay" ? (
         <p className="caption">
-          Actual distilgpt2 CPU forwards through ContinuousBatcher; logical
-          allocator enabled for this recording. Discrete ticks; playback cadence
-          is not measured elapsed time.
+          Actual distilgpt2 CPU forwards through CachedContinuousBatcher;
+          compact request-local KV caches. Discrete ticks; playback cadence is
+          not measured elapsed time.
         </p>
       ) : (
         <p className="caption">
           {snapshot
-            ? "Continuous uncached greedy HTTP engine. No logical allocator is enabled. Live snapshots describe the responding worker instance, not an aggregate across replicas."
+            ? `${snapshot.engine}. Serving cache: ${snapshot.serving_cache ? "on" : "off"}. No logical allocator is enabled. Live snapshots describe the responding worker instance, not an aggregate across replicas.`
             : liveUnavailable}
         </p>
       )}
@@ -322,10 +326,80 @@ export function RuntimeView({
           </p>
         )}
         <p className="caption">
-          Every decode row recomputes its full context. The trace does not imply
-          cached batched inference.
+          {cached
+            ? "PREFILL forwards new prompts. CACHED DECODE forwards one newest token per row with retained K/V; attention still reads history. Positions are a work proxy, not FLOPs."
+            : "Every decode row recomputes its full context. This uncached reference does not retain K/V."}
         </p>
       </section>
+      {cached && (
+        <section className="instrument-section">
+          <div className="section-title">
+            <h2>Request-local KV / actual forwarded history</h2>
+            <span className="caption">
+              Compact tensors · no physical paging
+            </span>
+          </div>
+          <p className="mono">
+            PREFILL: {frame?.prefill_request_ids?.map(label).join(", ") || "—"}
+            {" · "}CACHED DECODE:{" "}
+            {frame?.decode_request_ids?.map(label).join(", ") || "—"}
+            {" · "}decode input [{frame?.decode_input_shape?.join(", ") ?? "—"}]
+            {" · "}forwards {metric(frame?.model_forward_count_this_tick)}
+          </p>
+          <div className="table-scroll">
+            <table aria-label="Logical cache lengths this iteration">
+              <thead>
+                <tr>
+                  <th>Request</th>
+                  <th>Phase</th>
+                  <th className="numeric">Before</th>
+                  <th className="numeric">After forward</th>
+                  <th>After tick</th>
+                </tr>
+              </thead>
+              <tbody>
+                {frame?.events.map((event) => (
+                  <tr
+                    key={event.request_id}
+                    className={
+                      event.request_id === selected ? "selected-log" : ""
+                    }
+                  >
+                    <td>
+                      <button
+                        className="mono"
+                        aria-label={`Inspect cache ${label(event.request_id)}`}
+                        onClick={() => setSelected(event.request_id)}
+                      >
+                        {label(event.request_id)}
+                      </button>
+                    </td>
+                    <td>
+                      {event.phase === "prefill" ? "PREFILL" : "CACHED DECODE"}
+                    </td>
+                    <td className="numeric">
+                      {metric(event.logical_cache_length_before)}
+                    </td>
+                    <td className="numeric">
+                      {metric(event.logical_cache_length_after)}
+                    </td>
+                    <td>
+                      {frame.completed.includes(event.request_id)
+                        ? "released"
+                        : "retained"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="caption">
+            The selected output is not cached until the next forward. Temporary
+            left padding is masked during collation, then trimmed when rows
+            split. Finished requests release their caches.
+          </p>
+        </section>
+      )}
       <section className="instrument-section">
         <div className="section-title">
           <h2>Request state</h2>
@@ -353,85 +427,88 @@ export function RuntimeView({
           ))}
         </div>
       </section>
-      <section className="instrument-section">
-        <div className="section-title">
-          <h2>Logical KV block allocator</h2>
-          <span className="caption">
-            Block ownership model · not physical tensor paging
-          </span>
-        </div>
-        <div className="allocator-region">
-          <div>
-            {pool ? (
-              <>
-                <div className="allocator-grid">
-                  {Array.from({ length: pool.total_blocks }, (_, block) => {
-                    const owner = Object.entries(
-                      pool.request_block_tables,
-                    ).find(([, blocks]) => blocks.includes(block))?.[0];
-                    return (
-                      <button
-                        className={`block ${owner ? "owned" : "free"} ${owner === selected ? "selected-block" : owner ? "is-dimmed" : ""}`}
-                        key={block}
-                        disabled={!owner}
-                        aria-label={`Pool block ${block}, ${owner ? `owned by ${label(owner)}` : "free"}`}
-                        onClick={() => owner && setSelected(owner)}
-                      >
-                        <span className="block-id">{block}</span>
-                        <span>{owner ? label(owner) : "free"}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-                <p className="mono caption">
-                  {pool.allocated_blocks}/{pool.total_blocks} owned · block=
-                  {pool.block_size} tokens · {metric(pool.utilization * 100, 1)}
-                  % pool utilization
+      {!cached && (
+        <section className="instrument-section">
+          <div className="section-title">
+            <h2>Logical KV block allocator</h2>
+            <span className="caption">
+              Block ownership model · not physical tensor paging
+            </span>
+          </div>
+          <div className="allocator-region">
+            <div>
+              {pool ? (
+                <>
+                  <div className="allocator-grid">
+                    {Array.from({ length: pool.total_blocks }, (_, block) => {
+                      const owner = Object.entries(
+                        pool.request_block_tables,
+                      ).find(([, blocks]) => blocks.includes(block))?.[0];
+                      return (
+                        <button
+                          className={`block ${owner ? "owned" : "free"} ${owner === selected ? "selected-block" : owner ? "is-dimmed" : ""}`}
+                          key={block}
+                          disabled={!owner}
+                          aria-label={`Pool block ${block}, ${owner ? `owned by ${label(owner)}` : "free"}`}
+                          onClick={() => owner && setSelected(owner)}
+                        >
+                          <span className="block-id">{block}</span>
+                          <span>{owner ? label(owner) : "free"}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="mono caption">
+                    {pool.allocated_blocks}/{pool.total_blocks} owned · block=
+                    {pool.block_size} tokens ·{" "}
+                    {metric(pool.utilization * 100, 1)}% pool utilization
+                  </p>
+                </>
+              ) : (
+                <p className="empty-state">
+                  — No logical allocator snapshot available on the live HTTP
+                  path.
                 </p>
-              </>
-            ) : (
-              <p className="empty-state">
-                — No logical allocator snapshot available on the live HTTP path.
-              </p>
-            )}
-          </div>
-          <div>
-            <h3 className="minor-title">
-              {selected
-                ? `${label(selected)} / block table before forward`
-                : "Block table / no request selected"}
-            </h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Logical index</th>
-                  <th className="numeric">Pool block ID</th>
-                  <th>Owner</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ownership.map((block, i) => (
-                  <tr key={block}>
-                    <td className="mono">{i}</td>
-                    <td className="numeric">{block}</td>
-                    <td className="mono">{label(selected)}</td>
-                  </tr>
-                ))}
-                {!ownership.length && (
+              )}
+            </div>
+            <div>
+              <h3 className="minor-title">
+                {selected
+                  ? `${label(selected)} / block table before forward`
+                  : "Block table / no request selected"}
+              </h3>
+              <table>
+                <thead>
                   <tr>
-                    <td colSpan={3}>— No blocks held in this snapshot</td>
+                    <th>Logical index</th>
+                    <th className="numeric">Pool block ID</th>
+                    <th>Owner</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
-            <p className="caption">
-              Request tables and ownership only. No reference counts, shared
-              prefixes, or tensor addresses. HF cache storage is a separate
-              layer.
-            </p>
+                </thead>
+                <tbody>
+                  {ownership.map((block, i) => (
+                    <tr key={block}>
+                      <td className="mono">{i}</td>
+                      <td className="numeric">{block}</td>
+                      <td className="mono">{label(selected)}</td>
+                    </tr>
+                  ))}
+                  {!ownership.length && (
+                    <tr>
+                      <td colSpan={3}>— No blocks held in this snapshot</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              <p className="caption">
+                Request tables and ownership only. No reference counts, shared
+                prefixes, or tensor addresses. HF cache storage is a separate
+                layer.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       <section className="instrument-section">
         <div className="section-title">
           <h2>Selected request / token output</h2>
@@ -511,6 +588,9 @@ export function RuntimeView({
                   : (snapshot?.max_active ?? "—")}{" "}
                 · queue {metric(item.queue_depth)} · complete{" "}
                 {item.completed.map(label).join(", ") || "—"}
+                {cached
+                  ? ` · prefill ${item.prefill_request_ids?.length ?? 0} · cached decode ${item.decode_request_ids?.length ?? 0}`
+                  : ""}
                 {count > 1 ? ` · ×${count}` : ""}
               </span>
             </div>

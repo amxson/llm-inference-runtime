@@ -16,6 +16,9 @@ export interface TokenEvent {
   phase?: "prefill" | "decode";
 }
 export interface TraceEvent {
+  serving_cache?: boolean;
+  logical_cache_length_before?: number;
+  logical_cache_length_after?: number;
   request_id: string;
   token_id: number;
   token_index?: number;
@@ -27,6 +30,14 @@ export interface TraceEvent {
   batch_size: number;
 }
 export interface TraceFrame {
+  serving_cache?: boolean;
+  prefill_request_ids?: string[];
+  decode_request_ids?: string[];
+  prefill_input_shape?: number[] | null;
+  decode_input_shape?: number[] | null;
+  model_forward_count_this_tick?: number;
+  logical_cache_lengths_before?: Record<string, number>;
+  logical_cache_lengths_after?: Record<string, number>;
   tick: number;
   admitted: string[];
   active_request_ids: string[];

@@ -9,6 +9,7 @@ import {
 import { metric } from "../runtime/traceAdapter";
 import { FinalMeasurement } from "./FinalMeasurement";
 import { CacheLengthSweep } from "./CacheLengthSweep";
+import { CachedContinuousBenchmark } from "./CachedContinuousBenchmark";
 
 function Source({ artifact }: { artifact: Artifact }) {
   return (
@@ -237,14 +238,25 @@ export function BenchmarksView() {
       </div>
       {artifacts.find((a) => a.name === "cache_length_sweep_cpu.json") ? (
         <CacheLengthSweep
-          artifact={artifacts.find(
-            (a) => a.name === "cache_length_sweep_cpu.json",
-          )!}
+          artifact={
+            artifacts.find((a) => a.name === "cache_length_sweep_cpu.json")!
+          }
         />
       ) : (
         <p role="alert">
           Controlled cache-length sweep artifact is unavailable.
         </p>
+      )}
+      {artifacts.find(
+        (a) => a.name === "cached_continuous_batching_cpu.json",
+      ) && (
+        <CachedContinuousBenchmark
+          artifact={
+            artifacts.find(
+              (a) => a.name === "cached_continuous_batching_cpu.json",
+            )!
+          }
+        />
       )}
       {artifacts.find((a) => a.name === "final_cpu.json") && (
         <details className="result-details">

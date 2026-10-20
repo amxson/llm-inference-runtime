@@ -77,6 +77,8 @@ def test_equal_length_rows_zero_cancel_and_ownership():
     trace = engine.step()
     assert trace["completed"] == ["C"] and trace["prefill_input_shape"] is None
     assert states[2].model_execution_count == 0 and states[2].kv_cache is None
+    assert states[1].generated_token_ids == cached_greedy_decode(
+        engine.model, engine.tokenizer, "1 2 3", 2)["generated_token_ids"]
     engine.cancel_request("B")
     for state in states:
         engine.forget_request(state.request_id)
@@ -126,3 +128,16 @@ def test_context_boundary_error_and_lifecycle_validation():
     assert failed.stop_reason == "error" and failed.kv_cache is None
     with pytest.raises(ValueError):
         CachedContinuousBatcher(model, tokenizer, 0)
+
+
+def test_waiting_cancel_never_enters_a_model_batch():
+    engine = CachedContinuousBatcher(tiny_gpt2(), TinyTokenizer(), 1)
+    engine.add_request(RequestState("1 2 3", 3, "active"))
+    waiting = RequestState("4 5", 8, "waiting")
+    engine.add_request(waiting)
+    engine.step()
+    engine.cancel_request("waiting")
+    assert waiting.stop_reason == "cancelled" and waiting.kv_cache is None
+    assert waiting.model_execution_count == 0
+    engine.run_until_complete()
+    assert all("waiting" not in frame["model_request_ids"] for frame in engine.trace)

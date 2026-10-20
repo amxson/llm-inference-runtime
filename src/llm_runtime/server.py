@@ -65,7 +65,7 @@ class ServingRuntime:
             "queue_depth": len(self.engine.waiting),
             "batch_size": len(self.engine.active), "max_active": self.engine.max_active,
             "model_forward_count": self.engine.model_forward_count,
-            "last_batch_size": max((e["batch_size"] for e in self.engine.trace[-1]["events"]), default=0) if self.engine.trace else 0,
+            "last_batch_size": self.engine.trace[-1]["events"][-1]["batch_size"] if self.engine.trace and self.engine.trace[-1]["events"] else 0,
             "max_observed_batch_size": max(
                 (e["batch_size"] for item in self.engine.trace for e in item["events"]), default=0),
             "logical_allocator": None,

@@ -8,14 +8,15 @@ import time
 import httpx
 
 
-def check(base, origin):
+def check(base, origin, expected_engine="continuous_cached_greedy"):
     base = base.rstrip("/")
     with httpx.Client(timeout=180) as client:
         health_response = client.get(base + "/health", headers={"Origin":origin})
         health_response.raise_for_status()
         assert "application/json" in health_response.headers.get("content-type", ""), "Health is not JSON"
         health = health_response.json()
-        assert health["status"] == "ok" and health["engine"] == "continuous_uncached_greedy"
+        assert health["status"] == "ok" and health["engine"] == expected_engine
+        assert health["serving_cache"] is (expected_engine == "continuous_cached_greedy")
         cors = {"Origin":origin, "Access-Control-Request-Method":"POST", "Access-Control-Request-Headers":"content-type"}
         preflight = client.options(base + "/generate/stream", headers=cors)
         preflight.raise_for_status()
@@ -47,7 +48,7 @@ def check(base, origin):
         snapshot_response=client.get(base+"/runtime/snapshot",headers={"Origin":origin})
         snapshot_response.raise_for_status()
         snapshot=snapshot_response.json()
-        assert snapshot["engine"]==health["engine"] and snapshot["serving_cache"] is False
+        assert snapshot["engine"]==health["engine"] and snapshot["serving_cache"] is health["serving_cache"]
         return {"utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),"backend_url":base,
                 "health_url":base+"/health","health":health,"allowed_origin":origin,
                 "cors_preflight_status":preflight.status_code,"untrusted_origin_preflight_status":denied.status_code,
@@ -61,8 +62,9 @@ if __name__=="__main__":
     parser.add_argument("--base-url",required=True)
     parser.add_argument("--origin",required=True)
     parser.add_argument("--output",type=Path,required=True)
+    parser.add_argument("--expected-engine", choices=["continuous_cached_greedy", "continuous_uncached_greedy"], default="continuous_cached_greedy")
     args=parser.parse_args()
-    result=check(args.base_url,args.origin)
+    result=check(args.base_url,args.origin,args.expected_engine)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+"\n",encoding="utf8")
     print(json.dumps({key:result[key] for key in ("backend_url","health","token_events","done_events","error_events","generated_text")},indent=2))

@@ -38,41 +38,48 @@ export function ArchitectureView() {
       </div>
       <p className="caption">
         Live requires a connected Python runtime and observes worker-boundary
-        snapshots/SSE arrivals. Replay is an engine-generated recording with
-        logical ownership. Replay and benchmark assets are static; Live uses the
+        snapshots/SSE arrivals. Replay is an engine-generated cached execution
+        recording. Replay and benchmark assets are static; Live uses the
         connected Python API. No fresh benchmarks run in the browser; the
         harness separately measures local selection time and network arrival
         time.
       </p>
       <section className="instrument-section">
         <div className="section-title">
-          <h2>Live HTTP / uncached continuous greedy</h2>
-          <span className="caption">The Playground path</span>
+          <h2>Live HTTP / cached continuous greedy</h2>
+          <span className="caption">
+            Default local path · Live status reports the configured engine
+          </span>
         </div>
         <Pipeline
-          label="Live uncached HTTP data path"
+          label="Live cached HTTP data path"
           nodes={[
             { title: "HTTP request", detail: "prompt + budget" },
-            { title: "Request state", detail: "RequestState" },
-            { title: "FIFO admission", detail: "ContinuousBatcher" },
-            { title: "Collate / forward", detail: "batch_step · cache=False" },
-            { title: "Select token", detail: "logits → argmax" },
-            { title: "State update", detail: "record_token" },
-            { title: "Stream token", detail: "SSE token / done" },
+            { title: "FIFO admission", detail: "CachedContinuousBatcher" },
+            { title: "Prompt prefill", detail: "masks + logical positions" },
+            { title: "Request-local KV", detail: "compact DynamicCache" },
+            { title: "Cache collation", detail: "left pad + mask" },
+            {
+              title: "Batched one-token decode",
+              detail: "[B, 1] · cache=True",
+            },
+            { title: "Cache split / update", detail: "trim padding + select" },
+            { title: "SSE / completion", detail: "retain or release KV" },
           ]}
         />
         <p className="caption">
           Repeat a shared model forward for unfinished rows; admit waiting
-          requests when slots become free. Full contexts are recollated each
-          tick. Completion/cancellation releases the row and client history.
+          requests when slots become free. Each tick has at most one prefill
+          batch and one cached decode batch; one selected token per request.
+          Completion/cancellation releases the row and client history.
         </p>
         <div className="architecture-notes">
           <div>
             <h3>Prefill vs decode</h3>
             <p>
               Prefill processes a newly admitted prompt. Decode predicts
-              continuation tokens. Here, both recompute full contexts—the
-              serving path does not retain K/V.
+              continuation tokens using only the newest input plus prior K/V.
+              Position IDs follow logical history, not synthetic cache padding.
             </p>
           </div>
           <div>
@@ -92,6 +99,26 @@ export function ArchitectureView() {
             </p>
           </div>
         </div>
+      </section>
+      <section className="instrument-section">
+        <h2>Uncached reference / explicit alternative</h2>
+        <Pipeline
+          label="Live uncached HTTP data path"
+          nodes={[
+            { title: "HTTP request", detail: "continuous_uncached_greedy" },
+            { title: "FIFO admission", detail: "ContinuousBatcher" },
+            {
+              title: "Full-context collation",
+              detail: "batch_step · cache=False",
+            },
+            { title: "Select / complete", detail: "argmax + SSE" },
+          ]}
+        />
+        <p className="caption">
+          Retained as the correctness reference and benchmark baseline. Backend
+          health/snapshot report the actual selected engine; the public demo
+          keeps its own capacity limit.
+        </p>
       </section>
       <section className="instrument-section">
         <div className="section-title">
@@ -156,7 +183,10 @@ export function ArchitectureView() {
             <tr>
               <td>Static / continuous batching</td>
               <td>Left padding, masks/positions and independent stopping</td>
-              <td>No combined variable-length HF cache</td>
+              <td>
+                Cached path copies padded K/V then splits compact rows; not
+                physical paging
+              </td>
             </tr>
             <tr>
               <td>Logical block allocator</td>

@@ -40,6 +40,40 @@ export function parseTraceFrames(value: unknown): TraceFrame[] {
       !strings(frame.waiting_request_ids)
     )
       throw new Error("Invalid waiting IDs.");
+    if (frame.serving_cache === true) {
+      for (const phase of ["prefill", "decode"]) {
+        const ids = frame[phase + "_request_ids"];
+        const shape = frame[phase + "_input_shape"];
+        if (
+          !strings(ids) ||
+          (Array.isArray(ids) && ids.length > 0
+            ? !Array.isArray(shape) ||
+              shape.length !== 2 ||
+              !shape.every(Number.isInteger) ||
+              shape[0] !== ids.length ||
+              Number(shape[1]) < 1 ||
+              (phase === "decode" && shape[1] !== 1)
+            : shape !== null)
+        )
+          throw new Error("Invalid cached batch shape.");
+      }
+      for (const rawEvent of frame.events) {
+        const event = record(rawEvent);
+        const before = event.logical_cache_length_before;
+        const after = event.logical_cache_length_after;
+        if (
+          !Number.isInteger(before) ||
+          !Number.isInteger(after) ||
+          Number(before) < 0 ||
+          after !== event.logical_context_length ||
+          (event.phase === "decode" &&
+            (event.model_input_width !== 1 ||
+              Number(after) !== Number(before) + 1)) ||
+          (event.phase === "prefill" && before !== 0)
+        )
+          throw new Error("Invalid logical cache length.");
+      }
+    }
     for (const key of [
       "logical_kv_before_forward",
       "logical_kv_after_completion",

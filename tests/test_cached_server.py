@@ -132,3 +132,20 @@ def test_engine_configuration_cached_default_zero_error_and_context(monkeypatch)
         assert client.get("/health").json()["serving_cache"] is True
     with pytest.raises(ValueError, match="Unknown engine"):
         create_app(engine="invented")
+
+
+def test_published_batch_size_is_last_actual_forward_not_sum_or_tick_maximum():
+    runtime = ServingRuntime(tiny_gpt2(), TinyTokenizer(), max_active=4, engine="continuous_cached_greedy")
+    from llm_runtime.request import RequestState
+    runtime.engine.add_request(RequestState("1 2 3", 5, "old"))
+    runtime.engine.step()
+    for name in ("B", "C", "D"):
+        runtime.engine.add_request(RequestState("4 5", 5, name))
+    trace = runtime.engine.step()
+    assert trace["prefill_input_shape"] == [3, 2] and trace["decode_input_shape"] == [1, 1]
+    runtime._publish()
+    assert runtime.snapshot()["last_batch_size"] == 1
+    assert runtime.snapshot()["max_observed_batch_size"] == 3
+    assert runtime.snapshot()["model_forward_count"] == 3
+    for name in list(runtime.engine.requests):
+        runtime.engine.cancel_request(name)

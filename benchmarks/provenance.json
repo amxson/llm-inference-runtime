@@ -6,6 +6,12 @@
     "source_sha256": "e910f27b49c38ceb9b4bca18de9461f11a50c9216cdca592d399a8058b24d209"
   },
   {
+    "name": "cached_continuous_batching_cpu.json",
+    "source": "benchmarks/results/cached_continuous_batching_cpu.json",
+    "source_commit": "892827a9535aeec7e4778ff1a9e0e6367bfd74ab",
+    "source_sha256": "751bad50ed108be6e8be583eb6a579d6f54c7f155f40d41e7c3e1c1f1048fde9"
+  },
+  {
     "name": "final_cpu.json",
     "source": "benchmarks/results/final_cpu.json",
     "source_commit": "173025c01468e74d24865f96aaca152a394cb550",
