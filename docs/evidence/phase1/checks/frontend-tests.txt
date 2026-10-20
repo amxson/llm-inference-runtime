@@ -11,4 +11,3 @@ Derived 8 benchmark artifacts from Git-tracked JSON
       Tests  33 passed (33)
    Start at  18:10:32
    Duration  11.95s (transform 2.67s, setup 6.52s, import 3.48s, tests 12.11s, environment 22.03s)
-

@@ -8,6 +8,8 @@ Local `main`, fetched `origin/main` and the observed GitHub main started at `fa3
 
 The first six normal commits are `96da844` (server), `116753c` (harness/tests), `8981ae2` (real artifact), `44e07d2` (UI), `4104516` (methods/provenance) and `ad57089` (README). This verification record is the seventh commit. No old commit, timestamp or history was rewritten.
 
+The seventh commit is `06bb1e7`. One additional normal verification-only commit records the public deployment below and removes blank lines at EOF in two generated logs. It does not amend the seven commits or change application code. The earlier whitespace check ran before those untracked logs were staged; the final full-range whitespace check includes them after normalization.
+
 ## Server
 
 `ServingRuntime._publish()` now captures the health counters between forwards. `/health` reads `snapshot()`, not the inference thread's live trace. The existing bounded engine-history scope for maximum batch size is retained. No lock or second synchronization scheme was added.
@@ -57,3 +59,15 @@ README decreased from 267 to 108 lines. CLI/API reference moved into architectur
 The desktop browser connection reported an unavailable native pipe. The bundled headless Edge runtime provided the fresh browser review instead; no permissions/settings were changed. An unrelated ancestor-folder Node 20 installation shadowed Node 24 inside npm scripts. Verification used Node 24.19.0/npm 11 with a local ignored executable link in `frontend/node_modules/.bin`, without changing the ancestor/system installation. An initial wrong-directory test attempt produced only a regenerable Vitest cache; cleanup was blocked by host policy, so that precise generated cache is ignored, not published. The missing default favicon produced a real browser 404; an empty favicon declaration removes that unnecessary request without changing the UI or masking API errors. Final records above are passing reruns, not those failed initial attempts.
 
 The owner authorized updating the existing public Vercel project after the seventh push. The deployment uses a tracked-source archive and existing environment/project settings, with no paid infrastructure change. Public post-push validation is a separate step from these local records: local screenshots and successful builds do **not** by themselves certify a live public Playground. The task handoff must report the actual deployed health/browser/SSE result separately.
+
+## Public deployment — verified after the seventh push
+
+[Deployment record](public/deployment.json): canonical <https://llm-inference-runtime.vercel.app>, deployed application commit `06bb1e7`. The verification-only follow-up does not change its application code. Active Hobby plan and production API/CORS/large-function keys were checked; no paid host, plan change or local tunnel was created. Only a tracked-source archive was uploaded.
+
+- [Actual public health/CORS/SSE](public/health-sse.json): `/api/health` returned JSON `ok`, distilgpt2 CPU, uncached greedy engine, max_active 1. Exact production-origin preflight passed; untrusted origin received no allow-origin header. Eight real token events, one done, zero errors; IDs match completion.
+- [Actual public Playground browser](public/playground-browser.json): clicked Run on the deployed UI with the France prompt and budget eight. Output was visible while status was still `running`, then completed; top status returned to `idle` with `distilgpt2 · cpu · max_batch=1`. Zero console errors and failed requests; snapshot and stream requests returned 200. SSE had eight contiguous token indexes and one done. CDP chunk timestamps and a cloned real fetch response retain the transcript without changing the original response consumed by React. This instrumentation is functional evidence, not benchmark timing.
+- Generated continuation: ` the capital of the French Republic. The`. [Screenshot](public/playground-done.png).
+- Replay request selection, next-step and play/pause worked with `/api/*` blocked. It issued zero API requests. [Screenshot](public/replay-api-blocked.png).
+- [Public Benchmarks review](public/benchmarks/results.json) at 1440/1024/768: primary sweep visible, historical anomaly retained, no document overflow, console errors, failed requests or API polling. [1440](public/benchmarks/benchmarks-1440.png) · [1024](public/benchmarks/benchmarks-1024.png) · [768](public/benchmarks/benchmarks-768.png). The public raw sweep hash matches the committed JSON.
+
+These checks resolve the earlier public browser signoff gap for the tested path. They do not certify production capacity, global replica metrics, every cancellation race or all browser/platform combinations. No Phase 2 work was started.

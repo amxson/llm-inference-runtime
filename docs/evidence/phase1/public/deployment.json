@@ -1,0 +1,22 @@
+{
+  "application_commit": "06bb1e7a405f718726d304352373160fab6166cf",
+  "deployment_id": "dpl_HNMBEfwdkgBj9uFtjpFCt8t9cb2A",
+  "deployment_url": "https://llm-inference-runtime-imas0nl5m-amxsons-projects.vercel.app",
+  "canonical_url": "https://llm-inference-runtime.vercel.app",
+  "backend_url": "https://llm-inference-runtime.vercel.app/api",
+  "health_url": "https://llm-inference-runtime.vercel.app/api/health",
+  "state": "READY",
+  "plan_verified": "Hobby, active",
+  "paid_infrastructure_or_plan_change": false,
+  "upload_scope": "git archive of application_commit; unrelated untracked work and local credentials were not included",
+  "production_api_base_verified": "https://llm-inference-runtime.vercel.app/api",
+  "production_environment_keys_present": ["VITE_API_BASE_URL", "LLM_RUNTIME_CORS_ORIGINS", "VERCEL_SUPPORT_LARGE_FUNCTIONS"],
+  "javascript_asset": "/assets/index-Lccu5Mbn.js",
+  "public_raw_sweep_sha256": "e910f27b49c38ceb9b4bca18de9461f11a50c9216cdca592d399a8058b24d209",
+  "public_raw_sweep_matches_committed_artifact": true,
+  "function_compressed_mb_reported_by_cli": 332.29,
+  "health_cors_real_sse": "health-sse.json",
+  "public_playground_browser": "playground-browser.json",
+  "public_benchmark_browser": "benchmarks/results.json",
+  "scope": "Actual public deployment, health, inference, browser streaming/status/console/network and backend-independent Replay verified. Functional checks, not a new network benchmark. The subsequent verification-only commit does not change deployed application code."
+}

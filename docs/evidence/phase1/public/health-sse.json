@@ -1,0 +1,180 @@
+{
+  "utc": "2026-10-20T15:16:14.945903+00:00",
+  "backend_url": "https://llm-inference-runtime.vercel.app/api",
+  "health_url": "https://llm-inference-runtime.vercel.app/api/health",
+  "health": {
+    "status": "ok",
+    "model": "distilgpt2",
+    "device": "cpu",
+    "engine": "continuous_uncached_greedy",
+    "max_active": 1,
+    "model_forward_calls": 0,
+    "last_batch_size": 0,
+    "max_observed_batch_size": 0
+  },
+  "allowed_origin": "https://llm-inference-runtime.vercel.app",
+  "cors_preflight_status": 200,
+  "untrusted_origin_preflight_status": 400,
+  "request": {
+    "prompt": "The capital of France is",
+    "max_new_tokens": 8
+  },
+  "events": [
+    {
+      "event": "token",
+      "arrival_ms": 472.05,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 262,
+        "token_index": 1,
+        "token_text": " the",
+        "generated_text": " the",
+        "tick": 1,
+        "phase": "prefill"
+      }
+    },
+    {
+      "event": "token",
+      "arrival_ms": 472.273,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 3139,
+        "token_index": 2,
+        "token_text": " capital",
+        "generated_text": " the capital",
+        "tick": 2,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "arrival_ms": 521.692,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 286,
+        "token_index": 3,
+        "token_text": " of",
+        "generated_text": " the capital of",
+        "tick": 3,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "arrival_ms": 626.609,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 262,
+        "token_index": 4,
+        "token_text": " the",
+        "generated_text": " the capital of the",
+        "tick": 4,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "arrival_ms": 637.826,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 4141,
+        "token_index": 5,
+        "token_text": " French",
+        "generated_text": " the capital of the French",
+        "tick": 5,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "arrival_ms": 759.97,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 2066,
+        "token_index": 6,
+        "token_text": " Republic",
+        "generated_text": " the capital of the French Republic",
+        "tick": 6,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "arrival_ms": 969.112,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 13,
+        "token_index": 7,
+        "token_text": ".",
+        "generated_text": " the capital of the French Republic.",
+        "tick": 7,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "arrival_ms": 969.68,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "token_id": 383,
+        "token_index": 8,
+        "token_text": " The",
+        "generated_text": " the capital of the French Republic. The",
+        "tick": 8,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "done",
+      "arrival_ms": 969.796,
+      "data": {
+        "request_id": "04e7259daa1041bfb7a9c16fc3614de2",
+        "prompt": "The capital of France is",
+        "status": "finished",
+        "prompt_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318
+        ],
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383
+        ],
+        "full_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383
+        ],
+        "generated_text": " the capital of the French Republic. The",
+        "full_text": "The capital of France is the capital of the French Republic. The",
+        "generated_token_count": 8,
+        "model_execution_count": 8,
+        "stop_reason": "max_new_tokens"
+      }
+    }
+  ],
+  "token_events": 8,
+  "done_events": 1,
+  "error_events": 0,
+  "generated_text": " the capital of the French Republic. The",
+  "snapshot_engine": "continuous_uncached_greedy",
+  "scope": "Real public HTTP check. Browser Playground/console/network signoff is separate."
+}

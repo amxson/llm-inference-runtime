@@ -1,5 +1,7 @@
 # Finalization evidence — browser verification pending
 
+Historical record: the browser limitation below describes the earlier finalization session. **20 October update:** the public browser gap was subsequently checked with headless Edge after Phase 1 deployment; see [current public verification](../phase1/INDEX.md#public-deployment--verified-after-the-seventh-push). The old measurements/screenshots below are retained rather than relabeled as current.
+
 Production: [LLM Inference Runtime](https://llm-inference-runtime.vercel.app/#/runtime).
 
 Static-only application revision before backend deployment: `85365edfca78665068d16bd5f653ac719555e518`. Main implementation/measurement commit: `173025c01468e74d24865f96aaca152a394cb550`. The measured runtime baseline was `ffdd08c`; raw measurement source revision identifies that baseline, not a claim that the new harness existed in its parent commit. The subsequent public API change is documented in [public runtime deployment](../../public-runtime.md).
