@@ -30,6 +30,8 @@ There is deliberately **no KV-cache node between this HTTP model and logits**: `
 
 Disconnect cleanup enqueues cancellation, so it cannot change a row while its shared forward runs. Completion sends a small result and forgets engine history; endpoint cleanup releases its channel. Shared-forward failure sends sanitized error/done events and releases active history without terminating the worker. These limits are not a production flow-control system: token channels are buffered, with no delivery acknowledgment, durable queue, authentication or multi-worker coordination.
 
+Health and runtime telemetry read the same published completed-worker boundary, not the inference thread's live trace. `_publish()` captures forward count and last/maximum batch sizes between forwards; `/health` takes those fields from `snapshot()`. The maximum retains the existing bounded engine-history scope (last 1,024 ticks), not an unbounded lifetime maximum. No additional lock or second ownership system is needed. Worker failures use standard exception logging with traceback while HTTP/SSE clients retain generic errors.
+
 ## Cached single-request/scheduler data path
 
 ```mermaid
@@ -111,3 +113,48 @@ Local benchmark CLIs measure token selection availability; the server CLI measur
 | Measurements/aggregation | `benchmark_*.py`, `benchmarks/results/*.json` |
 
 Connecting uncached batching to real ragged cached storage requires another design/correctness milestone, not a documentation rename.
+
+## CLI and API reference
+
+These examples were moved from the landing page. Run from the repository root after installing `.[server,test]`; use a new scratch output path for measurements. Model commands use the Hugging Face cache outside this repository. All CLI modules support `--help` without loading weights.
+
+```powershell
+python -m llm_runtime.model_loader distilgpt2 --device cpu
+python -m llm_runtime.forward_inspect --device cpu --prompt "The capital of France is"
+python -m llm_runtime.greedy_decode --device cpu --max-new-tokens 10
+python -m llm_runtime.sample_decode --device cpu --temperature 0.8 --top-k 40 --top-p 0.95 --seed 42 --max-new-tokens 10
+python -m llm_runtime.cached_decode --device cpu --max-new-tokens 10
+python -m llm_runtime.speculative_decode --device cpu --max-new-tokens 10 --draft-tokens 3
+```
+
+Forward inspection reports token pieces/IDs, tensor shapes, logits and final-position candidates without generating a continuation. Sampling applies temperature → top-k → top-p → softmax → multinomial. Temperature must be positive/finite (use greedy rather than zero). Top-k retains exactly k candidates, clamped to vocabulary; top-p retains the threshold-crossing token. A seed initializes a local device-specific generator, not global randomness; cross-version/device reproducibility is not promised.
+
+| Local endpoint | Behavior |
+| --- | --- |
+| `GET /health` | Model/device/capacity and published forward/batch counters |
+| `GET /runtime/snapshot` | Bounded completed-boundary traces and request summaries |
+| `POST /generate` | Final IDs/text/stop reason |
+| `POST /generate/stream` | Live SSE `token` then `done`; failure emits `error` then `done` |
+
+Request JSON accepts only `prompt` (non-whitespace, up to 4,096 characters) and `max_new_tokens` (0–128, default 10). Context budget is checked before streaming headers. Sampling fields and unknown fields are rejected. This API is greedy/uncached and is not OpenAI-compatible. Zero-token streams emit only `done`, with no forward or TTFT. Token events contain IDs, individual text and the decoded generated prefix; use the prefix/final text for Unicode safety because token fragments need not concatenate correctly.
+
+```powershell
+$body = @{prompt="The capital of France is"; max_new_tokens=4} | ConvertTo-Json -Compress
+Invoke-RestMethod http://127.0.0.1:8765/health
+Invoke-RestMethod http://127.0.0.1:8765/generate -Method Post -ContentType "application/json" -Body $body
+$body | curl.exe -N http://127.0.0.1:8765/generate/stream -H "Content-Type: application/json" --data-binary "@-"
+```
+
+Historical benchmark reproduction commands (keep new measurements separate from committed results):
+
+```powershell
+python -m llm_runtime.benchmark_naive --device cpu --max-new-tokens 10 --warmup-runs 1 --runs 3 --output benchmark_results/naive.json
+python -m llm_runtime.benchmark_cache --device cpu --max-new-tokens 10 --warmup-runs 1 --runs 3 --output benchmark_results/cache.json
+python -m llm_runtime.benchmark_quantization --max-new-tokens 10 --warmup-runs 1 --runs 3 --output benchmark_results/quantization.json
+python -m llm_runtime.benchmark_speculative --max-new-tokens 10 --draft-tokens 3 --warmup-runs 1 --runs 3 --output benchmark_results/speculative.json
+# With the local server already running:
+python -m llm_runtime.benchmark_server --url http://127.0.0.1:8765 --concurrency 1 2 4 --requests 16 --max-new-tokens 4 --warmup-runs 1 --output benchmark_results/serving.json
+python -m llm_runtime.benchmark_summary
+```
+
+Base dependencies are torch and transformers; test extras add pytest/HTTPX and server extras add FastAPI/Uvicorn/HTTPX. Bounds are not a lockfile. First model load can take time/disk space; successful unauthenticated-Hub or Windows symlink warnings do not imply an inference error. Existing Starlette/HTTPX and quantization deprecation warnings remain visible. See the [UI guide](portfolio-ui.md) for frontend versions and [postmortem](postmortem.md) for experimental tradeoffs.

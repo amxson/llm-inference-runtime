@@ -9,6 +9,7 @@ ENGINE_COMMIT = "dc0f276be63a29fa9a929d3ba39dc864cd29373f"
 BENCHMARK_FILES = (
     "m5_naive_cpu.json", "m7_cached_vs_uncached_cpu.json", "m13_serving_cpu.json",
     "m15_quantization_cpu.json", "m16_speculative_cpu.json", "m17_summary.json", "final_cpu.json",
+    "cache_length_sweep_cpu.json",
 )
 
 

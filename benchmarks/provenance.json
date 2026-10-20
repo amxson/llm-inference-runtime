@@ -1,5 +1,11 @@
 [
   {
+    "name": "cache_length_sweep_cpu.json",
+    "source": "benchmarks/results/cache_length_sweep_cpu.json",
+    "source_commit": "8981ae24183bb59d1ae1cf1a9935f2b05262ec03",
+    "source_sha256": "e910f27b49c38ceb9b4bca18de9461f11a50c9216cdca592d399a8058b24d209"
+  },
+  {
     "name": "final_cpu.json",
     "source": "benchmarks/results/final_cpu.json",
     "source_commit": "173025c01468e74d24865f96aaca152a394cb550",

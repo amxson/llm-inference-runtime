@@ -12,6 +12,8 @@ The historical [M7 paired cache experiment](../benchmarks/results/m7_cached_vs_u
 
 Positions are not FLOPs; this is one CPU workload, not a universal speedup. Historical M5 had a different measured baseline and was not M7's denominator. Cache memory grows and attention still reads prior states.
 
+The 95 → 14 count is not a prediction of a 6.79× latency ratio. M7's five-token prompt and ten-token continuation are tiny, and distilgpt2 is small. Both paths still execute ten Python/model calls and do prompt prefill. Cached attention reads the earlier K/V on every decode step even though projection inputs shrink to one position. Input positions do not count the different operations inside a forward, including the growing attention read. Fixed call costs and those retained operations need not scale with the position count. Their individual contributions were not measured; CPU timing also says nothing about GPU kernel behavior. The [32/128/512 length sweep](finalization.md#cache-length-sweep) tests the longer-workload question directly rather than assigning an unmeasured cause to M7's timing.
+
 [M13](../benchmarks/results/m13_serving_cpu.json) established actual multi-client network serving: all 48 requests succeeded with matching IDs. Maximum observed batches were 1/2/4, with 64/40/21 shared forwards in the measured levels. This demonstrates sharing forwards, not a clean causal estimate for the whole throughput difference.
 
 ## What did not improve, or traded away something
@@ -21,6 +23,8 @@ Positions are not FLOPs; this is one CPU workload, not a universal speedup. Hist
 It quantized 24 attention/MLP projections, not the whole model. Embeddings, layer norms and tied output head stayed FP32. Payload excludes backend packing/qparams/activations/cache and is not RSS; both models stayed resident. Load and copy/adapter/probe/quantization setup were separate. Legacy PyTorch worked on installed `onednn` but emitted deprecation warnings. This is an experiment, not a durable universal quantization backend.
 
 [M16 speculation](../benchmarks/results/m16_speculative_cpu.json) retained exact ordinary greedy IDs but mean latency **increased 375.235 -> 517.977 ms** (38.04%). Tiny-gpt2 proposed 27 tokens/request and accepted **zero**; ten target verifications remained plus 27 draft forwards. A compatible small draft need not be a useful predictor. Drafting/extra verification positions had costs without saved target calls. Synthetic tests demonstrate acceptance/bonus correctness; they are not real-model speed evidence.
+
+The recorded draft/verify experiment checks the implementation and parity behavior; it did not demonstrate acceleration. Zero acceptance is observed on this workload. The artifact does not isolate why that draft produced those proposals, so no claim about model alignment is inferred from it. The original setup used a shared target tokenizer after checking the complete token mapping and core tokenization rules; compatibility alone cannot predict acceptance.
 
 M14 demonstrates capacity/ownership/reuse, not physical savings. Calling it paged attention or treating its utilization as GPU memory utilization would be misleading.
 

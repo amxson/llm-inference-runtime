@@ -13,3 +13,21 @@ models
 checkpoints
 .cache
 .huggingface
+
+# Generated/local artifacts; builds regenerate benchmark mirrors from sources.
+.vercel
+venv
+frontend/public/data
+docs/evidence
+*.safetensors
+*.gguf
+pytorch_model*.bin
+
+# Unrelated local work present before Phase 1. Do not inspect or publish it.
+abel_coursework_final/
+alternative_rdbms_solution/
+coursework_submission/
+mysql_download_page.html
+rdbms_runtime_review_20261019/
+rdbms_submission_review_20261019/
+rdbms_trigger_revision_20261019/
