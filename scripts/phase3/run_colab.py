@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import threading
@@ -76,12 +77,17 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--env-root", type=Path, required=True)
     parser.add_argument("--through", choices=("setup", "correctness", "smoke", "all"), default="all")
+    parser.add_argument("--execution-policy", choices=("fp16-sdpa", "fp32-math"), default="fp32-math")
+    parser.add_argument("--model-revision", default="060db6499f32faf8b98477b0a26969ef7d8b9987")
     args = parser.parse_args()
     if sys.platform != "linux" or args.output.exists() or args.env_root.exists():
         parser.error("Use Linux and fresh output/environment paths. Prior attempts are never overwritten.")
+    if not re.fullmatch(r"[0-9a-f]{40}", args.model_revision):
+        parser.error("Use an immutable full checkpoint revision SHA")
     provenance = source_provenance()
     args.output.mkdir(parents=True)
-    status = {"status": "running", "started_at_utc": utc_now(), "through": args.through, **provenance}
+    status = {"status": "running", "started_at_utc": utc_now(), "through": args.through,
+              "execution_policy": args.execution_policy, "model_revision": args.model_revision, **provenance}
     runtime_python = args.env_root / "runtime/bin/python"
     vllm_python = args.env_root / "vllm/bin/python"
     stage = "initialization"
@@ -101,6 +107,9 @@ def main():
         verify_resolution(args.output / "setup")
         stage = "3/7: install isolated stacks and verify FP16 CUDA"
         execute([*setup, "--install"], "setup-install.txt", stage)
+        if args.execution_policy == "fp32-math":
+            execute([vllm_python, "scripts/phase3/preflight.py", "--check-fp32-triton", "--output",
+                     args.output / "fp32-vllm-preflight.json"], "fp32-vllm-preflight.txt", "Check FP32 CUDA/backend declarations")
         execute([vllm_python, "-m", "vllm.entrypoints.openai.api_server", "--help"],
                 "vllm-server-help.txt", "Check vLLM CLI")
         if args.through != "setup":
@@ -109,14 +118,13 @@ def main():
             execute([runtime_python, "-m", "compileall", "-q", "src", "scripts", "tests"],
                     "compileall.txt", "Compile source/tests")
             execute(["git", "diff", "--check"], "git-diff-check.txt", "Check source whitespace")
-            stage = "5/7: real Qwen FP16 GPU correctness and HTTP/SSE"
-            code = ("from huggingface_hub import HfApi; import json,sys; "
-                    "d={'model':'Qwen/Qwen2.5-0.5B','revision':HfApi().model_info('Qwen/Qwen2.5-0.5B').sha}; "
-                    "f=open(sys.argv[1],'x'); json.dump(d,f,indent=2); f.close(); print(json.dumps(d))")
-            execute([runtime_python, "-c", code, args.output / "model.json"], "model-resolution.txt", "Pin model revision")
-            model = json.loads((args.output / "model.json").read_text())
+            stage = f"5/7: real Qwen {args.execution_policy} GPU correctness and HTTP/SSE"
+            model = {"model": "Qwen/Qwen2.5-0.5B", "revision": args.model_revision}
+            save_json(args.output / "model.json", model)
+            print(f"Pinned checkpoint: {model}", flush=True)
             execute([runtime_python, "scripts/phase3/correctness.py", "--model", model["model"],
-                     "--revision", model["revision"], "--concurrencies", "1", "2", "4",
+                     "--revision", model["revision"], "--execution-policy", args.execution_policy,
+                     "--concurrencies", "1", "2", "4",
                      "--output", args.output / "correctness.json"], "correctness.txt", stage)
             if args.through != "correctness":
                 command = [runtime_python, "scripts/phase3/benchmark.py", "--correctness", args.output / "correctness.json",

@@ -1,6 +1,6 @@
 # Phase 3: authorized Colab T4 execution
 
-Status: **preparation only; GPU correctness and performance are not yet verified**.
+Status: **native FP32 T4 correctness and two-engine smoke verified; full comparison under review**.
 Prefer [the single-cell launcher](phase3-colab-one-cell.md) for numbered live
 progress and automatic failure-log export. The seven manual cells below remain
 available for inspecting and running each stage separately.
@@ -18,7 +18,11 @@ facts until the cells collect them. `nvidia-smi`'s CUDA version is the driver's
 supported version, not necessarily the installed toolkit or PyTorch runtime.
 The workflow records all three separately, including `nvcc --version`.
 
-Use FP16, not native BF16 on this Turing GPU. The reviewed baseline is
+The original FP16 profile failed strict internal token parity. On 2026-10-21
+Amar approved FP32 for **both** engines; native BF16 is not the T4 target.
+The failed profiles remain preserved, not relabelled as passes. See the
+[precision decision and existing-environment continuation](phase3-fp32-comparison.md).
+The canonical fresh-run cells below now use `fp32-math`. The reviewed baseline is
 vLLM **0.17.1**: its published requirements pin Torch 2.10.0, FlashInfer 0.6.4
 and Transformers `<5`. This repository uses Transformers 5.17.0. Therefore:
 
@@ -28,13 +32,13 @@ and Transformers `<5`. This repository uses Transformers 5.17.0. Therefore:
 | New runtime venv | 2.10.0+cu129 | 5.17.0 | project tests, Qwen and client |
 | New vLLM venv | 2.10.0+cu129 | 4.57.6 | unmodified vLLM 0.17.1 server |
 
-This is a deliberate older stable baseline with explicitly documented T4
-FlashInfer support, not a claim about the latest vLLM release. Both engines
-use the same CUDA/Torch wheels, FP16, checkpoint commit and prompt token IDs.
+This is a deliberate pinned baseline, not a claim about the latest vLLM release.
+Both engines use the same CUDA/Torch wheels, native FP32 checkpoint values,
+immutable checkpoint commit and prompt token IDs.
 Driver backward compatibility is expected, but **not proof of a working
 installation**. Resolution, `pip check`, real CUDA matmul, model correctness,
-and the two-server smoke run are separate gates. FlashInfer may compile
-kernels at startup: if toolkit/JIT compatibility fails, return the logs.
+and the two-server smoke run are separate gates. FP32 uses math-only SDPA in
+our runtime, and unmodified vLLM TRITON_ATTN with `--enforce-eager`.
 Do not replace system CUDA, build vLLM from source or patch its implementation.
 
 Child processes preserve the inherited `LD_LIBRARY_PATH`, including Colab's
@@ -147,6 +151,8 @@ the subsequent vLLM server/JIT will work.
 run_logged([sys.executable, 'scripts/phase3/setup_colab.py', '--env-root', ENVS,
             '--output', RUN / 'setup', '--install'], 'setup-install.txt')
 run_logged([VPY, '-m', 'vllm.entrypoints.openai.api_server', '--help'], 'vllm-server-help.txt')
+run_logged([VPY, 'scripts/phase3/preflight.py', '--check-fp32-triton',
+            '--output', RUN / 'fp32-vllm-preflight.json'], 'fp32-vllm-preflight.txt')
 run_logged([RPY, '-m', 'pytest', '-q'], 'python-tests.txt')
 run_logged([RPY, '-m', 'compileall', '-q', 'src', 'scripts', 'tests'], 'compileall.txt')
 run_logged(['git', 'diff', '--check'], 'git-diff-check.txt')
@@ -160,21 +166,19 @@ versions are recorded. The gate covers finite full logits, uncached manual
 greedy, request-local cache, equal/ragged batches, changing cohorts, zero
 budget, test-only forced EOS, ordinary HTTP and genuine TCP SSE. The main
 24-request workload uses the full 32/64/128 budgets for cached parity at 1/2/4.
-An FP16 batch-shape rounding divergence is a failure to investigate, not a
-license to relax internal exact parity or switch to FP32 silently.
+The FP32 policy is the explicitly approved precision exception, not a relaxed
+parity check. Both engines load the original checkpoint directly as FP32;
+diagnostic FP16-to-FP32 promotion reports cannot authorize measurement.
 
 ```python
-resolved = subprocess.check_output([
-    str(RPY), '-c',
-    "from huggingface_hub import HfApi; import json; "
-    "print(json.dumps({'model':'Qwen/Qwen2.5-0.5B', 'revision':HfApi().model_info('Qwen/Qwen2.5-0.5B').sha}))"
-], cwd=ROOT, env=ENV, text=True)
-MODEL = json.loads(resolved)
+MODEL = {'model': 'Qwen/Qwen2.5-0.5B',
+         'revision': '060db6499f32faf8b98477b0a26969ef7d8b9987'}
 with (RUN / 'model.json').open('x') as f:
     json.dump(MODEL, f, indent=2)
 print(MODEL)
 run_logged([RPY, 'scripts/phase3/correctness.py', '--model', MODEL['model'],
-            '--revision', MODEL['revision'], '--concurrencies', '1', '2', '4',
+            '--revision', MODEL['revision'], '--execution-policy', 'fp32-math',
+            '--concurrencies', '1', '2', '4',
             '--output', RUN / 'correctness.json'], 'correctness.txt')
 ```
 
@@ -198,13 +202,14 @@ run_logged([RPY, 'scripts/phase3/benchmark.py', '--correctness', RUN / 'correctn
 
 ## Cell 6 — final benchmark and validation
 
-Pause other GPU work. Both servers use the same checkpoint, FP16 and Torch/CUDA
+Pause other GPU work. Both servers use the same checkpoint, FP32 and Torch/CUDA
 set. Default concurrency is 1/2/4. Each engine/configuration gets two warmup
 cohorts in each of its two residency sessions and ten measured repetitions in
 total (five per session). Config order rotates. Warmups/model loading/startup
 are not counted in request latency. Prefix caching is disabled in vLLM so
 repeated warmup prompts do not get an unfair cross-request prefix-cache hit.
-vLLM keeps its supported native optimizations; CUDA graphs are not disabled.
+vLLM uses its supported native TRITON_ATTN backend and enforce-eager mode:
+CUDA graphs/compilation are disabled. This is not best-tuned vLLM performance.
 
 TTFT starts immediately before HTTP send, after client-concurrency admission,
 and ends at the first event containing token IDs. Request latency ends at

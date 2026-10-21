@@ -1,11 +1,37 @@
 """Recompute GPU artifact aggregates and enforce evidence/provenance gates."""
 
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
+import re
+import subprocess
 
-from common import source_provenance
+from common import ROOT, source_provenance
+
+
+def committed_provenance(commit, root=ROOT):
+    """Review published evidence against immutable Git blobs, not today's files.
+
+    Collection still requires a clean checkout. This read-only review path lets
+    later UI/docs commits coexist with evidence from its original measured code.
+    """
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise ValueError("Use the full measured source commit SHA")
+
+    def git(*args):
+        return subprocess.check_output(["git", *args], cwd=root)
+
+    resolved = git("rev-parse", "--verify", f"{commit}^{{commit}}").decode().strip()
+    if resolved != commit:
+        raise ValueError("Measured source commit did not resolve exactly")
+    names = git("ls-tree", "-r", "--name-only", commit, "--", "src", "scripts/phase3", "pyproject.toml").decode().splitlines()
+    if not names or "pyproject.toml" not in names:
+        raise ValueError("Measured source tree is incomplete")
+    return {"source_commit": commit, "source_file_sha256": {
+        name: hashlib.sha256(git("show", f"{commit}:{name}").replace(b"\r\n", b"\n")).hexdigest()
+        for name in names}}
 
 
 def close(a, b):
@@ -117,10 +143,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("artifact", type=Path)
     parser.add_argument("--correctness", type=Path, required=True)
+    parser.add_argument("--source-commit", help="Review against the full measured Git SHA; never used for collection")
     args = parser.parse_args()
     data = json.loads(args.artifact.read_text(encoding="utf8"))
     gate = json.loads(args.correctness.read_text(encoding="utf8"))
-    print(json.dumps(validate_artifact(data, gate, source_provenance()), indent=2))
+    provenance = committed_provenance(args.source_commit) if args.source_commit else source_provenance()
+    print(json.dumps(validate_artifact(data, gate, provenance), indent=2))
 
 
 if __name__ == "__main__":

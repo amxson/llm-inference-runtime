@@ -1,5 +1,12 @@
 # Phase 3: one-cell Colab launcher
 
+This is a **fresh-environment reproduction**, not a recovery cell for an
+already-running benchmark. Do not run it while a comparison is in progress.
+For the already installed environments use the [guarded continuation](phase3-fp32-comparison.md).
+Both engines use the user-approved native FP32 profile after the retained FP16
+failures; internal exact token parity is still mandatory. vLLM uses unmodified
+TRITON_ATTN with enforce-eager, not a best-tuned production configuration.
+
 Use this instead of the seven manual cells, in the existing authorized T4
 notebook. It is self-contained: do not rerun the old Cell 1 or restart the
 runtime first. Existing clean clones are updated without discarding tracked
@@ -55,7 +62,9 @@ ENVS = Path("/content/phase3-envs") / RUN_ID
 print("Evidence:", RUN, flush=True)
 
 command = [sys.executable, "-u", "scripts/phase3/run_colab.py",
-           "--output", str(RUN), "--env-root", str(ENVS), "--through", STOP_AFTER]
+           "--output", str(RUN), "--env-root", str(ENVS), "--through", STOP_AFTER,
+           "--execution-policy", "fp32-math",
+           "--model-revision", "060db6499f32faf8b98477b0a26969ef7d8b9987"]
 with subprocess.Popen(command, cwd=ROOT, env=ENV, stdout=subprocess.PIPE,
                       stderr=subprocess.STDOUT, text=True, bufsize=1) as process:
     for line in process.stdout:

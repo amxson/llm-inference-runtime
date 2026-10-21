@@ -270,6 +270,26 @@ def test_one_cell_launcher_checks_pins_before_installing(tmp_path):
         run_colab.verify_resolution(tmp_path)
 
 
+def test_fresh_launcher_propagates_approved_policy_and_immutable_checkpoint(monkeypatch, tmp_path):
+    """Command planning only. All child execution is mocked, not GPU evidence."""
+    output = tmp_path / "synthetic-run"
+    monkeypatch.setattr(sys, "argv", ["run_colab", "--output", str(output), "--env-root",
+                                     str(tmp_path / "envs"), "--through", "correctness"])
+    monkeypatch.setattr(sys, "platform", "linux")
+    monkeypatch.setattr(run_colab, "source_provenance", lambda: {"source_commit": "synthetic-unit-only"})
+    monkeypatch.setattr(run_colab, "verify_resolution", lambda directory: None)
+    commands = []
+    monkeypatch.setattr(run_colab, "run_command", lambda command, log, label: commands.append(command))
+    run_colab.main()
+    correctness_command = next(command for command in commands if "scripts/phase3/correctness.py" in command)
+    assert correctness_command[correctness_command.index("--execution-policy") + 1] == "fp32-math"
+    assert correctness_command[correctness_command.index("--revision") + 1] == "060db6499f32faf8b98477b0a26969ef7d8b9987"
+    assert any("--check-fp32-triton" in command for command in commands)
+    assert not any("HfApi" in str(command) for command in commands)
+    report = json.loads((output / "run-status.json").read_text())
+    assert report["execution_policy"] == "fp32-math"
+
+
 def test_one_cell_notebook_matches_documentation_and_has_no_execution_output():
     root = Path(__file__).parents[1]
     book = json.loads((root / "notebooks/phase3_colab_one_cell.ipynb").read_text(encoding="utf8"))
