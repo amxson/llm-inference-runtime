@@ -7,11 +7,12 @@ import uvicorn
 from fastapi import HTTPException
 
 from common import environment, torch_memory
+from policies import POLICIES, apply_policy, numerical_settings
 from llm_runtime.model_loader import load_model_and_tokenizer
 from llm_runtime.server import create_app
 
 
-def gpu_app(model, tokenizer, *, model_name, revision):
+def gpu_app(model, tokenizer, *, model_name, revision, execution_policy="fp16-sdpa"):
     app = create_app(model, tokenizer, model_name=model_name)
     forwards = []
 
@@ -32,6 +33,10 @@ def gpu_app(model, tokenizer, *, model_name, revision):
     async def env():
         return {"environment": environment(), "model": model_name, "revision": revision,
                 "dtype": str(next(model.parameters()).dtype),
+                "execution_policy": execution_policy,
+                "checkpoint_load_dtype": str(next(model.parameters()).dtype).removeprefix("torch."),
+                "parameter_dtypes": sorted({str(p.dtype) for p in model.parameters()}),
+                "numerical_settings": numerical_settings(),
                 "attention_implementation": model.config._attn_implementation}
 
     @app.post("/phase3/reset")
@@ -65,10 +70,13 @@ def main():
     parser.add_argument("--model", required=True)
     parser.add_argument("--revision", required=True)
     parser.add_argument("--port", type=int, default=8766)
+    parser.add_argument("--execution-policy", choices=tuple(POLICIES), default="fp16-sdpa")
     args = parser.parse_args()
     environment()  # No CPU fallback.
-    model, tokenizer = load_model_and_tokenizer(args.model, "cuda", dtype="float16", revision=args.revision)
-    app = gpu_app(model, tokenizer, model_name=args.model, revision=args.revision)
+    selected = apply_policy(args.execution_policy)
+    options = {} if selected["attention"] is None else {"attn_implementation": selected["attention"]}
+    model, tokenizer = load_model_and_tokenizer(args.model, "cuda", dtype=selected["dtype"], revision=args.revision, **options)
+    app = gpu_app(model, tokenizer, model_name=args.model, revision=args.revision, execution_policy=args.execution_policy)
     uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="warning")
 
 

@@ -166,3 +166,25 @@ Local verification after adding the projection control: 222 Python tests
 passed with six existing warnings; compilation and whitespace checks passed.
 The tied-weight, unchanged-parameter and diagnostic cleanup checks are local
 CPU/unit tests, not evidence that this control passes on the T4.
+
+## Returned projection control and approved precision change
+
+The user returned `phase3-colab-fp32-head-control-20261021T125129948472Z-29f615d4.zip`
+from `a78bbb1`. All three manifest hashes and 39 source hashes matched.
+The control kept every parameter FP16 and produced finite FP32 projection
+logits, but failed short uncached/manual parity on request-02. It did not
+reach continuous batching, HTTP/SSE, vLLM or performance measurement. Changing
+the final projection alone is therefore not a verified fix.
+
+Amar explicitly approved an FP32 comparison for both engines on 2026-10-21,
+with exact internal parity still mandatory and failed FP16 evidence preserved.
+[The guarded continuation](../../phase3-fp32-comparison.md) loads the original
+checkpoint natively as FP32 for both engines, checks shared serving/correctness
+policy, runs a smoke gate and only then attempts the full comparison. This
+replaces neither the failed evidence nor the previous diagnostic with a fake
+pass. Actual native-FP32 correctness/vLLM inference/measurements remain pending.
+Local preparation checks passed: 228 Python tests with six existing warnings,
+compilation, and diff whitespace checks. The new policy tests use CPU/synthetic
+fixtures only. The existing notebook was reached in the authorized Chrome
+profile; its save-conflict warning was not overridden and a four-cell notebook
+backup was downloaded before adding any new execution cell.

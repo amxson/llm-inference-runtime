@@ -22,6 +22,8 @@ def validate_artifact(data, gate, provenance):
             raise ValueError("Artifact source provenance mismatch")
     if (data["revision"], data["model"], data["dtype"]) != (gate["revision"], gate["model"], gate["dtype"]):
         raise ValueError("Model/revision/dtype mismatch")
+    if data.get("execution_policy", "fp16-sdpa") != gate.get("execution_policy", "fp16-sdpa"):
+        raise ValueError("Execution policy differs from the correctness gate")
     final = data["final_eligible"]
     if final and (len(data["workload"]) < 16 or not {1, 2, 4} <= set(data["concurrencies"]) or
                   not {32, 64, 128} <= {s["max_new_tokens"] for s in data["workload"]}):
@@ -84,6 +86,17 @@ def validate_artifact(data, gate, provenance):
     if [s["engine"] for s in data["sessions"]] != ["runtime", "vllm", "vllm", "runtime"]:
         raise ValueError("Missing balanced ABBA session order")
     for session in data["sessions"]:
+        if data.get("execution_policy") == "fp32-math":
+            from policies import validate_fp32_record
+            if session["engine"] == "runtime":
+                validate_fp32_record(session["environment"])
+                if session["environment"].get("execution_policy") != "fp32-math":
+                    raise ValueError("Runtime did not report the approved FP32 policy")
+            else:
+                command = session["command"]
+                if (command[command.index("--dtype") + 1] != "float32" or "--enforce-eager" not in command or
+                        json.loads(command[command.index("--attention-config") + 1])["backend"] != "TRITON_ATTN"):
+                    raise ValueError("vLLM FP32 configuration differs from the recorded policy")
         env = session["environment"]
         env = env["environment"] if session["engine"] == "runtime" else env
         if not env["cuda_available"] or env["gpus"] != data["hardware"]["gpus"]:

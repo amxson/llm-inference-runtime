@@ -22,6 +22,7 @@ import httpx
 
 from common import (ROOT, child_environment, command_output, gpu_observation,
                     save_json, source_provenance, utc_now)
+from policies import policy, validate_fp32_record
 from stream_client import cohort, distribution, first_divergence
 
 
@@ -179,8 +180,33 @@ def validate_gate(gate, provenance, capacities):
     proven = {r["capacity"] for r in gate["continuous"] if r["exact_token_parity"]}
     if not set(capacities) <= proven:
         raise ValueError("Run correctness at every requested benchmark capacity first")
-    if gate["dtype"] != "float16" or gate["model"] != "Qwen/Qwen2.5-0.5B":
-        raise ValueError("Expected unquantized Qwen2.5-0.5B FP16 correctness evidence")
+    selected = policy(gate.get("execution_policy", "fp16-sdpa"))
+    if gate["dtype"] != selected["dtype"] or gate["model"] != "Qwen/Qwen2.5-0.5B":
+        raise ValueError("Expected unquantized Qwen2.5-0.5B evidence matching the execution policy")
+    if gate.get("execution_policy") == "fp32-math":
+        validate_fp32_record(gate)
+        if not gate.get("http_sse") or gate.get("forward", {}).get("logits_dtype") != "torch.float32":
+            raise ValueError("Native FP32 correctness and real HTTP/SSE proof are required")
+
+
+def server_command(engine, args, gate, port):
+    name = gate.get("execution_policy", "fp16-sdpa")
+    selected = policy(name)
+    if engine == "runtime":
+        return [str(args.runtime_python), "scripts/phase3/serve_runtime.py", "--model", gate["model"],
+                "--revision", gate["revision"], "--port", str(port), "--execution-policy", name]
+    if engine != "vllm":
+        raise ValueError("Unknown benchmark engine")
+    command = [str(args.vllm_python), "-m", "vllm.entrypoints.openai.api_server",
+               "--model", gate["model"], "--revision", gate["revision"],
+               "--tokenizer-revision", gate["revision"], "--dtype", selected["vllm_dtype"],
+               "--host", "127.0.0.1", "--port", str(port), "--served-model-name", "phase3-qwen",
+               "--max-model-len", "2048", "--max-num-seqs", str(max(args.concurrencies)),
+               "--gpu-memory-utilization", "0.70", "--generation-config", "vllm",
+               "--no-enable-prefix-caching", "--attention-config", json.dumps({"backend": selected["vllm_attention"]})]
+    if selected["vllm_eager"]:
+        command.append("--enforce-eager")
+    return command
 
 
 async def run(args, gate, provenance):
@@ -193,6 +219,8 @@ async def run(args, gate, provenance):
     result = {"schema_version": 1, "benchmark": "gpu_final_comparison",
               "final_eligible": not args.smoke, "started_at_utc": utc_now(), **provenance,
               "model": gate["model"], "revision": gate["revision"], "dtype": gate["dtype"],
+              "execution_policy": gate.get("execution_policy", "fp16-sdpa"),
+              "engine_configuration": policy(gate.get("execution_policy", "fp16-sdpa")),
               "correctness_evidence": {"file": args.correctness.name, "status": gate["status"]},
               "hardware": gate["environment"], "workload": specs, "concurrencies": args.concurrencies,
               "sessions": sessions, "warmups": warmups, "raw_repetitions": rows,
@@ -207,27 +235,22 @@ async def run(args, gate, provenance):
                   "Our server synchronizes CUDA at idle reset/stats boundaries. Both engines must deliver real token IDs to CPU before SSE delivery; client-side synchronize cannot synchronize another process.",
                   "PyTorch allocated/reserved peaks describe only our allocator. External nvidia-smi process rows are sampled every ~0.5s plus query cost, not exact peaks or allocator-equivalent metrics.",
                   "Runtime forward observation and bounded telemetry are included in its serving cost. vLLM uses its ordinary native server.",
-                  "vLLM 0.17.1 uses its supported CUDA wheel/Torch stack, Transformers <5 and FLASHINFER on T4; our adapter uses Transformers 5.17.0. All actual versions are recorded.",
+                  "vLLM 0.17.1 uses Transformers <5; our adapter uses Transformers 5.17.0. Both use the same Torch/CUDA package set. Actual versions and server commands are recorded.",
                   "Cross-engine greedy divergence is recorded, not rejected; internal runtime/reference parity is mandatory.",
                   "EOS is honored. Different output lengths change throughput denominators; inspect raw generated-token counts.",
                   "Our logical BlockAllocator is not PagedAttention; actual compact cache collation copies K/V every decode tick."
               ]}
+    if result["execution_policy"] == "fp32-math":
+        result["limitations"].extend([
+            "User-approved FP32 comparison after repeated strict FP16 parity failures; this is NOT an FP16 performance result or a claim that FP16 was fixed.",
+            "Both engines load the original pinned checkpoint directly as FP32. Earlier promoted-FP16-weight controls cannot authorize this run.",
+            "Our attention is math-only SDPA. vLLM uses its unmodified TRITON_ATTN backend with --enforce-eager (CUDA graphs/compilation disabled); not a best-tuned production-engine claim."])
     try:
         # ABBA: each engine gets early/late residency. Config order rotates too.
         for session_index, engine in enumerate(("runtime", "vllm", "vllm", "runtime")):
             port = 8766 if engine == "runtime" else 8767
             base_url = f"http://127.0.0.1:{port}"
-            if engine == "runtime":
-                command = [str(args.runtime_python), "scripts/phase3/serve_runtime.py", "--model", gate["model"],
-                           "--revision", gate["revision"], "--port", str(port)]
-            else:
-                command = [str(args.vllm_python), "-m", "vllm.entrypoints.openai.api_server",
-                           "--model", gate["model"], "--revision", gate["revision"],
-                           "--tokenizer-revision", gate["revision"], "--dtype", "half",
-                           "--host", "127.0.0.1", "--port", str(port), "--served-model-name", "phase3-qwen",
-                           "--max-model-len", "2048", "--max-num-seqs", str(max(args.concurrencies)),
-                           "--gpu-memory-utilization", "0.70", "--generation-config", "vllm",
-                           "--no-enable-prefix-caching", "--attention-config", '{"backend":"FLASHINFER"}']
+            command = server_command(engine, args, gate, port)
             offset = session_index % len(args.concurrencies)
             order = args.concurrencies[offset:] + args.concurrencies[:offset]
             session = {"index": session_index, "engine": engine, "command": command,
@@ -239,11 +262,14 @@ async def run(args, gate, provenance):
                 session["server_pid"] = process.pid
                 if engine == "runtime":
                     session["environment"] = await probe(base_url, "GET", "/phase3/environment")
+                    if result["execution_policy"] == "fp32-math":
+                        validate_fp32_record(session["environment"])
                 else:
                     captured = subprocess.run([str(args.vllm_python), "scripts/phase3/preflight.py"],
                                               cwd=ROOT, env=child_environment(), text=True, capture_output=True, check=True)
                     session["environment"] = json.loads(captured.stdout)
                     session["models"] = await probe(base_url, "GET", "/v1/models")
+                    session["version"] = await probe(base_url, "GET", "/version")
                     if session["environment"]["versions"]["vllm"] != "0.17.1":
                         raise ValueError("Expected the reviewed vLLM 0.17.1 environment")
                 half = args.repetitions // 2

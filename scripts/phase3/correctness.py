@@ -1,4 +1,4 @@
-"""Real Qwen/FP16/CUDA gate, plus explicitly ineligible numerical controls."""
+"""Real Qwen/CUDA gate, plus explicitly ineligible numerical controls."""
 
 import argparse
 import asyncio
@@ -13,6 +13,7 @@ import torch
 import uvicorn
 
 from common import environment, save_json, source_provenance, torch_memory, utc_now, workload
+from policies import POLICIES, apply_policy, numerical_settings, policy
 from stream_client import cohort, sse_events
 from llm_runtime.cached_continuous_batcher import CachedContinuousBatcher
 from llm_runtime.cached_decode import cached_greedy_decode
@@ -26,15 +27,6 @@ from llm_runtime.server import create_app
 def require(condition, message):
     if not condition:
         raise ValueError(message)
-
-
-def numerical_settings():
-    """Record process-wide policy, including the loopback server's thread."""
-    cuda = torch.backends.cuda
-    return {"fp16_reduced_precision_reduction": cuda.matmul.allow_fp16_reduced_precision_reduction,
-            "flash_sdp": cuda.flash_sdp_enabled(), "mem_efficient_sdp": cuda.mem_efficient_sdp_enabled(),
-            "math_sdp": cuda.math_sdp_enabled(), "cudnn_sdp": cuda.cudnn_sdp_enabled(),
-            "math_sdp_reduced_precision": cuda.fp16_bf16_reduction_math_sdp_allowed()}
 
 
 def configure_experiment(profile):
@@ -178,6 +170,7 @@ def main():
     parser.add_argument("--revision", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--concurrencies", type=int, nargs="+", default=[1, 2, 4])
+    parser.add_argument("--execution-policy", choices=tuple(POLICIES), default="fp16-sdpa")
     parser.add_argument("--numerical-experiment", default="default", choices=(
         "default", "sdpa-full-reduction", "math-full-reduction", "eager-full-reduction"),
         help="Diagnostic only: nondefault reports cannot authorize a benchmark")
@@ -189,27 +182,33 @@ def main():
     args = parser.parse_args()
     if (args.diagnostic_fp32 or args.diagnostic_fp32_head) and args.numerical_experiment != "math-full-reduction":
         parser.error("Precision controls require the recorded math-full-reduction policy")
+    experimental = args.numerical_experiment != "default" or args.diagnostic_fp32 or args.diagnostic_fp32_head
+    if args.execution_policy != "fp16-sdpa" and experimental:
+        parser.error("Do not combine the approved execution policy with diagnostic overrides")
     if args.output.exists():
         parser.error("Choose a new output file; prior evidence is immutable")
-    dtype = "float32" if args.diagnostic_fp32 else "float16"
+    selected = policy(args.execution_policy)
+    dtype = "float32" if args.diagnostic_fp32 else selected["dtype"]
     report = {"schema_version": 1, "status": "running", "started_at_utc": utc_now(),
               "model": args.model, "revision": args.revision, "dtype": dtype,
-              "checkpoint_load_dtype": "float16",
+              "execution_policy": args.execution_policy,
+              "checkpoint_load_dtype": selected["dtype"],
               "promote_fp16_weights_for_control": args.diagnostic_fp32,
               "diagnostic_fp32": args.diagnostic_fp32,
               "diagnostic_fp32_head": args.diagnostic_fp32_head,
               "logit_projection": "diagnostic_recomputed_fp32" if args.diagnostic_fp32_head else "native",
               "numerical_experiment": args.numerical_experiment,
-              "experiment_only": args.numerical_experiment != "default" or args.diagnostic_fp32 or args.diagnostic_fp32_head}
+              "experiment_only": experimental}
     server, thread, listener, head_hook = None, None, None, None
     try:
         report.update(source_provenance())
         report["environment"] = environment()
         report["numerical_settings_before"] = numerical_settings()
-        attention = configure_experiment(args.numerical_experiment)
+        apply_policy(args.execution_policy)
+        attention = configure_experiment(args.numerical_experiment) if experimental else selected["attention"]
         report["numerical_settings"] = numerical_settings()
         options = {} if attention is None else {"attn_implementation": attention}
-        model, tokenizer = load_model_and_tokenizer(args.model, "cuda", dtype="float16", revision=args.revision, **options)
+        model, tokenizer = load_model_and_tokenizer(args.model, "cuda", dtype=selected["dtype"], revision=args.revision, **options)
         if args.diagnostic_fp32:
             # Keep exactly the already-rounded FP16 parameter values. The
             # control changes execution precision, not checkpoint information.
