@@ -121,10 +121,13 @@ def test_installation_commands_isolate_binary_versions_and_keep_base_env(monkeyp
     assert "transformers==5.17.0" in commands["runtime"]
     assert "transformers==4.57.6" in commands["vllm"]
     assert "vllm==0.17.1" in commands["vllm"]
-    monkeypatch.setenv("LD_LIBRARY_PATH", "test-only-system-cuda")
-    assert "LD_LIBRARY_PATH" not in child_environment()
+    driver_paths = "/test-only/nvidia/driver:/test-only/cuda/lib64"
+    monkeypatch.setenv("LD_LIBRARY_PATH", driver_paths)
+    assert child_environment()["LD_LIBRARY_PATH"] == driver_paths
     import os
-    assert os.environ["LD_LIBRARY_PATH"] == "test-only-system-cuda"
+    assert os.environ["LD_LIBRARY_PATH"] == driver_paths
+    monkeypatch.delenv("LD_LIBRARY_PATH")
+    assert "LD_LIBRARY_PATH" not in child_environment()
     assert resolved_constraints({"install": [
         {"metadata": {"name": "torch", "version": "2.10.0+cu129"}},
         {"metadata": {"name": "llm-inference-runtime", "version": "0.1.0"}}

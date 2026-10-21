@@ -41,3 +41,13 @@ committed, published in the UI or labelled final automatically.
 
 Required GPU correctness, production-engine execution, measured comparison,
 results UI/docs, final public-demo review and project signoff remain pending.
+
+## Colab preflight correction
+
+The user returned diagnostics from the T4: base PyTorch 2.11.0+cu130 could
+initialize CUDA normally, but removing `LD_LIBRARY_PATH` made initialization
+fail with a missing-driver error. This was a workflow bug, not evidence of a
+missing GPU. Both notebook and nested child processes now preserve inherited
+driver-library paths. The regression test checks preservation and an originally
+absent variable. No GPU correctness or benchmark success follows from this fix;
+the corrected Colab execution still needs to run.

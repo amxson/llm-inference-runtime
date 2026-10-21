@@ -34,8 +34,11 @@ and the two-server smoke run are separate gates. FlashInfer may compile
 kernels at startup: if toolkit/JIT compatibility fails, return the logs.
 Do not replace system CUDA, build vLLM from source or patch its implementation.
 
-Child processes unset only `LD_LIBRARY_PATH`, following vLLM's documented
-CUDA-library-mismatch guidance; the kernel's environment is untouched. No
+Child processes preserve the inherited `LD_LIBRARY_PATH`, including Colab's
+NVIDIA driver-library paths. The original preparation incorrectly removed it:
+the user's T4 diagnostic showed normal CUDA worked while that removal hid the
+driver. Do not blanket-unset it to address a hypothetical library mismatch;
+diagnose any actual mismatch before making targeted changes. No
 `--system-site-packages`, `--no-deps` or dependency-conflict bypass is used.
 Core versions are pinned; dry-run reports produce hashed constraints files
 locking the selected transitive package versions before installation. Complete
@@ -85,7 +88,6 @@ RUN.mkdir(parents=True, exist_ok=False)
 ENVS = Path('/content/phase3-envs') / RUN_ID
 RPY, VPY = ENVS / 'runtime/bin/python', ENVS / 'vllm/bin/python'
 ENV = os.environ.copy()
-ENV.pop('LD_LIBRARY_PATH', None)
 ENV.update(TOKENIZERS_PARALLELISM='false', VLLM_NO_USAGE_STATS='1', DO_NOT_TRACK='1')
 
 def run_logged(command, name):

@@ -61,7 +61,7 @@ def environment(require_cuda=True):
             "nvidia_smi": command_output(["nvidia-smi"]),
             "nvcc": command_output(["nvcc", "--version"]),
             "gpu_observation": gpu_observation(),
-            "loader_library_policy": "Child processes remove LD_LIBRARY_PATH; use wheel-provided CUDA libraries, not Colab system CUDA overrides."}
+            "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."}
 
 
 def gpu_observation():
@@ -101,8 +101,8 @@ def workload(tokenizer, smoke=False):
 
 
 def child_environment():
+    """Copy runtime settings without hiding host-provided GPU driver libraries."""
     env = os.environ.copy()
-    env.pop("LD_LIBRARY_PATH", None)
     env["TOKENIZERS_PARALLELISM"] = "false"
     env["VLLM_NO_USAGE_STATS"] = "1"
     env["DO_NOT_TRACK"] = "1"
