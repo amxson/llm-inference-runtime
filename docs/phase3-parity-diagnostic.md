@@ -42,9 +42,10 @@ reproduction is explicitly labelled, never presented as a fix.
 
 The JSON/text evidence ZIP is created automatically, including partial error
 reports when possible. Return it for analysis; do not resume the full benchmark
-or edit the old correctness artifact. GPU execution of this diagnostic remains
-pending user execution; local tests use tiny randomly initialized CPU models
-and clearly synthetic old mismatches.
+or edit the old correctness artifact. The returned T4 diagnostic reproduced
+both mismatches; see [the analysis and bounded next experiment](phase3-numerics-probe.md).
+Local tests use tiny randomly initialized CPU models and clearly synthetic
+old mismatches, not benchmark evidence.
 
 ## One-cell execution in the existing Colab session
 

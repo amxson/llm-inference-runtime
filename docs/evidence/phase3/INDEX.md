@@ -1,6 +1,6 @@
 # Phase 3 preparation evidence
 
-Status: **INCOMPLETE — real Colab T4 execution pending**.
+Status: **INCOMPLETE — real T4 inference ran; strict internal parity fails**.
 
 Qwen/GPT-2 forward-policy support was pushed in `21ccf4f`. This preparation
 adds the reproducible notebook, isolated installation plan, correctness gate,
@@ -81,4 +81,29 @@ or benchmark measurement. No performance artifact is available to publish.
 [The targeted parity diagnostic](../../phase3-parity-diagnostic.md) reuses the
 original installed runtime and cached checkpoint offline, records actual
 cohort/logit/cache comparisons, and exports JSON only. It makes no runtime
-change or relaxed correctness policy; GPU diagnosis remains pending execution.
+change or relaxed correctness policy.
+
+## Returned parity diagnostic
+
+The user supplied `phase3-colab-diagnostic-20261021T115412030140Z-0cd5ea86.zip`
+from `eb5dec7`. The manifest digest and all 38 recorded source digests matched.
+ZIP SHA256: `3f123c5c9a6f4eb37325d5f2ef7df59dbd41f1e4c50040e5a4470a2b5f02fd01`.
+Contained `diagnostic.json` SHA256:
+`2291812d633793bfb7d982b2c5aaa824959238f671e464e7e7d8538b70178c21`.
+It reused Torch 2.10.0+cu129, Transformers 5.17.0, the T4, the pinned Qwen
+revision and FP16/SDPA. Both mismatches reproduced at the same token offsets.
+Both frames passed all recorded input/mask/position checks and all 24 layers
+of collation/splitting were bitwise exact. Repeated forwards were stable within
+each execution shape. Independent-vs-batch top token choices differed at tied
+or near-tied FP16 scores. Reference-cache substitution alone did not restore
+the independent token. This supports, but does not fully isolate, a numerical
+execution-shape explanation; it is not a passed correctness gate.
+
+[The bounded numerical probe](../../phase3-numerics-probe.md) keeps FP16 weights,
+the fixed workload and exact parity checks. It records three explicitly changed
+numeric/attention policies in separate processes. No runtime default is changed,
+and experiment reports cannot authorize benchmarks. Real GPU execution of this
+next probe is pending; no performance result or project completion is claimed.
+Local verification after adding the controlled probes: 214 Python tests passed
+with six existing warnings; compilation and diff whitespace checks passed.
+These local checks use CPU/synthetic fixtures, not the new T4 profiles.

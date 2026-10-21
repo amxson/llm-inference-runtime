@@ -28,6 +28,32 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def numerical_settings():
+    """Record process-wide policy, including the loopback server's thread."""
+    cuda = torch.backends.cuda
+    return {"fp16_reduced_precision_reduction": cuda.matmul.allow_fp16_reduced_precision_reduction,
+            "flash_sdp": cuda.flash_sdp_enabled(), "mem_efficient_sdp": cuda.mem_efficient_sdp_enabled(),
+            "math_sdp": cuda.math_sdp_enabled(), "cudnn_sdp": cuda.cudnn_sdp_enabled(),
+            "math_sdp_reduced_precision": cuda.fp16_bf16_reduction_math_sdp_allowed()}
+
+
+def configure_experiment(profile):
+    """Explicit worker-only experiments; never change default serving policy."""
+    if profile == "default":
+        return None
+    if profile not in {"sdpa-full-reduction", "math-full-reduction", "eager-full-reduction"}:
+        raise ValueError(f"Unknown numerical experiment: {profile}")
+    cuda = torch.backends.cuda
+    cuda.matmul.allow_fp16_reduced_precision_reduction = False
+    if profile == "math-full-reduction":
+        cuda.enable_flash_sdp(False)
+        cuda.enable_mem_efficient_sdp(False)
+        cuda.enable_cudnn_sdp(False)
+        cuda.enable_math_sdp(True)
+        cuda.allow_fp16_bf16_reduction_math_sdp(False)
+    return "eager" if profile == "eager-full-reduction" else "sdpa"
+
+
 def continuous(model, tokenizer, specs, capacity):
     engine = CachedContinuousBatcher(model, tokenizer, capacity)
     for spec in specs:
@@ -137,18 +163,30 @@ def main():
     parser.add_argument("--revision", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--concurrencies", type=int, nargs="+", default=[1, 2, 4])
+    parser.add_argument("--numerical-experiment", default="default", choices=(
+        "default", "sdpa-full-reduction", "math-full-reduction", "eager-full-reduction"),
+        help="Diagnostic only: nondefault reports cannot authorize a benchmark")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Choose a new output file; prior evidence is immutable")
     report = {"schema_version": 1, "status": "running", "started_at_utc": utc_now(),
-              "model": args.model, "revision": args.revision, "dtype": "float16"}
+              "model": args.model, "revision": args.revision, "dtype": "float16",
+              "numerical_experiment": args.numerical_experiment,
+              "experiment_only": args.numerical_experiment != "default"}
     server, thread, listener = None, None, None
     try:
         report.update(source_provenance())
         report["environment"] = environment()
-        model, tokenizer = load_model_and_tokenizer(args.model, "cuda", dtype="float16", revision=args.revision)
+        report["numerical_settings_before"] = numerical_settings()
+        attention = configure_experiment(args.numerical_experiment)
+        report["numerical_settings"] = numerical_settings()
+        options = {} if attention is None else {"attn_implementation": attention}
+        model, tokenizer = load_model_and_tokenizer(args.model, "cuda", dtype="float16", revision=args.revision, **options)
+        require(next(model.parameters()).dtype == torch.float16, "Expected FP16 model weights")
         require(model.config.model_type == "qwen2", "Expected real Qwen2 checkpoint")
         require(model.config._commit_hash == args.revision, "Resolved checkpoint revision differs")
+        if attention is not None:
+            require(model.config._attn_implementation == attention, "Experimental attention backend differs")
         report["tokenizer"] = type(tokenizer).__name__
         report["pad_token_id"] = tokenizer.pad_token_id
         report["eos_token_ids"] = list(eos_token_ids(model, tokenizer))
