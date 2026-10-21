@@ -1,6 +1,9 @@
 # Phase 3: authorized Colab T4 execution
 
 Status: **preparation only; GPU correctness and performance are not yet verified**.
+Prefer [the single-cell launcher](phase3-colab-one-cell.md) for numbered live
+progress and automatic failure-log export. The seven manual cells below remain
+available for inspecting and running each stage separately.
 Run these Python cells in order in the existing GPU notebook. Do not purchase
 compute, change the public hosting, mount Drive, enter credentials or install
 packages into the notebook's base interpreter. Stop at the first failing cell
@@ -45,6 +48,12 @@ locking the selected transitive package versions before installation. Complete
 installation reports and freezes are also recorded. Fresh resolution can still
 fail as packaging evolves.
 
+Colab's Python 3.13 failed while running `ensurepip` inside the first new venv.
+The bootstrap now creates pip-less venvs and uses the base pip's supported
+`--python <new-venv>` option to install pip 26.2.2 **only in each new venv**.
+This requires host pip >=22.3, not a system package installation or base pip
+upgrade. Full bootstrap output is saved in `setup/bootstrap-*.txt`.
+
 Target the authorized 16 GB-class T4, one GPU, Linux x86-64, Python 3.11–3.13
 and about 20 GiB of free installation disk as a planning allowance. This is
 **not** an experimentally established minimum VRAM/disk requirement. Both
@@ -54,6 +63,7 @@ only after correctness at 8; the required run uses 1/2/4.
 
 Sources inspected:
 
+- [pip: manage a pip-less environment with --python](https://pip.pypa.io/en/stable/topics/python-option/)
 - [vLLM 0.17.1 CUDA requirements](https://github.com/vllm-project/vllm/blob/v0.17.1/requirements/cuda.txt)
 - [vLLM common requirements](https://github.com/vllm-project/vllm/blob/v0.17.1/requirements/common.txt)
 - [vLLM GPU installation and CUDA-library guidance](https://docs.vllm.ai/en/v0.17.1/getting_started/installation/gpu/)

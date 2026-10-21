@@ -51,3 +51,20 @@ missing GPU. Both notebook and nested child processes now preserve inherited
 driver-library paths. The regression test checks preservation and an originally
 absent variable. No GPU correctness or benchmark success follows from this fix;
 the corrected Colab execution still needs to run.
+
+The next user run failed in Python 3.13's venv `ensurepip` bootstrap, before
+Torch/vLLM installation. The underlying ensurepip output was not exposed in
+that traceback, so no specific OS-package cause is asserted. Preparation now
+avoids ensurepip and targets only new venvs using pip's documented `--python`
+option. Bootstrap failure logs are surfaced and preserved. The failed partial
+environments and earlier evidence must not be deleted or reused silently.
+
+The pip-less bootstrap was exercised successfully in a fresh local Windows
+Python 3.11 venv using host pip's `--python` option. This is not a Colab 3.13 or
+GPU result. The single-cell launcher now sequences the existing guarded
+scripts, verifies core resolution pins before installation, prints stage/live
+progress with a quiet-stage heartbeat, and exports a per-run evidence ZIP after
+success or a caught failure. Unit tests verify fail-fast behavior, pin rejection,
+and notebook syntax/documentation equivalence. Real T4 execution is pending.
+After the bootstrap/launcher correction, the local Python suite passed all 203
+tests; compilation and diff whitespace checks also passed.

@@ -12,11 +12,14 @@ import sys
 
 import httpx
 import pytest
+from unittest.mock import MagicMock
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts/phase3"))
 from benchmark import aggregate, check_runtime_outputs, live_group_members, validate_gate
 from common import child_environment, workload
 from setup_colab import install_commands, resolved_constraints
+import setup_colab
+import run_colab
 from stream_client import cohort, distribution, first_divergence, sse_events, stream_request
 from validate import validate_artifact
 
@@ -146,6 +149,21 @@ def test_fixed_workload_is_varied_and_shared():
     assert len(workload(TestTokenizer(), smoke=True)[1]) == 4
 
 
+def test_colab_bootstrap_avoids_ensurepip_and_explicitly_targets_only_new_venv(monkeypatch, tmp_path):
+    builder = MagicMock()
+    calls = []
+    monkeypatch.setattr(setup_colab.venv, "EnvBuilder", builder)
+    monkeypatch.setattr(setup_colab, "logged", lambda command, path: calls.append((command, path)))
+    target = tmp_path / "runtime"
+    setup_colab.bootstrap_venv(target, tmp_path)
+    builder.assert_called_once_with(with_pip=False, system_site_packages=False)
+    builder.return_value.create.assert_called_once_with(target)
+    command, log = calls[0]
+    assert command[:6] == [sys.executable, "-m", "pip", "--python", str(target), "install"]
+    assert "pip==26.2.2" in command and log == tmp_path / "bootstrap-runtime.txt"
+    assert "--break-system-packages" not in command
+
+
 def unit_artifact():
     """Entirely synthetic, in-memory validator fixture; NEVER GPU evidence."""
     provenance = {"source_commit": "a" * 40, "source_file_sha256": {"test-only": "digest"}}
@@ -219,6 +237,47 @@ def test_notebook_is_output_free_syntax_valid_and_matches_documented_cells():
         compile(source, f"phase3-cell-{index + 1}", "exec")
     assert all(cell.get("outputs", []) == [] and cell.get("execution_count") is None
                for cell in book["cells"] if cell["cell_type"] == "code")
+
+
+def test_one_cell_launcher_is_fail_fast_and_exports_failure_logs(monkeypatch, tmp_path):
+    output, environments = tmp_path / "evidence", tmp_path / "environments"
+    monkeypatch.setattr(sys, "argv", ["run_colab", "--output", str(output), "--env-root", str(environments)])
+    monkeypatch.setattr(sys, "platform", "linux")
+    monkeypatch.setattr(run_colab, "source_provenance", lambda: {"source_commit": "unit-test-only"})
+    calls = []
+    def fail(command, log, label):
+        calls.append(label)
+        Path(log).write_text("synthetic unit-test failure, not GPU evidence")
+        raise RuntimeError("test-only preflight failure")
+    monkeypatch.setattr(run_colab, "run_command", fail)
+    with pytest.raises(RuntimeError, match="test-only preflight"):
+        run_colab.main()
+    assert len(calls) == 1
+    status = json.loads((output / "run-status.json").read_text())
+    assert status["status"] == "fail" and status["failed_stage"].startswith("1/7")
+    assert (tmp_path / "phase3-colab-evidence.zip").exists()
+    assert not environments.exists()
+
+
+def test_one_cell_launcher_checks_pins_before_installing(tmp_path):
+    for name, packages in {"runtime": {"torch": "2.10.0+cu129", "transformers": "5.17.0"},
+                           "vllm": {"torch": "2.10.0+cu129", "transformers": "4.57.6", "vllm": "0.17.1"}}.items():
+        (tmp_path / f"resolve-{name}.json").write_text(json.dumps({
+            "install": [{"metadata": {"name": k, "version": v}} for k, v in packages.items()]}))
+    run_colab.verify_resolution(tmp_path)
+    (tmp_path / "resolve-vllm.json").write_text('{"install": []}')
+    with pytest.raises(RuntimeError, match="before installing"):
+        run_colab.verify_resolution(tmp_path)
+
+
+def test_one_cell_notebook_matches_documentation_and_has_no_execution_output():
+    root = Path(__file__).parents[1]
+    book = json.loads((root / "notebooks/phase3_colab_one_cell.ipynb").read_text(encoding="utf8"))
+    code = ["".join(cell["source"]) for cell in book["cells"] if cell["cell_type"] == "code"]
+    documented = re.findall(r"```python\n(.*?)```", (root / "docs/phase3-colab-one-cell.md").read_text(encoding="utf8"), re.S)
+    assert len(code) == 1 and code == documented
+    compile(code[0], "phase3-one-cell", "exec")
+    assert all(not cell.get("outputs") for cell in book["cells"])
 
 
 def test_new_measurement_client_against_actual_loopback_qwen_cpu_sse():

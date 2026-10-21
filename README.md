@@ -104,6 +104,7 @@ npm run build
 ## More detail
 
 - [Phase 3 Colab T4 workflow — prepared, GPU execution pending](docs/phase3-colab.md)
+- [Single-cell Colab launcher with live progress and automatic log export](docs/phase3-colab-one-cell.md)
 - [Architecture and CLI/API reference](docs/architecture.md)
 - [Postmortem and experiment tradeoffs](docs/postmortem.md)
 - [Profiler UI guide](docs/portfolio-ui.md)

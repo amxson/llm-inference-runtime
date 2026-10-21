@@ -30,7 +30,21 @@ def logged(command, path):
         process = subprocess.Popen(command, cwd=ROOT, env=child_environment(), stdout=log, stderr=subprocess.STDOUT)
         code = process.wait()
     if code:
+        print(Path(path).read_text(encoding="utf8")[-12000:], flush=True)
         raise RuntimeError(f"Command exited {code}. Stop here and return {path}; do not patch dependencies.")
+
+
+def bootstrap_venv(directory, output):
+    """Do not depend on Debian/Colab's optional ensurepip installation.
+
+    pip >=22.3 can manage a pip-less target venv via --python. The host pip
+    runs the command, but installation goes ONLY into the explicit new venv.
+    No apt install, base pip upgrade or system-site-packages is needed.
+    """
+    venv.EnvBuilder(with_pip=False, system_site_packages=False).create(directory)
+    logged([sys.executable, "-m", "pip", "--python", str(directory), "install",
+            "--index-url", "https://pypi.org/simple", "--only-binary=:all:", "pip==26.2.2"],
+           output / f"bootstrap-{directory.name}.txt")
 
 
 def resolved_constraints(report):
@@ -61,7 +75,7 @@ def main():
         args.env_root.mkdir(parents=True)
         constraints_hashes = {}
         for name in commands:
-            venv.EnvBuilder(with_pip=True, system_site_packages=False).create(args.env_root / name)
+            bootstrap_venv(args.env_root / name, args.output)
             logged(commands[name] + ["--dry-run", "--report", str(args.output / f"resolve-{name}.json")],
                    args.output / f"resolve-{name}.txt")
             report = json.loads((args.output / f"resolve-{name}.json").read_text(encoding="utf8"))
