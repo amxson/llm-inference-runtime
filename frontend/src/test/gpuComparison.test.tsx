@@ -12,6 +12,8 @@ test("published GPU summary derives from the unchanged full artifact", () => {
   const artifact = bundle.artifacts.find((a: Artifact) => a.name === "gpu_final_comparison.json") as Artifact;
   const summary = adaptGpuComparison(artifact);
   expect(artifact.source_sha256).toBe(createHash("sha256").update(rawText.replace(/\r\n/g, "\n")).digest("hex"));
+  const download = readFileSync("public/data/gpu_final_comparison.json");
+  expect(createHash("sha256").update(download).digest("hex")).toBe(artifact.source_sha256);
   expect(summary.source_commit).toBe(raw.source_commit);
   expect(summary.measured_cohorts).toBe(60);
   expect(summary.excluded_warmup_cohorts).toBe(24);

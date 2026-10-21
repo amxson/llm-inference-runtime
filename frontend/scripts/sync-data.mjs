@@ -102,7 +102,9 @@ await writeFile(
 for (const artifact of artifacts)
   await writeFile(
     path.join(out, artifact.name),
-    await readFile(path.join(root, artifact.source), "utf8"),
+    // Downloads use the same canonical LF bytes as the provenance digest.
+    // Windows source archives/checkouts may otherwise introduce CRLF.
+    (await readFile(path.join(root, artifact.source), "utf8")).replace(/\r\n/g, "\n"),
   );
 console.log(
   `Derived ${artifacts.length} benchmark artifacts from Git-tracked JSON`,
