@@ -102,8 +102,33 @@ execution-shape explanation; it is not a passed correctness gate.
 [The bounded numerical probe](../../phase3-numerics-probe.md) keeps FP16 weights,
 the fixed workload and exact parity checks. It records three explicitly changed
 numeric/attention policies in separate processes. No runtime default is changed,
-and experiment reports cannot authorize benchmarks. Real GPU execution of this
-next probe is pending; no performance result or project completion is claimed.
+and experiment reports cannot authorize benchmarks. The returned GPU execution
+is documented below; no performance result or project completion is claimed.
 Local verification after adding the controlled probes: 214 Python tests passed
 with six existing warnings; compilation and diff whitespace checks passed.
 These local checks use CPU/synthetic fixtures, not the new T4 profiles.
+
+## Returned numerical experiments
+
+The user supplied `phase3-colab-numerics-20261021T121338807622Z-1e364bfe.zip`
+from `eab17d0`. All seven manifest hashes passed; every profile's 39 recorded
+source hashes matched the submitted checkout. ZIP SHA256:
+`05709396c28b0f72a22eaf7fc9740ff06cabf59212c216ff3bd544a4a6399918`.
+The original model revision, T4, installed runtime versions and FP16 dtype
+were retained, and each requested numerical setting was recorded as applied.
+
+All three profiles passed all 24 requests at capacity 1. Capacity-2 exact
+complete-output parity was 21/24 with SDPA/full reduction, 23/24 with
+math-only/full reduction, and 21/24 with eager/full reduction. Each profile
+stopped on its first failed parity assertion after retaining its full capacity-2
+cohort. Capacity 4, HTTP/SSE, vLLM inference and benchmarks were not reached.
+None of these policies is adopted as a fix, and no failed request is excluded.
+
+[The same probe](../../phase3-numerics-probe.md) now provides a single FP32
+math-policy sensitivity control using the existing environment. This is not
+an FP16 correctness pass or permission to benchmark; the primary FP16 target
+and exact parity requirement remain unchanged. Execution of that control on
+the T4 is pending. No additional environment installation is required.
+After adding this control, all 217 local Python tests passed with six existing
+warnings; compilation and whitespace checks passed. These checks do not
+substitute for real GPU execution. The primary FP16 parity gate remains failed.

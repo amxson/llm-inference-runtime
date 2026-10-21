@@ -1,4 +1,4 @@
-"""Real Qwen/FP16/CUDA gate. A failure saves diagnostics, never GPU results."""
+"""Real Qwen/FP16/CUDA gate, plus explicitly ineligible numerical controls."""
 
 import argparse
 import asyncio
@@ -166,13 +166,21 @@ def main():
     parser.add_argument("--numerical-experiment", default="default", choices=(
         "default", "sdpa-full-reduction", "math-full-reduction", "eager-full-reduction"),
         help="Diagnostic only: nondefault reports cannot authorize a benchmark")
+    parser.add_argument("--diagnostic-fp32", action="store_true",
+                        help="FP32 sensitivity control only, never an FP16 benchmark gate")
     args = parser.parse_args()
+    if args.diagnostic_fp32 and args.numerical_experiment != "math-full-reduction":
+        parser.error("The FP32 control requires the recorded math-full-reduction policy")
     if args.output.exists():
         parser.error("Choose a new output file; prior evidence is immutable")
+    dtype = "float32" if args.diagnostic_fp32 else "float16"
     report = {"schema_version": 1, "status": "running", "started_at_utc": utc_now(),
-              "model": args.model, "revision": args.revision, "dtype": "float16",
+              "model": args.model, "revision": args.revision, "dtype": dtype,
+              "checkpoint_load_dtype": "float16",
+              "promote_fp16_weights_for_control": args.diagnostic_fp32,
+              "diagnostic_fp32": args.diagnostic_fp32,
               "numerical_experiment": args.numerical_experiment,
-              "experiment_only": args.numerical_experiment != "default"}
+              "experiment_only": args.numerical_experiment != "default" or args.diagnostic_fp32}
     server, thread, listener = None, None, None
     try:
         report.update(source_provenance())
@@ -182,7 +190,11 @@ def main():
         report["numerical_settings"] = numerical_settings()
         options = {} if attention is None else {"attn_implementation": attention}
         model, tokenizer = load_model_and_tokenizer(args.model, "cuda", dtype="float16", revision=args.revision, **options)
-        require(next(model.parameters()).dtype == torch.float16, "Expected FP16 model weights")
+        if args.diagnostic_fp32:
+            # Keep exactly the already-rounded FP16 parameter values. The
+            # control changes execution precision, not checkpoint information.
+            model.float()
+        require(next(model.parameters()).dtype == getattr(torch, dtype), "Model weights differ from recorded precision")
         require(model.config.model_type == "qwen2", "Expected real Qwen2 checkpoint")
         require(model.config._commit_hash == args.revision, "Resolved checkpoint revision differs")
         if attention is not None:
