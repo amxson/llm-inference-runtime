@@ -169,7 +169,8 @@ def aggregate(rows, capacities):
 
 
 def validate_gate(gate, provenance, capacities):
-    if gate.get("experiment_only") or gate.get("numerical_experiment", "default") != "default":
+    if (gate.get("experiment_only") or gate.get("diagnostic_fp32") or gate.get("diagnostic_fp32_head") or
+            gate.get("numerical_experiment", "default") != "default"):
         raise ValueError("Numerical experiment reports cannot authorize benchmarks; serving policy must be reconciled first")
     if gate.get("status") != "pass" or not gate.get("environment", {}).get("cuda_available"):
         raise ValueError("A passing REAL CUDA correctness artifact is required")

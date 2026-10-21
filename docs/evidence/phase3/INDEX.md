@@ -127,8 +127,42 @@ None of these policies is adopted as a fix, and no failed request is excluded.
 [The same probe](../../phase3-numerics-probe.md) now provides a single FP32
 math-policy sensitivity control using the existing environment. This is not
 an FP16 correctness pass or permission to benchmark; the primary FP16 target
-and exact parity requirement remain unchanged. Execution of that control on
-the T4 is pending. No additional environment installation is required.
+and exact parity requirement remain unchanged. The returned T4 control is
+documented below. No additional environment installation is required.
 After adding this control, all 217 local Python tests passed with six existing
 warnings; compilation and whitespace checks passed. These checks do not
 substitute for real GPU execution. The primary FP16 parity gate remains failed.
+
+## Returned FP32 sensitivity control
+
+The user supplied `phase3-colab-fp32-control-20261021T123720551114Z-2af3282f.zip`
+from `c4b18e2`. All three manifest hashes and all 39 source hashes matched.
+ZIP SHA256: `a09a9d90b40f40fd2817207800c7998182d271d04da5fd37ddb99f4597135380`.
+Contained `math-fp32-control.json` SHA256:
+`3520e981be436b00c5e13f7d9fb2cf47c56c59e859e2f2adbd4db4ec2262b136`.
+The pinned Qwen/T4/software environment was retained. FP16-rounded parameter
+values were promoted to FP32 for this diagnostic only, with math-only SDPA.
+
+- Exact independent-vs-batched parity: 24/24 at each of capacities 1, 2 and 4.
+- Eight short manual-vs-cached checks passed.
+- Ordinary loopback HTTP passed.
+- All 24 loopback SSE requests succeeded with exact reference IDs; all 1,760
+  token IDs matched their recorded arrival-event concatenations and every
+  request's prompt IDs were verified.
+- Zero-budget generation made zero model executions; forced EOS ended after
+  one selected token; the dynamic cohort/cache trace assertions passed.
+
+This validates those paths under the diagnostic FP32 policy on the submitted
+workload, not pure FP16 or arbitrary inputs. It is not a public-site request,
+vLLM execution or measured comparison. The allocator observations are retained
+in the diagnostic bundle, not promoted to benchmark memory measurements.
+The required primary FP16 run remains failed; the project is incomplete.
+
+The next bounded diagnostic retains the FP16 model and recomputes only its
+vocabulary projection in FP32. This mixed-compute experiment is explicitly
+labelled and rejected by the benchmark guard. Production source/defaults are
+unchanged; no stability policy is adopted without real evidence and review.
+Local verification after adding the projection control: 222 Python tests
+passed with six existing warnings; compilation and whitespace checks passed.
+The tied-weight, unchanged-parameter and diagnostic cleanup checks are local
+CPU/unit tests, not evidence that this control passes on the T4.

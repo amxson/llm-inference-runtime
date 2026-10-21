@@ -54,6 +54,20 @@ def configure_experiment(profile):
     return "eager" if profile == "eager-full-reduction" else "sdpa"
 
 
+def recompute_head_fp32(module, inputs, output):
+    """Diagnostic only: same learned projection, no weight or token overrides.
+
+    The native half projection has already run; recomputing it adds overhead.
+    This hook is deliberately ineligible for performance measurements.
+    """
+    require(isinstance(module, torch.nn.Linear) and module.weight.dtype == torch.float16,
+            "Head control requires an ordinary FP16 Linear output embedding")
+    require(len(inputs) == 1 and inputs[0].dtype == torch.float16,
+            "Head control expects FP16 hidden states")
+    bias = None if module.bias is None else module.bias.float()
+    return torch.nn.functional.linear(inputs[0].float(), module.weight.float(), bias)
+
+
 def continuous(model, tokenizer, specs, capacity):
     engine = CachedContinuousBatcher(model, tokenizer, capacity)
     for spec in specs:
@@ -71,7 +85,8 @@ def internal_checks(model, tokenizer, specs, capacities, report):
         output = model(**encoded, use_cache=False)
         require(bool(torch.isfinite(output.logits).all()), "Nonfinite Qwen logits")
         report["forward"] = {"input_shape": list(encoded["input_ids"].shape),
-                             "logits_shape": list(output.logits.shape), "finite": True}
+                             "logits_shape": list(output.logits.shape),
+                             "logits_dtype": str(output.logits.dtype), "finite": True}
     del output, encoded
     references = {}
     report["references"] = []
@@ -166,11 +181,14 @@ def main():
     parser.add_argument("--numerical-experiment", default="default", choices=(
         "default", "sdpa-full-reduction", "math-full-reduction", "eager-full-reduction"),
         help="Diagnostic only: nondefault reports cannot authorize a benchmark")
-    parser.add_argument("--diagnostic-fp32", action="store_true",
-                        help="FP32 sensitivity control only, never an FP16 benchmark gate")
+    precision = parser.add_mutually_exclusive_group()
+    precision.add_argument("--diagnostic-fp32", action="store_true",
+                           help="FP32 sensitivity control only, never an FP16 benchmark gate")
+    precision.add_argument("--diagnostic-fp32-head", action="store_true",
+                           help="FP16 model plus diagnostic FP32 logit projection, not a benchmark policy")
     args = parser.parse_args()
-    if args.diagnostic_fp32 and args.numerical_experiment != "math-full-reduction":
-        parser.error("The FP32 control requires the recorded math-full-reduction policy")
+    if (args.diagnostic_fp32 or args.diagnostic_fp32_head) and args.numerical_experiment != "math-full-reduction":
+        parser.error("Precision controls require the recorded math-full-reduction policy")
     if args.output.exists():
         parser.error("Choose a new output file; prior evidence is immutable")
     dtype = "float32" if args.diagnostic_fp32 else "float16"
@@ -179,9 +197,11 @@ def main():
               "checkpoint_load_dtype": "float16",
               "promote_fp16_weights_for_control": args.diagnostic_fp32,
               "diagnostic_fp32": args.diagnostic_fp32,
+              "diagnostic_fp32_head": args.diagnostic_fp32_head,
+              "logit_projection": "diagnostic_recomputed_fp32" if args.diagnostic_fp32_head else "native",
               "numerical_experiment": args.numerical_experiment,
-              "experiment_only": args.numerical_experiment != "default" or args.diagnostic_fp32}
-    server, thread, listener = None, None, None
+              "experiment_only": args.numerical_experiment != "default" or args.diagnostic_fp32 or args.diagnostic_fp32_head}
+    server, thread, listener, head_hook = None, None, None, None
     try:
         report.update(source_provenance())
         report["environment"] = environment()
@@ -195,10 +215,18 @@ def main():
             # control changes execution precision, not checkpoint information.
             model.float()
         require(next(model.parameters()).dtype == getattr(torch, dtype), "Model weights differ from recorded precision")
+        report["parameter_dtypes"] = sorted({str(p.dtype) for p in model.parameters()})
+        require(report["parameter_dtypes"] == [f"torch.{dtype}"], "Unexpected mixed parameter storage")
         require(model.config.model_type == "qwen2", "Expected real Qwen2 checkpoint")
         require(model.config._commit_hash == args.revision, "Resolved checkpoint revision differs")
         if attention is not None:
             require(model.config._attn_implementation == attention, "Experimental attention backend differs")
+        if args.diagnostic_fp32_head:
+            head = model.get_output_embeddings()
+            require(isinstance(head, torch.nn.Linear), "Expected a Linear vocabulary projection")
+            # Do not call head.float(): Qwen can tie this weight to its FP16
+            # input embedding. The hook leaves both parameters untouched.
+            head_hook = head.register_forward_hook(recompute_head_fp32)
         report["tokenizer"] = type(tokenizer).__name__
         report["pad_token_id"] = tokenizer.pad_token_id
         report["eos_token_ids"] = list(eos_token_ids(model, tokenizer))
@@ -238,6 +266,8 @@ def main():
             thread.join(15)
         if listener is not None:
             listener.close()
+        if head_hook is not None:
+            head_hook.remove()
         report["finished_at_utc"] = utc_now()
         save_json(args.output, report)
         print(f"Correctness status={report['status']}; raw evidence: {args.output}", flush=True)

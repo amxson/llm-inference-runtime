@@ -32,18 +32,28 @@ def check_prior(prior, provenance, env):
     return sorted(changed)
 
 
-def run_profiles(output, prior, execute=run_command, *, fp32_control=False):
+def selected_profiles(fp32_control=False, fp32_head_control=False):
+    if fp32_control and fp32_head_control:
+        raise ValueError("Choose one precision control at a time")
+    if fp32_head_control:
+        return ("math-fp32-head-control",)
+    return ("math-fp32-control",) if fp32_control else PROFILES
+
+
+def run_profiles(output, prior, execute=run_command, *, fp32_control=False, fp32_head_control=False):
     """Expected parity failures continue; installation/environment errors stop."""
     rows = []
-    profiles = ("math-fp32-control",) if fp32_control else PROFILES
+    profiles = selected_profiles(fp32_control, fp32_head_control)
     for index, profile in enumerate(profiles, 1):
         target = output / f"{profile}.json"
-        policy = "math-full-reduction" if fp32_control else profile
+        policy = "math-full-reduction" if fp32_control or fp32_head_control else profile
         command = [sys.executable, "scripts/phase3/correctness.py", "--model", prior["model"],
                    "--revision", prior["revision"], "--concurrencies", "1", "2", "4",
                    "--numerical-experiment", policy, "--output", target]
         if fp32_control:
             command.append("--diagnostic-fp32")
+        if fp32_head_control:
+            command.append("--diagnostic-fp32-head")
         command_error = None
         try:
             execute(command, output / f"{profile}.txt",
@@ -57,7 +67,9 @@ def run_profiles(output, prior, execute=run_command, *, fp32_control=False):
                 result.get("experiment_only") is not True or
                 result.get("numerical_experiment") != policy or
                 result.get("dtype") != ("float32" if fp32_control else "float16") or
-                bool(result.get("diagnostic_fp32")) != fp32_control):
+                bool(result.get("diagnostic_fp32")) != fp32_control or
+                bool(result.get("diagnostic_fp32_head")) != fp32_head_control or
+                (fp32_head_control and result.get("logit_projection") != "diagnostic_recomputed_fp32")):
             raise ValueError("Experiment configuration/workload differs unexpectedly")
         status, error = result["status"], result.get("error")
         # Only failed assertions about parity are expected experimental results.
@@ -69,6 +81,7 @@ def run_profiles(output, prior, execute=run_command, *, fp32_control=False):
             raise RuntimeError(f"Worker failed after writing a pass: {command_error}")
         rows.append({"profile": profile, "status": status, "error": error,
                      "dtype": result["dtype"],
+                     "logit_projection": result.get("logit_projection", "native"),
                      "passing_capacities": [r["capacity"] for r in result.get("continuous", [])
                                             if r["exact_token_parity"]],
                      "http_sse_passed": status == "pass" and "http_sse" in result})
@@ -79,16 +92,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prior", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--fp32-control", action="store_true",
-                        help="Run only the FP32 math-policy sensitivity control, not FP16 experiments")
+    precision = parser.add_mutually_exclusive_group()
+    precision.add_argument("--fp32-control", action="store_true",
+                           help="Run only the FP32 math-policy sensitivity control, not FP16 experiments")
+    precision.add_argument("--fp32-head-control", action="store_true",
+                           help="Run only FP16 plus FP32 vocabulary-projection diagnostics")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Choose a fresh directory; prior evidence is immutable")
     args.output.mkdir(parents=True)
     report = {"kind": "numerical_experiment_not_benchmark", "benchmark_valid": False,
               "status": "running", "started_at_utc": utc_now(),
-              "profiles": ["math-fp32-control"] if args.fp32_control else list(PROFILES),
-              "fp32_control": args.fp32_control}
+              "profiles": list(selected_profiles(args.fp32_control, args.fp32_head_control)),
+              "fp32_control": args.fp32_control, "fp32_head_control": args.fp32_head_control}
     try:
         if any(os.environ.get(name) != "1" for name in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE")):
             raise ValueError("Require offline cached weights; no installation/download is performed")
@@ -99,7 +115,8 @@ def main():
         report["environment"] = environment()
         report["prior_source_commit"] = prior["source_commit"]
         report["changed_prior_source_files"] = check_prior(prior, report, report["environment"])
-        report["results"] = run_profiles(args.output, prior, fp32_control=args.fp32_control)
+        report["results"] = run_profiles(args.output, prior, fp32_control=args.fp32_control,
+                                         fp32_head_control=args.fp32_head_control)
         report["status"] = "experiments_complete"
         report["note"] = "Review results before changing serving policy. No benchmark or automatic promotion ran."
         print(json.dumps(report["results"], indent=2), flush=True)

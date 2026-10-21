@@ -36,7 +36,8 @@ def test_profiles_are_explicit_and_default_is_unchanged(monkeypatch):
 
 
 def test_experiments_cannot_authorize_benchmarks():
-    for marker in ({"experiment_only": True}, {"numerical_experiment": "sdpa-full-reduction"}):
+    for marker in ({"experiment_only": True}, {"numerical_experiment": "sdpa-full-reduction"},
+                   {"diagnostic_fp32": True}, {"diagnostic_fp32_head": True}):
         with pytest.raises(ValueError, match="cannot authorize"):
             validate_gate({"status": "pass", **marker}, {}, [1, 2, 4])
 
@@ -134,6 +135,61 @@ def test_fp32_control_is_one_strict_explicitly_ineligible_worker(tmp_path):
         validate_gate(json.loads((tmp_path / "math-fp32-control.json").read_text()), {}, [1, 2, 4])
 
 
+def test_head_projection_resolves_synthetic_rounding_tie_without_mutating_tied_weights():
+    embedding = torch.nn.Embedding(2, 2, dtype=torch.float16)
+    head = torch.nn.Linear(2, 2, bias=False, dtype=torch.float16)
+    head.weight = embedding.weight
+    with torch.no_grad():
+        head.weight.copy_(torch.tensor([[1., 0.], [1., 2. ** -12]], dtype=torch.float16))
+    hidden = torch.ones(1, 1, 2, dtype=torch.float16)
+    before, pointer = head.weight.detach().clone(), head.weight.data_ptr()
+    with torch.inference_mode():
+        native = head(hidden)
+        assert native.dtype == torch.float16 and int(native.argmax()) == 0
+        hook = head.register_forward_hook(correctness.recompute_head_fp32)
+        try:
+            actual = head(hidden)
+            expected = torch.nn.functional.linear(hidden.float(), before.float())
+            assert torch.equal(actual, expected) and actual.dtype == torch.float32
+            assert int(actual.argmax()) == 1
+        finally:
+            hook.remove()
+        assert torch.equal(head(hidden), native)
+    assert head.weight is embedding.weight and head.weight.data_ptr() == pointer
+    assert head.weight.dtype == torch.float16 and torch.equal(head.weight, before)
+    assert hidden.dtype == torch.float16
+
+
+def test_fp32_head_control_is_one_half_weight_strict_worker(tmp_path):
+    prior, commands = prior_fixture(), []
+    def execute(command, log, label):
+        commands.append(command)
+        assert "--diagnostic-fp32-head" in command and "--diagnostic-fp32" not in command
+        assert command[command.index("--numerical-experiment") + 1] == "math-full-reduction"
+        Path(command[command.index("--output") + 1]).write_text(json.dumps({
+            "status": "pass", "experiment_only": True, "dtype": "float16", "diagnostic_fp32_head": True,
+            "logit_projection": "diagnostic_recomputed_fp32", "numerical_experiment": "math-full-reduction",
+            "workload": prior["workload"], "continuous": [
+                {"capacity": c, "exact_token_parity": True} for c in (1, 2, 4)],
+            "http_sse": {"synthetic_unit_test_only": True}}))
+    rows = probe_numerics.run_profiles(tmp_path, prior, execute, fp32_head_control=True)
+    assert len(commands) == 1 and rows[0]["dtype"] == "float16"
+    assert rows[0]["logit_projection"] == "diagnostic_recomputed_fp32"
+    assert rows[0]["http_sse_passed"]
+    with pytest.raises(ValueError, match="one precision control"):
+        probe_numerics.selected_profiles(True, True)
+
+
+@pytest.mark.parametrize("flags", [
+    ["--diagnostic-fp32-head"], ["--diagnostic-fp32", "--diagnostic-fp32-head"]])
+def test_head_control_is_never_an_implicit_default(monkeypatch, tmp_path, flags):
+    output = tmp_path / "unused.json"
+    monkeypatch.setattr(sys, "argv", ["correctness", "--revision", "unit-only", "--output", str(output), *flags])
+    with pytest.raises(SystemExit):
+        correctness.main()
+    assert not output.exists()
+
+
 def test_fp32_cannot_silently_replace_the_default_gate(monkeypatch, tmp_path):
     monkeypatch.setattr(sys, "argv", ["correctness", "--revision", "unit-test-only",
         "--output", str(tmp_path / "unused.json"), "--diagnostic-fp32"])
@@ -142,23 +198,30 @@ def test_fp32_cannot_silently_replace_the_default_gate(monkeypatch, tmp_path):
     assert not (tmp_path / "unused.json").exists()
 
 
-def test_fp32_control_promotes_only_the_loaded_fp16_parameter_values(monkeypatch, tmp_path):
+@pytest.mark.parametrize("head_only", [False, True])
+def test_precision_control_preserves_loaded_parameter_values_and_cleans_hooks(monkeypatch, tmp_path, head_only):
     model = torch.nn.Linear(2, 2, bias=False).half()
     original_values = model.weight.detach().float().clone()
     model.config = SimpleNamespace(model_type="qwen2", _commit_hash="unit-test-only",
                                    _attn_implementation="sdpa", max_position_embeddings=2048)
     tokenizer = SimpleNamespace(pad_token_id=0)
+    model.get_output_embeddings = lambda: model
     calls = []
     def load(*args, **kwargs):
         calls.append(kwargs)
         return model, tokenizer
     def check(*args):
-        assert model.weight.dtype == torch.float32
-        assert torch.equal(model.weight, original_values)
+        assert model.weight.dtype == (torch.float16 if head_only else torch.float32)
+        assert torch.equal(model.weight.float(), original_values)
+        assert len(model._forward_hooks) == int(head_only)
+        if head_only:
+            hidden = torch.ones(1, 2, dtype=torch.float16)
+            assert torch.equal(model(hidden), torch.nn.functional.linear(hidden.float(), original_values))
         raise RuntimeError("synthetic stop before GPU inference")
     output = tmp_path / "control.json"
     monkeypatch.setattr(sys, "argv", ["correctness", "--revision", "unit-test-only", "--output", str(output),
-        "--numerical-experiment", "math-full-reduction", "--diagnostic-fp32"])
+        "--numerical-experiment", "math-full-reduction",
+        "--diagnostic-fp32-head" if head_only else "--diagnostic-fp32"])
     monkeypatch.setattr(correctness, "source_provenance", lambda: {"source_commit": "synthetic-unit-only"})
     monkeypatch.setattr(correctness, "environment", lambda: {"synthetic_unit_only": True})
     monkeypatch.setattr(correctness, "numerical_settings", lambda: {})
@@ -174,7 +237,10 @@ def test_fp32_control_promotes_only_the_loaded_fp16_parameter_values(monkeypatch
     assert calls[0]["dtype"] == "float16" and calls[0]["attn_implementation"] == "sdpa"
     report = json.loads(output.read_text())
     assert report["status"] == "fail" and report["experiment_only"]
-    assert report["dtype"] == "float32" and report["promote_fp16_weights_for_control"]
+    assert report["dtype"] == ("float16" if head_only else "float32")
+    assert report["promote_fp16_weights_for_control"] == (not head_only)
+    assert report["diagnostic_fp32_head"] == head_only
+    assert not model._forward_hooks
 
 
 def test_one_cell_numerics_probe_is_syntax_valid_and_offline():
@@ -183,4 +249,4 @@ def test_one_cell_numerics_probe_is_syntax_valid_and_offline():
     assert len(cells) == 1
     compile(cells[0], "numerics-probe-cell", "exec")
     assert 'HF_HUB_OFFLINE="1"' in cells[0] and "pip install" not in cells[0]
-    assert '"--fp32-control"' in cells[0]
+    assert '"--fp32-head-control"' in cells[0]

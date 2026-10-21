@@ -90,8 +90,44 @@ cached weights. It can use more memory/time and may fail; partial reports are
 exported. The ordinary correctness command still defaults to FP16. Explicit
 FP32 is permitted only alongside the diagnostic math policy, recorded in its
 report, and rejected by the benchmark gate. No automatic policy selection or
-precision conversion in the production runtime is introduced. Real T4
-execution of this FP32 control is pending user execution.
+precision conversion in the production runtime is introduced. The returned
+FP32 control is recorded below.
+
+## Returned FP32 control and narrower projection experiment
+
+The returned `fp32-control-20261021T123720551114Z-2af3282f` run from `c4b18e2`
+passed all 24 independent-vs-batched outputs at each of capacities 1, 2 and 4.
+All 24 real loopback SSE requests matched their references; their 1,760
+generated token IDs exactly matched the concatenated recorded arrival events.
+The ordinary HTTP, zero-budget/no-forward, forced-EOS and changing-cohort
+checks passed too. All three archive-manifest hashes and 39 source hashes
+matched. This establishes precision sensitivity on this fixed workload, not
+the exact offending operation or a passed FP16 target. It is not GPU
+performance evidence or public deployment verification.
+
+`probe_numerics.py --fp32-head-control` narrows the next experiment to the final
+vocabulary projection. It retains math-only SDPA, all FP16 model parameters,
+FP16 transformer hidden states and FP16 caches. A diagnostic Linear forward
+hook recomputes only the final projection from FP32 copies of those same
+FP16 hidden states and weights; greedy selection uses its FP32 logits. The
+native FP16 head forward still executes first, so this deliberately redundant
+implementation is not suitable for timing. No tokens are substituted and
+no tolerance or special near-tie rule is introduced.
+
+The hook does not mutate or convert shared weights: Qwen can tie its output
+head to the input embedding. Calling `head.float()` would also affect that
+shared parameter; this experiment explicitly avoids it. The report records
+parameter dtypes, the projection policy, and separate diagnostic flags. Both
+independent and batched decoding use the same mixed-compute policy. All
+original prompts, budgets, capacities and HTTP/SSE gates remain unchanged.
+
+This is **mixed precision**, not a pure-FP16 correctness pass. Passing would
+only motivate a separately reviewed stability policy; failing would show that
+changing this projection alone is insufficient. Neither outcome isolates every
+possible source of roundoff. The production runtime, serving defaults and
+benchmark remain unchanged, and the benchmark rejects these reports even
+though the model's parameter dtype remains FP16. Real GPU execution of this
+projection control is pending. It performs no installation or model download.
 
 ## One cell in the existing T4 session
 
@@ -103,7 +139,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 import os, subprocess, uuid
 
-COMMIT = None  # Full FP32-control commit supplied in chat.
+COMMIT = None  # Full projection-control commit supplied in chat.
 ROOT = Path("/content/llm-inference-runtime-phase3")
 PRIOR_ID = "20261021T080713847703Z-2ec61482"
 PRIOR = ROOT / "benchmark_results/phase3-colab" / PRIOR_ID / "correctness.json"
@@ -120,9 +156,9 @@ if dirty.strip():
 subprocess.run(["git", "fetch", "origin"], cwd=ROOT, env=ENV, check=True)
 subprocess.run(["git", "checkout", "--detach", COMMIT or "origin/main"],
                cwd=ROOT, env=ENV, check=True)
-RUN_ID = "fp32-control-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ") + "-" + uuid.uuid4().hex[:8]
+RUN_ID = "fp32-head-control-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ") + "-" + uuid.uuid4().hex[:8]
 OUT = ROOT / "benchmark_results/phase3-colab" / RUN_ID
-command = [str(PYTHON), "-u", "scripts/phase3/probe_numerics.py", "--fp32-control",
+command = [str(PYTHON), "-u", "scripts/phase3/probe_numerics.py", "--fp32-head-control",
            "--prior", str(PRIOR), "--output", str(OUT)]
 with subprocess.Popen(command, cwd=ROOT, env=ENV, stdout=subprocess.PIPE,
                       stderr=subprocess.STDOUT, text=True, bufsize=1) as process:
