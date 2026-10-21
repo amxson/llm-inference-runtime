@@ -808,6 +808,7 @@ pre {
   margin-top: 16px;
 }
 .source-line {
+  overflow-wrap: anywhere;
   display: flex;
   gap: 16px;
   flex-wrap: wrap;

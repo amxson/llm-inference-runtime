@@ -81,7 +81,23 @@ const out = path.join(root, "frontend/public/data");
 await mkdir(out, { recursive: true });
 await writeFile(
   path.join(out, "benchmarks.json"),
-  JSON.stringify({ artifacts }),
+  JSON.stringify({ artifacts: artifacts.map((artifact) => {
+    if (artifact.name !== "gpu_final_comparison.json") return artifact;
+    // Keep raw requests/events/forward traces in the linked, unchanged JSON.
+    // The page needs aggregates, not many copies of the full GPU recording.
+    const { raw_repetitions, warmups, source_file_sha256, sessions, ...data } = artifact.data;
+    return { ...artifact, data: {
+      ...data,
+      presentation_projection: "GPU summary; full source available through Raw JSON",
+      measured_cohorts: raw_repetitions.length,
+      excluded_warmup_cohorts: warmups.length,
+      sessions: sessions.map(({ index, engine, command, environment }) => ({ index, engine, command, environment })),
+      aggregates: data.aggregates.map(({ comparison, ...row }) => {
+        const { outputs, ...summary } = comparison;
+        return { ...row, comparison: summary };
+      }),
+    } };
+  }) }),
 );
 for (const artifact of artifacts)
   await writeFile(

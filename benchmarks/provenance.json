@@ -18,6 +18,12 @@
     "source_sha256": "5768f92ba1c5d71ec20c1802212f616cf881e4b1b53009727988d14206d4c094"
   },
   {
+    "name": "gpu_final_comparison.json",
+    "source": "benchmarks/results/gpu_final_comparison.json",
+    "source_commit": "da219830f797d14c781a95d5ab9b0e865ba8f782",
+    "source_sha256": "e609163efa26fdaaafd87895b1f2cffe66d276c462dd631c9507a393efd72a6d"
+  },
+  {
     "name": "m13_serving_cpu.json",
     "source": "benchmarks/results/m13_serving_cpu.json",
     "source_commit": "ca6c170a49b4f0075150fa358e01221acd2c9bc1",

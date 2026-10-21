@@ -10,6 +10,7 @@ import { metric } from "../runtime/traceAdapter";
 import { FinalMeasurement } from "./FinalMeasurement";
 import { CacheLengthSweep } from "./CacheLengthSweep";
 import { CachedContinuousBenchmark } from "./CachedContinuousBenchmark";
+import { GpuComparison } from "./GpuComparison";
 
 function Source({ artifact }: { artifact: Artifact }) {
   return (
@@ -229,13 +230,16 @@ export function BenchmarksView() {
   return (
     <>
       <div className="page-heading">
-        <p className="eyebrow">Measurements / committed CPU experiments</p>
+        <p className="eyebrow">Measurements / committed experiments</p>
         <h1>Less repeated work. Measured, not assumed.</h1>
         <p>
           Build-time mirrors of committed JSON—not live benchmark measurements.
           Each figure links to its source and methodology.
         </p>
       </div>
+      {artifacts.find((a) => a.name === "gpu_final_comparison.json") && (
+        <GpuComparison artifact={artifacts.find((a) => a.name === "gpu_final_comparison.json")!} />
+      )}
       {artifacts.find((a) => a.name === "cache_length_sweep_cpu.json") ? (
         <CacheLengthSweep
           artifact={

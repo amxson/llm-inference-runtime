@@ -7,7 +7,7 @@
   "functions": {
     "api/index.py": {
       "maxDuration": 300,
-      "excludeFiles": "{frontend/**,tests/**,docs/**,scripts/**,assignment_review/**,benchmark_results/**,.env*,.venv/**}"
+      "excludeFiles": "{frontend/**,tests/**,docs/**,scripts/**,assignment_review/**,benchmark_results/**,benchmarks/results/gpu_final_comparison.json,.env*,.venv/**}"
     }
   },
   "rewrites": [

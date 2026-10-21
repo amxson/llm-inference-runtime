@@ -45,6 +45,22 @@ export function ArchitectureView() {
         time.
       </p>
       <section className="instrument-section">
+        <h2>Model-specific execution, shared scheduler</h2>
+        <p>
+          GPT-2/distilgpt2 and full-attention Qwen2 use a small forward-input
+          adapter. Qwen drops GPT-2 token-type inputs, derives rotary position
+          IDs from each row’s logical mask, and keeps only the final-position
+          logits during token loops. Cache ownership, collation/splitting,
+          admission and SSE remain in the same engine—not separate model schedulers.
+        </p>
+        <p className="caption">
+          The recorded Qwen/T4 experiment is separate from the public CPU
+          Playground and its CPU replay recording. The adapter targets the
+          inspected Transformers API and full-attention DynamicCache; it does
+          not establish compatibility with arbitrary model/cache families.
+        </p>
+      </section>
+      <section className="instrument-section">
         <div className="section-title">
           <h2>Live HTTP / cached continuous greedy</h2>
           <span className="caption">

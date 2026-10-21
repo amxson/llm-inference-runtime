@@ -1,4 +1,10 @@
 import { vi } from "vitest";
+import { readFileSync } from "node:fs";
+
+test("recorded GPU evidence stays static rather than bloating the public CPU function", () => {
+  const config = JSON.parse(readFileSync("../vercel.json", "utf8"));
+  expect(config.functions["api/index.py"].excludeFiles).toContain("benchmarks/results/gpu_final_comparison.json");
+});
 
 afterEach(() => {
   vi.unstubAllEnvs();

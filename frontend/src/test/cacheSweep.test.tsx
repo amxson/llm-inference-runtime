@@ -52,7 +52,7 @@ test("parity failure suppresses the entire sweep ratio table", () => {
   expect(screen.queryByRole("table")).not.toBeInTheDocument();
 });
 
-test("benchmark page leads with the sweep and retains historical anomalies", async () => {
+test("benchmark page leads with the GPU result, then sweep, and retains historical anomalies", async () => {
   const bundle = JSON.parse(
     readFileSync("public/data/benchmarks.json", "utf8"),
   );
@@ -65,7 +65,8 @@ test("benchmark page leads with the sweep and retains historical anomalies", asy
     name: "KV cache / generation-length sweep",
   });
   const headings = screen.getAllByRole("heading", { level: 2 });
-  expect(headings[0]).toHaveTextContent("KV cache / generation-length sweep");
+  expect(headings[0]).toHaveTextContent("Same model, same GPU, different engine design.");
+  expect(headings[1]).toHaveTextContent("KV cache / generation-length sweep");
   expect(
     screen.getByRole("heading", {
       name: "Exploratory serving / concurrency result",

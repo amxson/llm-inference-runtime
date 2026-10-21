@@ -150,7 +150,7 @@ export function App() {
             href={`${projectUrl}/tree/${fixture.engine_commit}`}
             className="mono"
           >
-            engine {fixture.engine_commit.slice(0, 7)}
+            replay source {fixture.engine_commit.slice(0, 7)}
           </a>
           <span>Trace / runtime instruments</span>
         </div>
