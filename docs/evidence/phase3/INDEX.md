@@ -68,3 +68,17 @@ success or a caught failure. Unit tests verify fail-fast behavior, pin rejection
 and notebook syntax/documentation equivalence. Real T4 execution is pending.
 After the bootstrap/launcher correction, the local Python suite passed all 203
 tests; compilation and diff whitespace checks also passed.
+
+## Returned GPU correctness run
+
+The user supplied `phase3-colab-20261021T080713847703Z-2ec61482.zip` from source
+`e699cd8`. Its 35 manifest digests and 37 source-file digests matched. The
+isolated stacks and FP16 CUDA checks passed, as did 203 tests on Colab. Actual
+Qwen FP16 GPU outputs matched all 24 references at capacity 1, but differed for
+two requests at capacity 2. The gate stopped before GPU HTTP/SSE, vLLM inference
+or benchmark measurement. No performance artifact is available to publish.
+
+[The targeted parity diagnostic](../../phase3-parity-diagnostic.md) reuses the
+original installed runtime and cached checkpoint offline, records actual
+cohort/logit/cache comparisons, and exports JSON only. It makes no runtime
+change or relaxed correctness policy; GPU diagnosis remains pending execution.
