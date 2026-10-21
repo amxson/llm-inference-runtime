@@ -1,0 +1,2120 @@
+{
+  "utc": "2026-10-21T15:04:02.508Z",
+  "base_url": "https://llm-inference-runtime.vercel.app",
+  "engine": "continuous_cached_greedy",
+  "serving_cache": true,
+  "intermediate": {
+    "status": "running",
+    "output": "Output the capital of the French Republic. The capital of France is the capitaltoken 3139 · index 14 · request r1 · worker step — ms (dispatch + forward)"
+  },
+  "events": [
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 1,
+        "token_text": " the",
+        "generated_text": " the",
+        "tick": 1,
+        "phase": "prefill"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 3139,
+        "token_index": 2,
+        "token_text": " capital",
+        "generated_text": " the capital",
+        "tick": 2,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 286,
+        "token_index": 3,
+        "token_text": " of",
+        "generated_text": " the capital of",
+        "tick": 3,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 4,
+        "token_text": " the",
+        "generated_text": " the capital of the",
+        "tick": 4,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 4141,
+        "token_index": 5,
+        "token_text": " French",
+        "generated_text": " the capital of the French",
+        "tick": 5,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 2066,
+        "token_index": 6,
+        "token_text": " Republic",
+        "generated_text": " the capital of the French Republic",
+        "tick": 6,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 13,
+        "token_index": 7,
+        "token_text": ".",
+        "generated_text": " the capital of the French Republic.",
+        "tick": 7,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 383,
+        "token_index": 8,
+        "token_text": " The",
+        "generated_text": " the capital of the French Republic. The",
+        "tick": 8,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 3139,
+        "token_index": 9,
+        "token_text": " capital",
+        "generated_text": " the capital of the French Republic. The capital",
+        "tick": 9,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 286,
+        "token_index": 10,
+        "token_text": " of",
+        "generated_text": " the capital of the French Republic. The capital of",
+        "tick": 10,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 4881,
+        "token_index": 11,
+        "token_text": " France",
+        "generated_text": " the capital of the French Republic. The capital of France",
+        "tick": 11,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 318,
+        "token_index": 12,
+        "token_text": " is",
+        "generated_text": " the capital of the French Republic. The capital of France is",
+        "tick": 12,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 13,
+        "token_text": " the",
+        "generated_text": " the capital of the French Republic. The capital of France is the",
+        "tick": 13,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 3139,
+        "token_index": 14,
+        "token_text": " capital",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital",
+        "tick": 14,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 286,
+        "token_index": 15,
+        "token_text": " of",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of",
+        "tick": 15,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 16,
+        "token_text": " the",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the",
+        "tick": 16,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 4141,
+        "token_index": 17,
+        "token_text": " French",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French",
+        "tick": 17,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 2066,
+        "token_index": 18,
+        "token_text": " Republic",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic",
+        "tick": 18,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 13,
+        "token_index": 19,
+        "token_text": ".",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic.",
+        "tick": 19,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 383,
+        "token_index": 20,
+        "token_text": " The",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The",
+        "tick": 20,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 3139,
+        "token_index": 21,
+        "token_text": " capital",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital",
+        "tick": 21,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 286,
+        "token_index": 22,
+        "token_text": " of",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of",
+        "tick": 22,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 4881,
+        "token_index": 23,
+        "token_text": " France",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France",
+        "tick": 23,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 318,
+        "token_index": 24,
+        "token_text": " is",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is",
+        "tick": 24,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 25,
+        "token_text": " the",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the",
+        "tick": 25,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 3139,
+        "token_index": 26,
+        "token_text": " capital",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital",
+        "tick": 26,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 286,
+        "token_index": 27,
+        "token_text": " of",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of",
+        "tick": 27,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 28,
+        "token_text": " the",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the",
+        "tick": 28,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 4141,
+        "token_index": 29,
+        "token_text": " French",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French",
+        "tick": 29,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 2066,
+        "token_index": 30,
+        "token_text": " Republic",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic",
+        "tick": 30,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 13,
+        "token_index": 31,
+        "token_text": ".",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.",
+        "tick": 31,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 383,
+        "token_index": 32,
+        "token_text": " The",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The",
+        "tick": 32,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 3139,
+        "token_index": 33,
+        "token_text": " capital",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital",
+        "tick": 33,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 286,
+        "token_index": 34,
+        "token_text": " of",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of",
+        "tick": 34,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 4881,
+        "token_index": 35,
+        "token_text": " France",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France",
+        "tick": 35,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 318,
+        "token_index": 36,
+        "token_text": " is",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is",
+        "tick": 36,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 37,
+        "token_text": " the",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the",
+        "tick": 37,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 3139,
+        "token_index": 38,
+        "token_text": " capital",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital",
+        "tick": 38,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 286,
+        "token_index": 39,
+        "token_text": " of",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of",
+        "tick": 39,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 262,
+        "token_index": 40,
+        "token_text": " the",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the",
+        "tick": 40,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 4141,
+        "token_index": 41,
+        "token_text": " French",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French",
+        "tick": 41,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 2066,
+        "token_index": 42,
+        "token_text": " Republic",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic",
+        "tick": 42,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 13,
+        "token_index": 43,
+        "token_text": ".",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.",
+        "tick": 43,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 44,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n",
+        "tick": 44,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 45,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n",
+        "tick": 45,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 46,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n",
+        "tick": 46,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 47,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n",
+        "tick": 47,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 48,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n",
+        "tick": 48,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 49,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n",
+        "tick": 49,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 50,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n",
+        "tick": 50,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 51,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n",
+        "tick": 51,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 52,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n",
+        "tick": 52,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 53,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n",
+        "tick": 53,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 54,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 54,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 55,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 55,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 56,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 56,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 57,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 57,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 58,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 58,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 59,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 59,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 60,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 60,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 61,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 61,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 62,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 62,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 63,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 63,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 64,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 64,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 65,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 65,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 66,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 66,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 67,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 67,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 68,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 68,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 69,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 69,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 70,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 70,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 71,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 71,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 72,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 72,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 73,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 73,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 74,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 74,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 75,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 75,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 76,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 76,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 77,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 77,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 78,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 78,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 79,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 79,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 80,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 80,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 81,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 81,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 82,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 82,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 83,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 83,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 84,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 84,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 85,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 85,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 86,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 86,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 87,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 87,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 88,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 88,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 89,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 89,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 90,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 90,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 91,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 91,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 92,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 92,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 93,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 93,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 94,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 94,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 95,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 95,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 96,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 96,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 97,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 97,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 98,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 98,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 99,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 99,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 100,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 100,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 101,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 101,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 102,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 102,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 103,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 103,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 104,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 104,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 105,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 105,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 106,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 106,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 107,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 107,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 108,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 108,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 109,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 109,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 110,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 110,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 111,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 111,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 112,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 112,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 113,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 113,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 114,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 114,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 115,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 115,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 116,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 116,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 117,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 117,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 118,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 118,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 119,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 119,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 120,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 120,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 121,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 121,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 122,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 122,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 123,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 123,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 124,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 124,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 125,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 125,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 126,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 126,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 127,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 127,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "token",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "token_id": 198,
+        "token_index": 128,
+        "token_text": "\n",
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "tick": 128,
+        "phase": "decode"
+      }
+    },
+    {
+      "event": "done",
+      "data": {
+        "request_id": "a153a06383ab48a4a350b78891ebb255",
+        "prompt": "The capital of France is",
+        "status": "finished",
+        "prompt_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318
+        ],
+        "generated_token_ids": [
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198
+        ],
+        "full_token_ids": [
+          464,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          383,
+          3139,
+          286,
+          4881,
+          318,
+          262,
+          3139,
+          286,
+          262,
+          4141,
+          2066,
+          13,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198,
+          198
+        ],
+        "generated_text": " the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "full_text": "The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic. The capital of France is the capital of the French Republic.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "generated_token_count": 128,
+        "model_execution_count": 128,
+        "stop_reason": "max_new_tokens"
+      }
+    }
+  ],
+  "network_chunks": [
+    {
+      "arrival_ms": 69.6000000005588,
+      "bytes": 185
+    },
+    {
+      "arrival_ms": 130.5,
+      "bytes": 391
+    },
+    {
+      "arrival_ms": 146.79999999981374,
+      "bytes": 199
+    },
+    {
+      "arrival_ms": 194,
+      "bytes": 431
+    },
+    {
+      "arrival_ms": 256.20000000018626,
+      "bytes": 212
+    },
+    {
+      "arrival_ms": 286.5,
+      "bytes": 220
+    },
+    {
+      "arrival_ms": 333.1000000005588,
+      "bytes": 465
+    },
+    {
+      "arrival_ms": 409.90000000037253,
+      "bytes": 486
+    },
+    {
+      "arrival_ms": 456.20000000018626,
+      "bytes": 247
+    },
+    {
+      "arrival_ms": 486.70000000018626,
+      "bytes": 260
+    },
+    {
+      "arrival_ms": 554.2000000001863,
+      "bytes": 257
+    },
+    {
+      "arrival_ms": 579.1000000005588,
+      "bytes": 535
+    },
+    {
+      "arrival_ms": 628.5,
+      "bytes": 284
+    },
+    {
+      "arrival_ms": 656.2999999998137,
+      "bytes": 275
+    },
+    {
+      "arrival_ms": 686.2000000001863,
+      "bytes": 283
+    },
+    {
+      "arrival_ms": 732.5,
+      "bytes": 296
+    },
+    {
+      "arrival_ms": 763.1000000005588,
+      "bytes": 293
+    },
+    {
+      "arrival_ms": 1573.7000000001863,
+      "bytes": 8194
+    },
+    {
+      "arrival_ms": 1821.4000000003725,
+      "bytes": 2877
+    },
+    {
+      "arrival_ms": 2085.9000000003725,
+      "bytes": 2975
+    },
+    {
+      "arrival_ms": 2176.2999999998137,
+      "bytes": 868
+    },
+    {
+      "arrival_ms": 2255.600000000559,
+      "bytes": 1317
+    },
+    {
+      "arrival_ms": 2332.5,
+      "bytes": 888
+    },
+    {
+      "arrival_ms": 2626.9000000003725,
+      "bytes": 3171
+    },
+    {
+      "arrival_ms": 2688.4000000003725,
+      "bytes": 461
+    },
+    {
+      "arrival_ms": 2704.2000000001863,
+      "bytes": 463
+    },
+    {
+      "arrival_ms": 2735.2000000001863,
+      "bytes": 465
+    },
+    {
+      "arrival_ms": 2766.7999999998137,
+      "bytes": 467
+    },
+    {
+      "arrival_ms": 2937.9000000003725,
+      "bytes": 1888
+    },
+    {
+      "arrival_ms": 3001.2999999998137,
+      "bytes": 477
+    },
+    {
+      "arrival_ms": 3016.7000000001863,
+      "bytes": 479
+    },
+    {
+      "arrival_ms": 3110.4000000003725,
+      "bytes": 481
+    },
+    {
+      "arrival_ms": 3125.9000000003725,
+      "bytes": 968
+    },
+    {
+      "arrival_ms": 3173.100000000559,
+      "bytes": 976
+    },
+    {
+      "arrival_ms": 3267.2999999998137,
+      "bytes": 984
+    },
+    {
+      "arrival_ms": 3359.4000000003725,
+      "bytes": 992
+    },
+    {
+      "arrival_ms": 3374.7000000001863,
+      "bytes": 499
+    },
+    {
+      "arrival_ms": 3405.9000000003725,
+      "bytes": 501
+    },
+    {
+      "arrival_ms": 3421.4000000003725,
+      "bytes": 503
+    },
+    {
+      "arrival_ms": 3452.2000000001863,
+      "bytes": 505
+    },
+    {
+      "arrival_ms": 3482.9000000003725,
+      "bytes": 507
+    },
+    {
+      "arrival_ms": 3515.2000000001863,
+      "bytes": 509
+    },
+    {
+      "arrival_ms": 3561.9000000003725,
+      "bytes": 511
+    },
+    {
+      "arrival_ms": 3624.7999999998137,
+      "bytes": 1032
+    },
+    {
+      "arrival_ms": 3641.2000000001863,
+      "bytes": 519
+    },
+    {
+      "arrival_ms": 3702.5,
+      "bytes": 521
+    },
+    {
+      "arrival_ms": 3733.7999999998137,
+      "bytes": 523
+    },
+    {
+      "arrival_ms": 3749.2000000001863,
+      "bytes": 525
+    },
+    {
+      "arrival_ms": 3796.2999999998137,
+      "bytes": 527
+    },
+    {
+      "arrival_ms": 3827.7999999998137,
+      "bytes": 529
+    },
+    {
+      "arrival_ms": 3858.2999999998137,
+      "bytes": 531
+    },
+    {
+      "arrival_ms": 3905.4000000003725,
+      "bytes": 533
+    },
+    {
+      "arrival_ms": 3936,
+      "bytes": 535
+    },
+    {
+      "arrival_ms": 3950.9000000003725,
+      "bytes": 537
+    },
+    {
+      "arrival_ms": 3997.4000000003725,
+      "bytes": 1080
+    },
+    {
+      "arrival_ms": 4059.2000000001863,
+      "bytes": 543
+    },
+    {
+      "arrival_ms": 4105.299999999814,
+      "bytes": 545
+    },
+    {
+      "arrival_ms": 4135.600000000559,
+      "bytes": 547
+    },
+    {
+      "arrival_ms": 4258.5,
+      "bytes": 2208
+    },
+    {
+      "arrival_ms": 4334.200000000186,
+      "bytes": 1677
+    },
+    {
+      "arrival_ms": 4395.799999999814,
+      "bytes": 563
+    },
+    {
+      "arrival_ms": 4458.4000000003725,
+      "bytes": 565
+    },
+    {
+      "arrival_ms": 4474,
+      "bytes": 567
+    },
+    {
+      "arrival_ms": 4546.9000000003725,
+      "bytes": 3633
+    }
+  ],
+  "request_id": "a153a06383ab48a4a350b78891ebb255",
+  "console_errors": [],
+  "failed_requests": [],
+  "responses": [
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/generate/stream",
+      "status": 200
+    },
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+      "status": 200
+    },
+    {
+      "url": "https://llm-inference-runtime.vercel.app/api/runtime/snapshot",
+      "status": 200
+    }
+  ],
+  "observation": "Cloned actual frontend response; returned original unchanged. No mock inference or status; not a latency benchmark.",
+  "replay_api_requests": [],
+  "replay_interaction_passed": true,
+  "intentionally_cancelled_polls": []
+}

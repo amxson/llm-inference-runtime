@@ -72,16 +72,63 @@ qualified measurement, not a rigorously power-controlled causal result. The
 [design/results note](cached-continuous-batching.md#cpu-comparison) and raw runs
 retain that caveat. No memory savings, GPU behavior or broad model compatibility
 were measured. There is still no paging, memory-aware eviction or distributed
-scheduler. Phase 3 has not started.
+scheduler. The final GPU result below is separate evidence.
 
 ## Why this is not vLLM or a production replacement
 
-No physical KV paging, custom/fused attention kernels, distributed/tensor-parallel executor, CUDA graphs or memory-aware admission/eviction/swapping exists here. Cached continuous batching uses explicit padded copies, not a production cache layout. HTTP has no authentication, OpenAI API compatibility, durable queue, delivery acknowledgments, multi-process coordination or validated backpressure policy. GPU performance was not measured; serving samples are small/CPU-specific.
+No physical KV paging, custom/fused attention kernels, distributed/tensor-parallel executor, CUDA graphs or memory-aware admission/eviction/swapping exists here. Cached continuous batching uses explicit padded copies, not a production cache layout. HTTP has no authentication, OpenAI API compatibility, durable queue, delivery acknowledgments, multi-process coordination or validated backpressure policy. GPU measurements cover one small model/workload, not production capacity.
 
 Production engines additionally need integrated cache layouts/kernels, high-utilization prompt/decode scheduling, overload controls, cancellation/backpressure guarantees, observability, security, fault handling, broad model compatibility, and representative hardware/performance/quality validation. Those require engineering and measurement, not renaming bookkeeping classes.
 
-## What to build next with more time
+## Historical scope limits
 
-Memory-aware admission and actual memory measurements remain possible extensions, not implemented features. Evaluate quantization quality/migrate deprecated APIs; choose a better draft and implement cache rollback before expecting speculative acceleration. Serving authentication, delivery/backpressure policy and multi-process coordination remain open.
+The earlier CPU-only review left GPU memory measurement open; Phase 3 now records allocator statistics and sampled process memory below. Memory-aware admission/eviction, quantization quality/API migration, a better speculative draft/cache rollback, authentication, delivery/backpressure policy and multi-process coordination remain outside the completed scope.
 
-These are proposals only. M17 finalizes documentation/results; no stretch mechanisms are started.
+These are limitations, not a new roadmap. No stretch mechanisms are started.
+
+## GPU / production-engine comparison
+
+Qwen2.5-0.5B ran on the existing cached engine without redesigning its scheduler.
+The model-input boundary removes GPT-2 segment IDs, supplies logical per-row
+rotary positions, respects generation EOS lists and requests final-position
+logits for token loops. Transformers 5.17 Qwen2 no longer takes `cache_position`.
+Full-attention DynamicCache is supported; sliding-window caches are rejected.
+Masked physical padding is not logical history.
+
+The hard failure was exact FP16 greedy parity across batch shapes. The fixed
+workload passed capacity one but not two. Diagnostics verified input/mask/position
+invariants and bitwise-exact cache collation/splitting at the mismatch frames;
+different execution shapes changed near-tied token rankings. Math-only attention,
+full reductions and a FP32 vocabulary head did not establish FP16 correctness.
+That supports numerical sensitivity, not proof of one faulty kernel or universal
+stability. Failed outputs remain in the evidence, not excluded from the workload.
+
+Amar explicitly approved FP32 for both engines. A fresh native-FP32 load of the
+original checkpoint—not promoted rounded FP16 weights—passed all 24 prompts at
+capacities 1/2/4, eight manual checks, dynamic admission, zero/EOS and HTTP/SSE.
+The final run completed 60 measured cohorts and 1,440 requests without failure.
+All internal reference IDs and 720 paired cross-engine outputs matched. This
+establishes this workload, not a general equivalence theorem.
+
+Unmodified vLLM 0.17.1 was faster: median generated-token throughput was
+38.03/70.94/126.97 tok/s versus our 29.36/49.06/76.78 at concurrency 1/2/4,
+ratios 1.30×/1.45×/1.65×. Our median request latency increased with concurrency;
+greater throughput did not mean lower client latency. At capacity one our median
+TTFT was lower (37.19 vs 54.74 ms), despite lower overall throughput.
+
+Known differences: our Python scheduler observes forwards and copies compact K/V
+into padded batches every tick; vLLM has an integrated executor and kernel/cache
+layout, including its supported Triton attention path. These plausibly contribute
+to the gap, but timing alone does not isolate their costs. CUDA graphs/compilation
+and prefix caching were disabled in vLLM here, so cannot explain its measured
+advantage. FP32 on a T4 is not a best-performance production profile. Both engines
+use the same Torch/CUDA wheels but different Transformers versions. vLLM receives
+pretokenized IDs; ours tokenizes HTTP text. Request tails pool correlated samples;
+external VRAM sampling is not an exact comparable peak. Only our allocator peaks
+are reported as allocated/reserved, not physical VRAM savings.
+
+Closing the remaining gap would require increasingly specialized layouts,
+memory/kernel work, profiling and possibly distributed execution. This project
+stops here: it demonstrates core runtime mechanisms and measures them against a
+production engine. There is no Phase 4. Public CPU serving stays separate from
+the recorded T4 experiment. [Raw data and methods](evidence/phase3/INDEX.md).

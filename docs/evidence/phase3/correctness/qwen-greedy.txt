@@ -1,0 +1,5 @@
+Derived reading guide, not a new execution log.
+Source: correctness.json (native FP32, real Tesla T4, measured source 14700d4).
+The manual_greedy section records eight explicit-forward checks.
+The forward check records finite float32 logits with shape [1,5,151936].
+Original stdout is qwen-correctness.txt; token IDs and outputs are in correctness.json.

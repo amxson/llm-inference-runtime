@@ -2,7 +2,7 @@
 
 The runtime contains several explicit execution paths, not one fully optimized engine. Transformers supplies model/attention operations; this repository supplies token loops, request state, scheduling/batching, serving ownership, capacity modeling and measurement. No path uses `model.generate()`.
 
-## Model forward policy (Phase 3 preparation)
+## Model forward policy: GPT-2 and Qwen2
 
 `model_adapter.py` preserves GPT-2 inputs and adds a focused Qwen2 policy: no
 token-type embeddings, logical per-row RoPE positions, final-position logits,
@@ -17,9 +17,14 @@ This was inspected against installed Transformers 5.17.0: Qwen2's forward accept
 `position_ids` and `past_key_values`; it has no explicit `cache_position` argument.
 RoPE is applied before cache insertion. A cached decode therefore uses each
 row's logical history length, not the padded batch width. Tiny randomly
-initialized Qwen2/GQA CPU tests exercise these mechanics; they are **not** proof
-that the real Qwen2.5-0.5B checkpoint works on a T4. That execution and its exact
-internal greedy parity gate remain pending the Colab run.
+initialized Qwen2/GQA CPU tests exercise these mechanics. Separately, the native
+FP32 Qwen2.5-0.5B recording on a real T4 passes exact cached/continuous token
+parity for all 24 fixed prompts at capacities 1/2/4, manual checks, dynamic
+admission and HTTP/SSE. This proves that workload, not arbitrary-model support.
+The original FP16 failures remain recorded; FP32 was explicitly approved for
+both compared engines. Public Vercel inference and Replay remain CPU/distilgpt2,
+separate from the GPU measurements. Full-forward inspection retains full
+logits; only explicit token loops request final-position logits.
 
 ## HTTP data path (cached continuous greedy by default)
 

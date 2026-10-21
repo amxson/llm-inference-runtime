@@ -1,0 +1,5 @@
+
+> llm-runtime-trace@1.0.0 audit:design
+> node scripts/design-audit.mjs
+
+Trace static design audit passed: 11 visual source files; approved palette, weights, radii, shadows; no decorative UI/icon/chart dependency.

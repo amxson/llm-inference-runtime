@@ -1,0 +1,1328 @@
+{
+  "schema_version": 1,
+  "benchmark": "gpu_final_comparison",
+  "final_eligible": true,
+  "started_at_utc": "2026-10-21T13:25:12.099944+00:00",
+  "source_commit": "14700d46569f2889d9b3ed110cbccf1b293c6c38",
+  "model": "Qwen/Qwen2.5-0.5B",
+  "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "dtype": "float32",
+  "execution_policy": "fp32-math",
+  "engine_configuration": {
+    "dtype": "float32",
+    "attention": "sdpa",
+    "vllm_dtype": "float32",
+    "vllm_attention": "TRITON_ATTN",
+    "vllm_eager": true
+  },
+  "correctness_evidence": {
+    "file": "correctness.json",
+    "status": "pass"
+  },
+  "hardware": {
+    "recorded_at_utc": "2026-10-21T13:20:28.084158+00:00",
+    "python": "3.13.15",
+    "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+    "cpu": "x86_64",
+    "versions": {
+      "torch": "2.10.0+cu129",
+      "transformers": "5.17.0",
+      "vllm": null,
+      "fastapi": "0.156.6",
+      "uvicorn": "0.54.0",
+      "httpx": "0.28.1",
+      "flashinfer-python": null
+    },
+    "system_ram_bytes": 13605830656,
+    "cuda_runtime": "12.9",
+    "cuda_available": true,
+    "gpu_count": 1,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "total_vram_bytes": 15637086208,
+        "compute_capability": [
+          7,
+          5
+        ]
+      }
+    ],
+    "nvidia_smi": {
+      "command": [
+        "nvidia-smi"
+      ],
+      "returncode": 0,
+      "stdout": "Wed Oct 21 13:20:28 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   44C    P8             13W /   70W |       3MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+      "stderr": ""
+    },
+    "nvcc": {
+      "command": [
+        "nvcc",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+      "stderr": ""
+    },
+    "gpu_observation": {
+      "command": [
+        "nvidia-smi",
+        "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+        "--format=csv,noheader,nounits"
+      ],
+      "returncode": 0,
+      "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 44, 18.75\n",
+      "stderr": ""
+    },
+    "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."
+  },
+  "workload": [
+    {
+      "id": "request-00",
+      "prompt": "The capital of France is",
+      "prompt_token_ids": [
+        785,
+        6722,
+        315,
+        9625,
+        374
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-01",
+      "prompt": "An operating system manages",
+      "prompt_token_ids": [
+        2082,
+        10350,
+        1849,
+        28872
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-02",
+      "prompt": "In the early morning, the city",
+      "prompt_token_ids": [
+        641,
+        279,
+        4124,
+        6556,
+        11,
+        279,
+        3283
+      ],
+      "max_new_tokens": 128
+    },
+    {
+      "id": "request-03",
+      "prompt": "A computer network connects",
+      "prompt_token_ids": [
+        32,
+        6366,
+        3922,
+        33061
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-04",
+      "prompt": "Explain why a database index can speed up a query, and describe a situation where it does not help.",
+      "prompt_token_ids": [
+        840,
+        20772,
+        3170,
+        264,
+        4625,
+        1922,
+        646,
+        4628,
+        705,
+        264,
+        3239,
+        11,
+        323,
+        7512,
+        264,
+        6534,
+        1380,
+        432,
+        1558,
+        537,
+        1492,
+        13
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-05",
+      "prompt": "def fibonacci(n):\n    if n < 2:\n        return n\n    return",
+      "prompt_token_ids": [
+        750,
+        75698,
+        1445,
+        982,
+        262,
+        421,
+        308,
+        366,
+        220,
+        17,
+        510,
+        286,
+        470,
+        308,
+        198,
+        262,
+        470
+      ],
+      "max_new_tokens": 128
+    },
+    {
+      "id": "request-06",
+      "prompt": "The water cycle begins when",
+      "prompt_token_ids": [
+        785,
+        3015,
+        10775,
+        12033,
+        979
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-07",
+      "prompt": "A queue differs from a stack because",
+      "prompt_token_ids": [
+        32,
+        7177,
+        43542,
+        504,
+        264,
+        5611,
+        1576
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-08",
+      "prompt": "Write a short explanation of TCP retransmission for a backend developer who already understands HTTP.",
+      "prompt_token_ids": [
+        7985,
+        264,
+        2805,
+        16148,
+        315,
+        26656,
+        312,
+        1458,
+        2728,
+        369,
+        264,
+        19163,
+        15754,
+        879,
+        2669,
+        30769,
+        10130,
+        13
+      ],
+      "max_new_tokens": 128
+    },
+    {
+      "id": "request-09",
+      "prompt": "SELECT customer_id, COUNT(*) AS orders\nFROM orders\nGROUP BY",
+      "prompt_token_ids": [
+        4858,
+        6002,
+        842,
+        11,
+        23989,
+        28671,
+        5752,
+        10163,
+        198,
+        30093,
+        10163,
+        198,
+        41480,
+        7710
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-10",
+      "prompt": "Once upon a time, a traveler arrived at a quiet village. At the edge of the village stood",
+      "prompt_token_ids": [
+        12522,
+        5193,
+        264,
+        882,
+        11,
+        264,
+        62765,
+        11465,
+        518,
+        264,
+        11340,
+        14126,
+        13,
+        2411,
+        279,
+        6821,
+        315,
+        279,
+        14126,
+        14638
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-11",
+      "prompt": "The three primary colors of light are",
+      "prompt_token_ids": [
+        785,
+        2326,
+        6028,
+        7987,
+        315,
+        3100,
+        525
+      ],
+      "max_new_tokens": 128
+    },
+    {
+      "id": "request-12",
+      "prompt": "Consider a service with one worker and a bounded waiting queue. If arrivals exceed processing capacity for a sustained period,",
+      "prompt_token_ids": [
+        37175,
+        264,
+        2473,
+        448,
+        825,
+        11864,
+        323,
+        264,
+        61115,
+        8580,
+        7177,
+        13,
+        1416,
+        69047,
+        12488,
+        8692,
+        8654,
+        369,
+        264,
+        28659,
+        4168,
+        11
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-13",
+      "prompt": "class Counter:\n    def __init__(self):\n        self.value = 0\n\n    def increment(self):\n        self.value",
+      "prompt_token_ids": [
+        1040,
+        19735,
+        510,
+        262,
+        707,
+        1304,
+        2327,
+        3804,
+        721,
+        982,
+        286,
+        656,
+        2824,
+        284,
+        220,
+        15,
+        271,
+        262,
+        707,
+        16252,
+        1193,
+        982,
+        286,
+        656,
+        2824
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-14",
+      "prompt": "Bread dough rises because",
+      "prompt_token_ids": [
+        33,
+        878,
+        30352,
+        37168,
+        1576
+      ],
+      "max_new_tokens": 128
+    },
+    {
+      "id": "request-15",
+      "prompt": "The purpose of a unit test is",
+      "prompt_token_ids": [
+        785,
+        7428,
+        315,
+        264,
+        4982,
+        1273,
+        374
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-16",
+      "prompt": "Describe the tradeoff between storing a computed result and recomputing it on demand. Include both memory cost and invalidation.",
+      "prompt_token_ids": [
+        74785,
+        279,
+        6559,
+        1847,
+        1948,
+        27572,
+        264,
+        24182,
+        1102,
+        323,
+        37201,
+        628,
+        287,
+        432,
+        389,
+        7479,
+        13,
+        29734,
+        2176,
+        4938,
+        2783,
+        323,
+        8318,
+        367,
+        13
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-17",
+      "prompt": "function sum(values) {\n  let total = 0;\n  for (const value of values) {\n    total",
+      "prompt_token_ids": [
+        1688,
+        2629,
+        20103,
+        8,
+        341,
+        220,
+        1077,
+        2790,
+        284,
+        220,
+        15,
+        280,
+        220,
+        369,
+        320,
+        1024,
+        897,
+        315,
+        2750,
+        8,
+        341,
+        262,
+        2790
+      ],
+      "max_new_tokens": 128
+    },
+    {
+      "id": "request-18",
+      "prompt": "On a rainy afternoon, the library",
+      "prompt_token_ids": [
+        1925,
+        264,
+        62757,
+        13354,
+        11,
+        279,
+        6733
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-19",
+      "prompt": "In a relational database, a foreign key",
+      "prompt_token_ids": [
+        641,
+        264,
+        71183,
+        4625,
+        11,
+        264,
+        7214,
+        1376
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-20",
+      "prompt": "A request first waits in a queue, then receives service, and finally completes. Explain how queue time differs from service time.",
+      "prompt_token_ids": [
+        32,
+        1681,
+        1156,
+        46936,
+        304,
+        264,
+        7177,
+        11,
+        1221,
+        21189,
+        2473,
+        11,
+        323,
+        5499,
+        44595,
+        13,
+        81917,
+        1246,
+        7177,
+        882,
+        43542,
+        504,
+        2473,
+        882,
+        13
+      ],
+      "max_new_tokens": 128
+    },
+    {
+      "id": "request-21",
+      "prompt": "GET /items HTTP/1.1\nHost: example.test\nAccept: application/json\n\nThe server responds with",
+      "prompt_token_ids": [
+        3806,
+        608,
+        3615,
+        10130,
+        14,
+        16,
+        13,
+        16,
+        198,
+        9296,
+        25,
+        3110,
+        5958,
+        198,
+        16646,
+        25,
+        3766,
+        8931,
+        271,
+        785,
+        3538,
+        30580,
+        448
+      ],
+      "max_new_tokens": 32
+    },
+    {
+      "id": "request-22",
+      "prompt": "Photosynthesis converts",
+      "prompt_token_ids": [
+        31772,
+        73667,
+        32722
+      ],
+      "max_new_tokens": 64
+    },
+    {
+      "id": "request-23",
+      "prompt": "To debug a slow endpoint, first measure",
+      "prompt_token_ids": [
+        1249,
+        7390,
+        264,
+        6301,
+        14887,
+        11,
+        1156,
+        6629
+      ],
+      "max_new_tokens": 128
+    }
+  ],
+  "concurrencies": [
+    1,
+    2,
+    4
+  ],
+  "limitations": [
+    "Only one 0.5B model, GPU and fixed mixed workload; not a production capacity claim.",
+    "10 repetitions (smoke: fewer). Request percentiles pool correlated requests; not tail SLAs or confidence intervals.",
+    "ABBA model-residency sessions with rotated concurrency order reduce, not eliminate, thermal/order bias. No strict per-repetition engine alternation.",
+    "TTFT starts immediately before HTTP send, after client semaphore admission, and ends at first nonempty token-ID event. No internet latency.",
+    "HTTP latency includes serialization, queueing, tokenization/detokenization and terminal SSE delivery, not model load/startup/warmup.",
+    "vLLM receives the same pretokenized prompt IDs; our HTTP endpoint tokenizes text. This favors vLLM slightly and is explicitly not an identical preprocessing path.",
+    "Mean ITL = first-to-last token EVENT arrival span/(tokens-1). Bundled chunks limit per-token timing resolution; raw event sizes/times are retained.",
+    "Our server synchronizes CUDA at idle reset/stats boundaries. Both engines must deliver real token IDs to CPU before SSE delivery; client-side synchronize cannot synchronize another process.",
+    "PyTorch allocated/reserved peaks describe only our allocator. External nvidia-smi process rows are sampled every ~0.5s plus query cost, not exact peaks or allocator-equivalent metrics.",
+    "Runtime forward observation and bounded telemetry are included in its serving cost. vLLM uses its ordinary native server.",
+    "vLLM 0.17.1 uses Transformers <5; our adapter uses Transformers 5.17.0. Both use the same Torch/CUDA package set. Actual versions and server commands are recorded.",
+    "Cross-engine greedy divergence is recorded, not rejected; internal runtime/reference parity is mandatory.",
+    "EOS is honored. Different output lengths change throughput denominators; inspect raw generated-token counts.",
+    "Our logical BlockAllocator is not PagedAttention; actual compact cache collation copies K/V every decode tick.",
+    "User-approved FP32 comparison after repeated strict FP16 parity failures; this is NOT an FP16 performance result or a claim that FP16 was fixed.",
+    "Both engines load the original pinned checkpoint directly as FP32. Earlier promoted-FP16-weight controls cannot authorize this run.",
+    "Our attention is math-only SDPA. vLLM uses its unmodified TRITON_ATTN backend with --enforce-eager (CUDA graphs/compilation disabled); not a best-tuned production-engine claim."
+  ],
+  "aggregates": [
+    {
+      "concurrency": 1,
+      "runtime": {
+        "measured_repetitions": 10,
+        "successful_requests": 240,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 240,
+          "median": 2171.2372260008124,
+          "p50": 2171.2372260008124,
+          "p90": 4410.915124799067,
+          "p95": 4445.088398952066,
+          "max": 4764.034960000572
+        },
+        "ttft_ms": {
+          "count": 240,
+          "median": 37.19034000096144,
+          "p50": 37.19034000096144,
+          "p90": 43.19702449938631,
+          "p95": 46.98852144956616,
+          "max": 59.7960150007566
+        },
+        "mean_itl_ms": {
+          "count": 240,
+          "median": 33.946273452748414,
+          "p50": 33.946273452748414,
+          "p90": 34.96835956986096,
+          "p95": 35.453095808533625,
+          "max": 37.443389818112
+        },
+        "cohort_wall_time_ms": {
+          "count": 10,
+          "median": 59948.48641600038,
+          "p50": 59948.48641600038,
+          "p90": 60414.1021758991,
+          "p95": 61066.05076794967,
+          "max": 61717.99936000025
+        },
+        "request_throughput": {
+          "count": 10,
+          "median": 0.40034415421054903,
+          "p50": 0.40034415421054903,
+          "p90": 0.40327173912709585,
+          "p95": 0.40332584411306444,
+          "max": 0.4033799490990331
+        },
+        "generated_token_throughput": {
+          "count": 10,
+          "median": 29.358571308773598,
+          "p50": 29.358571308773598,
+          "p90": 29.57326086932036,
+          "p95": 29.577228568291392,
+          "max": 29.581196267262424
+        },
+        "torch_peak_allocated_bytes": 2011518464,
+        "torch_peak_reserved_bytes": 2134900736,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "vllm": {
+        "measured_repetitions": 10,
+        "successful_requests": 240,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 240,
+          "median": 1679.990810000163,
+          "p50": 1679.990810000163,
+          "p90": 3391.4770467010385,
+          "p95": 3411.8128572008573,
+          "max": 3508.094312001049
+        },
+        "ttft_ms": {
+          "count": 240,
+          "median": 54.738677501518396,
+          "p50": 54.738677501518396,
+          "p90": 63.065002999064745,
+          "p95": 65.41817094803262,
+          "max": 89.54570300193154
+        },
+        "mean_itl_ms": {
+          "count": 240,
+          "median": 25.767857798227826,
+          "p50": 25.767857798227826,
+          "p90": 26.568608790486383,
+          "p95": 26.858111552362043,
+          "max": 28.797882624985505
+        },
+        "cohort_wall_time_ms": {
+          "count": 10,
+          "median": 46280.576831499275,
+          "p50": 46280.576831499275,
+          "p90": 47056.74238330175,
+          "p95": 47120.82291115075,
+          "max": 47184.903438999754
+        },
+        "request_throughput": {
+          "count": 10,
+          "median": 0.5185792351411329,
+          "p50": 0.5185792351411329,
+          "p90": 0.5242700158727854,
+          "p95": 0.5249810608652179,
+          "max": 0.5256921058576505
+        },
+        "generated_token_throughput": {
+          "count": 10,
+          "median": 38.029143910349745,
+          "p50": 38.029143910349745,
+          "p90": 38.44646783067093,
+          "p95": 38.49861113011598,
+          "max": 38.55075442956104
+        },
+        "torch_peak_allocated_bytes": null,
+        "torch_peak_reserved_bytes": null,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "comparison": {
+        "vllm_over_runtime_token_throughput": 1.295333601570217,
+        "runtime_over_vllm_latency": 1.292410180506048,
+        "exact_output_parity_rate": 1
+      }
+    },
+    {
+      "concurrency": 2,
+      "runtime": {
+        "measured_repetitions": 10,
+        "successful_requests": 240,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 240,
+          "median": 2494.513638999706,
+          "p50": 2494.513638999706,
+          "p90": 5038.086629101235,
+          "p95": 5093.213662198468,
+          "max": 5472.941063002509
+        },
+        "ttft_ms": {
+          "count": 240,
+          "median": 100.72351949929725,
+          "p50": 100.72351949929725,
+          "p90": 114.52805099906982,
+          "p95": 117.94922724966455,
+          "max": 155.34174000276835
+        },
+        "mean_itl_ms": {
+          "count": 240,
+          "median": 38.04713280868215,
+          "p50": 38.04713280868215,
+          "p90": 39.3254500267713,
+          "p95": 39.817634212883924,
+          "max": 42.45622948386177
+        },
+        "cohort_wall_time_ms": {
+          "count": 10,
+          "median": 35872.03793499975,
+          "p50": 35872.03793499975,
+          "p90": 36405.38739659896,
+          "p95": 36622.894584298774,
+          "max": 36840.401771998586
+        },
+        "request_throughput": {
+          "count": 10,
+          "median": 0.6690593571383753,
+          "p50": 0.6690593571383753,
+          "p90": 0.6754896041709616,
+          "p95": 0.6759641720352207,
+          "max": 0.67643873989948
+        },
+        "generated_token_throughput": {
+          "count": 10,
+          "median": 49.06435285681419,
+          "p50": 49.06435285681419,
+          "p90": 49.53590430587052,
+          "p95": 49.57070594924953,
+          "max": 49.605507592628534
+        },
+        "torch_peak_allocated_bytes": 2017024000,
+        "torch_peak_reserved_bytes": 2141192192,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "vllm": {
+        "measured_repetitions": 10,
+        "successful_requests": 240,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 240,
+          "median": 1723.2237539992639,
+          "p50": 1723.2237539992639,
+          "p90": 3434.0266890008934,
+          "p95": 3460.313968850096,
+          "max": 3561.6373169978033
+        },
+        "ttft_ms": {
+          "count": 240,
+          "median": 76.80564600195794,
+          "p50": 76.80564600195794,
+          "p90": 88.32118779791926,
+          "p95": 91.52848754911247,
+          "max": 134.77368600069894
+        },
+        "mean_itl_ms": {
+          "count": 240,
+          "median": 26.104538617503557,
+          "p50": 26.104538617503557,
+          "p90": 26.963238311280875,
+          "p95": 27.333085002389872,
+          "max": 28.984317500089674
+        },
+        "cohort_wall_time_ms": {
+          "count": 10,
+          "median": 24809.20173350023,
+          "p50": 24809.20173350023,
+          "p90": 25414.54418040157,
+          "p95": 25449.29140019958,
+          "max": 25484.03861999759
+        },
+        "request_throughput": {
+          "count": 10,
+          "median": 0.9673830144949831,
+          "p50": 0.9673830144949831,
+          "p90": 0.9784367011421283,
+          "p95": 0.9832297383405493,
+          "max": 0.9880227755389702
+        },
+        "generated_token_throughput": {
+          "count": 10,
+          "median": 70.94142106296542,
+          "p50": 70.94142106296542,
+          "p90": 71.75202475042275,
+          "p95": 72.10351414497362,
+          "max": 72.45500353952448
+        },
+        "torch_peak_allocated_bytes": null,
+        "torch_peak_reserved_bytes": null,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "comparison": {
+        "vllm_over_runtime_token_throughput": 1.445885188173085,
+        "runtime_over_vllm_latency": 1.4475854532590036,
+        "exact_output_parity_rate": 1
+      }
+    },
+    {
+      "concurrency": 4,
+      "runtime": {
+        "measured_repetitions": 10,
+        "successful_requests": 240,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 240,
+          "median": 3021.647469500749,
+          "p50": 3021.647469500749,
+          "p90": 6033.5666398990725,
+          "p95": 6105.1233531521575,
+          "max": 6277.062067998486
+        },
+        "ttft_ms": {
+          "count": 240,
+          "median": 118.07729599968297,
+          "p50": 118.07729599968297,
+          "p90": 143.79557710053632,
+          "p95": 153.51774125083466,
+          "max": 223.6814729985781
+        },
+        "mean_itl_ms": {
+          "count": 240,
+          "median": 45.77135526677053,
+          "p50": 45.77135526677053,
+          "p90": 47.31353334905299,
+          "p95": 47.74549175653524,
+          "max": 49.6539066252808
+        },
+        "cohort_wall_time_ms": {
+          "count": 10,
+          "median": 22923.311622500478,
+          "p50": 22923.311622500478,
+          "p90": 23210.72723569814,
+          "p95": 23306.57777434826,
+          "max": 23402.42831299838
+        },
+        "request_throughput": {
+          "count": 10,
+          "median": 1.0469831230229387,
+          "p50": 1.0469831230229387,
+          "p90": 1.0595718429342087,
+          "p95": 1.059970773944754,
+          "max": 1.060369704955299
+        },
+        "generated_token_throughput": {
+          "count": 10,
+          "median": 76.77876235501552,
+          "p50": 76.77876235501552,
+          "p90": 77.70193514850864,
+          "p95": 77.73119008928194,
+          "max": 77.76044503005525
+        },
+        "torch_peak_allocated_bytes": 2033380864,
+        "torch_peak_reserved_bytes": 2183135232,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "vllm": {
+        "measured_repetitions": 10,
+        "successful_requests": 240,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 240,
+          "median": 1741.3392729995394,
+          "p50": 1741.3392729995394,
+          "p90": 3455.5752453990863,
+          "p95": 3493.9416822506246,
+          "max": 3653.2888549991185
+        },
+        "ttft_ms": {
+          "count": 240,
+          "median": 78.1762560018251,
+          "p50": 78.1762560018251,
+          "p90": 89.33648780002841,
+          "p95": 93.74719490024289,
+          "max": 119.79763199997251
+        },
+        "mean_itl_ms": {
+          "count": 240,
+          "median": 26.38372793981967,
+          "p50": 26.38372793981967,
+          "p90": 27.32365963442835,
+          "p95": 27.987086990970063,
+          "max": 29.13845322578826
+        },
+        "cohort_wall_time_ms": {
+          "count": 10,
+          "median": 13862.289564000093,
+          "p50": 13862.289564000093,
+          "p90": 14025.888053301605,
+          "p95": 14087.244492650643,
+          "max": 14148.600931999681
+        },
+        "request_throughput": {
+          "count": 10,
+          "median": 1.7314004047999507,
+          "p50": 1.7314004047999507,
+          "p90": 1.7618457928621396,
+          "p95": 1.7634384871126771,
+          "max": 1.765031181363215
+        },
+        "generated_token_throughput": {
+          "count": 10,
+          "median": 126.96936301866306,
+          "p50": 126.96936301866306,
+          "p90": 129.20202480989025,
+          "p95": 129.318822388263,
+          "max": 129.43561996663576
+        },
+        "torch_peak_allocated_bytes": null,
+        "torch_peak_reserved_bytes": null,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "comparison": {
+        "vllm_over_runtime_token_throughput": 1.653704216168169,
+        "runtime_over_vllm_latency": 1.7352433936069322,
+        "exact_output_parity_rate": 1
+      }
+    }
+  ],
+  "finished_at_utc": "2026-10-21T14:14:01.932890+00:00",
+  "status": "pass",
+  "derived_from": "benchmarks/results/gpu_final_comparison.json",
+  "measured_cohorts": 60,
+  "excluded_warmup_cohorts": 24,
+  "sessions": [
+    {
+      "engine": "runtime",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/runtime/bin/python",
+        "scripts/phase3/serve_runtime.py",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--port",
+        "8766",
+        "--execution-policy",
+        "fp32-math"
+      ],
+      "environment": {
+        "environment": {
+          "recorded_at_utc": "2026-10-21T13:25:19.311704+00:00",
+          "python": "3.13.15",
+          "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+          "cpu": "x86_64",
+          "versions": {
+            "torch": "2.10.0+cu129",
+            "transformers": "5.17.0",
+            "vllm": null,
+            "fastapi": "0.156.6",
+            "uvicorn": "0.54.0",
+            "httpx": "0.28.1",
+            "flashinfer-python": null
+          },
+          "system_ram_bytes": 13605830656,
+          "cuda_runtime": "12.9",
+          "cuda_available": true,
+          "gpu_count": 1,
+          "gpus": [
+            {
+              "index": 0,
+              "name": "Tesla T4",
+              "total_vram_bytes": 15637086208,
+              "compute_capability": [
+                7,
+                5
+              ]
+            }
+          ],
+          "nvidia_smi": {
+            "command": [
+              "nvidia-smi"
+            ],
+            "returncode": 0,
+            "stdout": "Wed Oct 21 13:25:19 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   72C    P0             30W /   70W |    2105MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           85203      C   ...Z-2ec61482/runtime/bin/python       2102MiB |\n+-----------------------------------------------------------------------------------------+\n",
+            "stderr": ""
+          },
+          "nvcc": {
+            "command": [
+              "nvcc",
+              "--version"
+            ],
+            "returncode": 0,
+            "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+            "stderr": ""
+          },
+          "gpu_observation": {
+            "command": [
+              "nvidia-smi",
+              "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+              "--format=csv,noheader,nounits"
+            ],
+            "returncode": 0,
+            "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2105, 72, 31.08\n",
+            "stderr": ""
+          },
+          "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."
+        },
+        "model": "Qwen/Qwen2.5-0.5B",
+        "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "dtype": "torch.float32",
+        "execution_policy": "fp32-math",
+        "checkpoint_load_dtype": "float32",
+        "parameter_dtypes": [
+          "torch.float32"
+        ],
+        "numerical_settings": {
+          "fp16_reduced_precision_reduction": false,
+          "flash_sdp": false,
+          "mem_efficient_sdp": false,
+          "math_sdp": true,
+          "cudnn_sdp": false,
+          "math_sdp_reduced_precision": false,
+          "matmul_allow_tf32": false
+        },
+        "attention_implementation": "sdpa"
+      }
+    },
+    {
+      "engine": "vllm",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/vllm/bin/python",
+        "-m",
+        "vllm.entrypoints.openai.api_server",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--tokenizer-revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--dtype",
+        "float32",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8767",
+        "--served-model-name",
+        "phase3-qwen",
+        "--max-model-len",
+        "2048",
+        "--max-num-seqs",
+        "4",
+        "--gpu-memory-utilization",
+        "0.70",
+        "--generation-config",
+        "vllm",
+        "--no-enable-prefix-caching",
+        "--attention-config",
+        "{\"backend\": \"TRITON_ATTN\"}",
+        "--enforce-eager"
+      ],
+      "environment": {
+        "recorded_at_utc": "2026-10-21T13:39:45.194745+00:00",
+        "python": "3.13.15",
+        "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+        "cpu": "x86_64",
+        "versions": {
+          "torch": "2.10.0+cu129",
+          "transformers": "4.57.6",
+          "vllm": "0.17.1",
+          "fastapi": "0.156.6",
+          "uvicorn": "0.54.0",
+          "httpx": "0.28.1",
+          "flashinfer-python": "0.6.4"
+        },
+        "system_ram_bytes": 13605830656,
+        "cuda_runtime": "12.9",
+        "cuda_available": true,
+        "gpu_count": 1,
+        "gpus": [
+          {
+            "index": 0,
+            "name": "Tesla T4",
+            "total_vram_bytes": 15637086208,
+            "compute_capability": [
+              7,
+              5
+            ]
+          }
+        ],
+        "nvidia_smi": {
+          "command": [
+            "nvidia-smi"
+          ],
+          "returncode": 0,
+          "stdout": "Wed Oct 21 13:39:45 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   71C    P0             29W /   70W |   10509MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           91093      C   VLLM::EngineCore                      10506MiB |\n+-----------------------------------------------------------------------------------------+\n",
+          "stderr": ""
+        },
+        "nvcc": {
+          "command": [
+            "nvcc",
+            "--version"
+          ],
+          "returncode": 0,
+          "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+          "stderr": ""
+        },
+        "gpu_observation": {
+          "command": [
+            "nvidia-smi",
+            "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10509, 71, 30.60\n",
+          "stderr": ""
+        },
+        "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes.",
+        "fp16_cuda_matmul": "pass",
+        "fp32_cuda_matmul": "pass"
+      }
+    },
+    {
+      "engine": "vllm",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/vllm/bin/python",
+        "-m",
+        "vllm.entrypoints.openai.api_server",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--tokenizer-revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--dtype",
+        "float32",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8767",
+        "--served-model-name",
+        "phase3-qwen",
+        "--max-model-len",
+        "2048",
+        "--max-num-seqs",
+        "4",
+        "--gpu-memory-utilization",
+        "0.70",
+        "--generation-config",
+        "vllm",
+        "--no-enable-prefix-caching",
+        "--attention-config",
+        "{\"backend\": \"TRITON_ATTN\"}",
+        "--enforce-eager"
+      ],
+      "environment": {
+        "recorded_at_utc": "2026-10-21T13:50:08.390618+00:00",
+        "python": "3.13.15",
+        "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+        "cpu": "x86_64",
+        "versions": {
+          "torch": "2.10.0+cu129",
+          "transformers": "4.57.6",
+          "vllm": "0.17.1",
+          "fastapi": "0.156.6",
+          "uvicorn": "0.54.0",
+          "httpx": "0.28.1",
+          "flashinfer-python": "0.6.4"
+        },
+        "system_ram_bytes": 13605830656,
+        "cuda_runtime": "12.9",
+        "cuda_available": true,
+        "gpu_count": 1,
+        "gpus": [
+          {
+            "index": 0,
+            "name": "Tesla T4",
+            "total_vram_bytes": 15637086208,
+            "compute_capability": [
+              7,
+              5
+            ]
+          }
+        ],
+        "nvidia_smi": {
+          "command": [
+            "nvidia-smi"
+          ],
+          "returncode": 0,
+          "stdout": "Wed Oct 21 13:50:08 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   74C    P0             30W /   70W |   10509MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           95409      C   VLLM::EngineCore                      10506MiB |\n+-----------------------------------------------------------------------------------------+\n",
+          "stderr": ""
+        },
+        "nvcc": {
+          "command": [
+            "nvcc",
+            "--version"
+          ],
+          "returncode": 0,
+          "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+          "stderr": ""
+        },
+        "gpu_observation": {
+          "command": [
+            "nvidia-smi",
+            "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10509, 74, 31.59\n",
+          "stderr": ""
+        },
+        "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes.",
+        "fp16_cuda_matmul": "pass",
+        "fp32_cuda_matmul": "pass"
+      }
+    },
+    {
+      "engine": "runtime",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/runtime/bin/python",
+        "scripts/phase3/serve_runtime.py",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--port",
+        "8766",
+        "--execution-policy",
+        "fp32-math"
+      ],
+      "environment": {
+        "environment": {
+          "recorded_at_utc": "2026-10-21T14:00:13.024508+00:00",
+          "python": "3.13.15",
+          "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+          "cpu": "x86_64",
+          "versions": {
+            "torch": "2.10.0+cu129",
+            "transformers": "5.17.0",
+            "vllm": null,
+            "fastapi": "0.156.6",
+            "uvicorn": "0.54.0",
+            "httpx": "0.28.1",
+            "flashinfer-python": null
+          },
+          "system_ram_bytes": 13605830656,
+          "cuda_runtime": "12.9",
+          "cuda_available": true,
+          "gpu_count": 1,
+          "gpus": [
+            {
+              "index": 0,
+              "name": "Tesla T4",
+              "total_vram_bytes": 15637086208,
+              "compute_capability": [
+                7,
+                5
+              ]
+            }
+          ],
+          "nvidia_smi": {
+            "command": [
+              "nvidia-smi"
+            ],
+            "returncode": 0,
+            "stdout": "Wed Oct 21 14:00:13 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   72C    P0             30W /   70W |    2105MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           99674      C   ...Z-2ec61482/runtime/bin/python       2102MiB |\n+-----------------------------------------------------------------------------------------+\n",
+            "stderr": ""
+          },
+          "nvcc": {
+            "command": [
+              "nvcc",
+              "--version"
+            ],
+            "returncode": 0,
+            "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+            "stderr": ""
+          },
+          "gpu_observation": {
+            "command": [
+              "nvidia-smi",
+              "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+              "--format=csv,noheader,nounits"
+            ],
+            "returncode": 0,
+            "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2105, 72, 31.09\n",
+            "stderr": ""
+          },
+          "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."
+        },
+        "model": "Qwen/Qwen2.5-0.5B",
+        "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "dtype": "torch.float32",
+        "execution_policy": "fp32-math",
+        "checkpoint_load_dtype": "float32",
+        "parameter_dtypes": [
+          "torch.float32"
+        ],
+        "numerical_settings": {
+          "fp16_reduced_precision_reduction": false,
+          "flash_sdp": false,
+          "mem_efficient_sdp": false,
+          "math_sdp": true,
+          "cudnn_sdp": false,
+          "math_sdp_reduced_precision": false,
+          "matmul_allow_tf32": false
+        },
+        "attention_implementation": "sdpa"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[title="Request ID: d4276c498e8047a699ace5f41211481e"]')
+
+    at C:\Users\hpuse\Videos\proj1\benchmark_results\phase3-live-review.mjs:63:60 {
+  log: [
+    `  - waiting for locator('[title="Request ID: d4276c498e8047a699ace5f41211481e"]')`
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v24.19.0

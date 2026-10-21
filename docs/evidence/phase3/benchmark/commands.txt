@@ -1,0 +1,15 @@
+Command reading guide (environment directory shortened, no measurement rerun).
+Exact original commands are retained in gpu_final_comparison.json sessions[].command.
+Measured checkout: 14700d46569f2889d9b3ed110cbccf1b293c6c38.
+
+Runtime environment Python:
+python scripts/phase3/serve_runtime.py --model Qwen/Qwen2.5-0.5B --revision 060db6499f32faf8b98477b0a26969ef7d8b9987 --port 8766 --execution-policy fp32-math
+
+vLLM environment Python:
+python -m vllm.entrypoints.openai.api_server --model Qwen/Qwen2.5-0.5B --revision 060db6499f32faf8b98477b0a26969ef7d8b9987 --tokenizer-revision 060db6499f32faf8b98477b0a26969ef7d8b9987 --dtype float32 --host 127.0.0.1 --port 8767 --served-model-name phase3-qwen --max-model-len 2048 --max-num-seqs 4 --gpu-memory-utilization 0.70 --generation-config vllm --no-enable-prefix-caching --attention-config '{"backend":"TRITON_ATTN"}' --enforce-eager
+
+Review validator (runs locally, not GPU execution):
+python scripts/phase3/validate.py benchmarks/results/gpu_final_comparison.json --correctness docs/evidence/phase3/correctness/correctness.json --source-commit 14700d46569f2889d9b3ed110cbccf1b293c6c38
+
+Reproduction entry points: docs/phase3-colab.md and docs/phase3-fp32-comparison.md.
+Do not benchmark until that execution's exact internal correctness gate passes.

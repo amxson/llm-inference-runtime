@@ -1,0 +1,1 @@
+python -m compileall -q src scripts tests: PASS (exit 0)

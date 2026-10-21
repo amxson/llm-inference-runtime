@@ -64,7 +64,8 @@ requests at capacities 1/2/4, eight manual checks and 24 real SSE requests
 (1,760 token IDs), plus the dynamic-admission/zero/EOS checks. The two-engine
 smoke artifact passed consistency/provenance review: four measured tiny cohorts,
 16 successful requests and no failures. It remains `final_eligible: false`.
-The full comparison must still finish and pass review before publication.
+The full comparison subsequently passed: 60 measured cohorts, 1,440 successful
+requests and no failures. [Original artifacts and review](evidence/phase3/INDEX.md).
 
 After the local battery shutdown, the notebook reopened an older saved version,
 but the original run directory and installed environments remained available.

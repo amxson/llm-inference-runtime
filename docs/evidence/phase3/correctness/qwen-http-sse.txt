@@ -1,0 +1,6 @@
+Derived reading guide, not a new execution log.
+Source: correctness.json, native FP32, real Tesla T4.
+Actual HTTP generation and all 24 SSE requests passed; SSE returned 1,760 token
+IDs with zero failures. IDs matched independent cached references.
+Zero-token and forced-EOS completion checks passed; forced EOS selects one token.
+This GPU loopback evidence is distinct from public CPU checks in ../public/.

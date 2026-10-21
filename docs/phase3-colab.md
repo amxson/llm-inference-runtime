@@ -1,6 +1,8 @@
 # Phase 3: authorized Colab T4 execution
 
-Status: **native FP32 T4 correctness and two-engine smoke verified; full comparison under review**.
+Status: **native FP32 T4 correctness and full comparison verified**.
+The [recorded evidence](evidence/phase3/INDEX.md) is separate from running these
+cells again; no rerun is needed to review the completed result.
 Prefer [the single-cell launcher](phase3-colab-one-cell.md) for numbered live
 progress and automatic failure-log export. The seven manual cells below remain
 available for inspecting and running each stage separately.

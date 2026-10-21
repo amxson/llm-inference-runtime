@@ -1,0 +1,10 @@
+Derived reading guide, not a new execution log.
+Source: correctness.json, native FP32, real Tesla T4.
+All 24 requests passed exact reference parity at each capacity 1, 2 and 4.
+The 11-frame changing-cohort trace admits trace-0 and trace-1 at tick 1,
+prefilling [2,5]. Tick 2 decodes [2,1] and trace-0 completes.
+Tick 3 admits trace-2, prefills [1,7] and decodes the retained request [1,1].
+Tick 4 decodes old/new requests together [2,1]. Trace-1 completes at tick 6.
+Tick 7 admits trace-3 with prefill [1,4]; trace-2 continues cached decode.
+Tick 8 decodes [2,1], trace-2 completes; trace-3 completes at tick 11.
+Full logical cache lengths, outputs, request membership and shapes are in JSON.

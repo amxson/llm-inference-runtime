@@ -1,6 +1,11 @@
-# Phase 3 preparation evidence
+# Phase 3 evidence
 
-Status: **INCOMPLETE — final GPU comparison validated; publication UI/public signoff pending**.
+Status: final GPU comparison validated and published; final public verification is recorded in [public-demo-check.md](public/public-demo-check.md).
+
+The sections below are a chronological audit trail, not a list of outstanding
+tasks. Earlier "pending" and "incomplete" statements describe those earlier
+attempts. The approved native-FP32 run supersedes them for the final comparison;
+it does not turn any failed FP16 attempt into a pass.
 
 Qwen/GPT-2 forward-policy support was pushed in `21ccf4f`. This preparation
 adds the reproducible notebook, isolated installation plan, correctness gate,
@@ -251,7 +256,13 @@ Earlier failed/diagnostic JSON reports and original manifests are preserved in
 hashes across 11 reports were reverified. A promoted-FP16 FP32 control is still
 a diagnostic, not the new native-FP32 primary result.
 
-Remaining: finish the result UI's real-artifact integration tests, final short
-README/postmortem, responsive/public browser review, existing-plan deployment,
-final evidence/review bundle and final Git/project signoff. The user requested a
-pause until their usage window resets; no project-complete claim is made.
+The result UI now reads a provenance-checked summary of the unchanged raw
+artifact. Full request/event/forward records remain available through Raw GPU
+JSON. Local final checks passed: 235 Python tests (six existing warnings), 50
+frontend tests, typecheck, design audit, production build, compilation and
+immutable-source artifact validation. One frontend interaction timed out during
+concurrent Python/UI testing; the complete isolated rerun passed without a test
+or timeout change. Raw final outputs are under `checks/`.
+
+The final public review, responsive captures and Definition of Done are linked
+from [the signoff report](FINAL_REPORT.md). No GPU rerun was needed for publication.

@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-21T14:59:27.767Z",
+  "base_url": "https://llm-inference-runtime.vercel.app",
+  "index_status": 200,
+  "raw_status": 200,
+  "bytes": 40524755,
+  "sha256": "e609163efa26fdaaafd87895b1f2cffe66d276c462dd631c9507a393efd72a6d",
+  "publication_commit": "da219830f797d14c781a95d5ab9b0e865ba8f782",
+  "measured_commit": "14700d46569f2889d9b3ed110cbccf1b293c6c38",
+  "measured_cohorts": 60,
+  "index_contains_raw_repetitions": false,
+  "aggregate_count": 3
+}

@@ -1,3 +1,9 @@
 # Preserve the original vLLM terminal output, including progress-line CRs/spaces.
 docs/evidence/phase3/benchmark/server-1-vllm.txt -text -whitespace
 docs/evidence/phase3/benchmark/server-2-vllm.txt -text -whitespace
+# Original nvidia-smi output extracted from the unchanged environment inventory.
+docs/evidence/phase3/hardware/nvidia-smi.txt -text -whitespace
+# Preserve final command stdout verbatim (upstream warnings/blank terminal lines).
+docs/evidence/phase3/checks/python-tests.txt -text -whitespace
+docs/evidence/phase3/checks/frontend-tests.txt -text -whitespace
+docs/evidence/phase3/checks/typecheck.txt -text -whitespace

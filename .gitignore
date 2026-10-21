@@ -38,6 +38,7 @@ pytorch_model*.bin
 
 # Generated benchmark results
 benchmark_results/
+/llm-inference-runtime-final-review.zip
 benchmarks/results/*
 !benchmarks/results/m5_naive_cpu.json
 !benchmarks/results/m7_cached_vs_uncached_cpu.json

@@ -1,0 +1,6 @@
+Derived reading guide, not a new execution log.
+Source: correctness.json, native FP32, real Tesla T4.
+Independent request-local cached decoding provides the 24 fixed references.
+Every internal cached continuous result matched those reference token IDs at
+max_active 1, 2 and 4. Zero-token execution performs zero forwards.
+Earlier failed FP16 and promoted-weight controls remain in ../precision/.
