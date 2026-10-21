@@ -48,6 +48,7 @@ benchmarks/results/*
 !benchmarks/results/final_cpu.json
 !benchmarks/results/cache_length_sweep_cpu.json
 !benchmarks/results/cached_continuous_batching_cpu.json
+!benchmarks/results/gpu_final_comparison.json
 .vercel/
 
 /.env.local

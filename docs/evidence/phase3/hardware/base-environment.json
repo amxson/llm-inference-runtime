@@ -1,0 +1,58 @@
+{
+  "recorded_at_utc": "2026-10-21T08:07:15.483847+00:00",
+  "python": "3.13.15",
+  "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+  "cpu": "x86_64",
+  "versions": {
+    "torch": "2.11.0+cu130",
+    "transformers": "5.20.1",
+    "vllm": null,
+    "fastapi": "0.141.1",
+    "uvicorn": "0.54.0",
+    "httpx": "0.28.1",
+    "flashinfer-python": null
+  },
+  "system_ram_bytes": 13605830656,
+  "cuda_runtime": "13.0",
+  "cuda_available": true,
+  "gpu_count": 1,
+  "gpus": [
+    {
+      "index": 0,
+      "name": "Tesla T4",
+      "total_vram_bytes": 15637086208,
+      "compute_capability": [
+        7,
+        5
+      ]
+    }
+  ],
+  "nvidia_smi": {
+    "command": [
+      "nvidia-smi"
+    ],
+    "returncode": 0,
+    "stdout": "Wed Oct 21 08:07:15 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   45C    P8             13W /   70W |       3MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+    "stderr": ""
+  },
+  "nvcc": {
+    "command": [
+      "nvcc",
+      "--version"
+    ],
+    "returncode": 0,
+    "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+    "stderr": ""
+  },
+  "gpu_observation": {
+    "command": [
+      "nvidia-smi",
+      "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+      "--format=csv,noheader,nounits"
+    ],
+    "returncode": 0,
+    "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 45, 13.72\n",
+    "stderr": ""
+  },
+  "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."
+}

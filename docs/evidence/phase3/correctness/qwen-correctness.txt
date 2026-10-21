@@ -1,0 +1,11 @@
+
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/290 [00:00<01:52,  2.58it/s]
+Loading weights:  51%|█████     | 147/290 [00:00<00:00, 385.72it/s]
+Loading weights:  78%|███████▊  | 227/290 [00:00<00:00, 382.90it/s]
+Loading weights:  99%|█████████▉| 288/290 [00:00<00:00, 363.54it/s]
+Loading weights: 100%|██████████| 290/290 [00:00<00:00, 324.47it/s]
+Exact GPU internal parity passed: 24 requests, max_active=1
+Exact GPU internal parity passed: 24 requests, max_active=2
+Exact GPU internal parity passed: 24 requests, max_active=4
+Correctness status=pass; raw evidence: /content/llm-inference-runtime-phase3/benchmark_results/phase3-colab/approved-fp32-20261021T132004512269Z-fc8b7b66/correctness.json

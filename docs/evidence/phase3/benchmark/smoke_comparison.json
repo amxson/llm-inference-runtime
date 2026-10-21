@@ -1,0 +1,5640 @@
+{
+  "schema_version": 1,
+  "benchmark": "gpu_final_comparison",
+  "final_eligible": false,
+  "started_at_utc": "2026-10-21T13:23:42.655319+00:00",
+  "source_commit": "14700d46569f2889d9b3ed110cbccf1b293c6c38",
+  "source_file_sha256": {
+    "pyproject.toml": "d59ddc9bb4f00a7aa984aee2f820e3ea178a3453d5f11697d4a632838ba78532",
+    "scripts/phase3/benchmark.py": "71728eef4d26078d8315fbbcf6055b7cc0fd6cb5406cf628f9b9a3a67d8a2a6f",
+    "scripts/phase3/common.py": "5bb85bdfab7c2849d5f7748c81da06d4b8a4e52deae92120962366d82ccacf03",
+    "scripts/phase3/correctness.py": "5e6ed3a608126ca60161be1d37f542fd6adfe1b0ee423e742c711c5d636bbbe3",
+    "scripts/phase3/diagnose_parity.py": "6997eec592b8c1e2a1bfcf175c54c82de76ec8c80b8c75274a2aea33eac1a3e0",
+    "scripts/phase3/policies.py": "23190eaa19ed4a6a64abc736e5c96cf95eb59b05f1d11ffb7be9a85a179e1d93",
+    "scripts/phase3/preflight.py": "22e254d68455f7dc57d5a0dbf59f0a9e1bc5b28b2c34292c925c67bbf05a5049",
+    "scripts/phase3/probe_numerics.py": "95b82ede676589a45c341e3d81727596333995e353ca11af6e9f6fe89cbd45ea",
+    "scripts/phase3/resume_colab.py": "7a24f7904b80ce3ca884aa53f9c9622b474f792d4290db9de3d8a65a487a7f4e",
+    "scripts/phase3/run_colab.py": "06d4f6c570aca45ad0c2ca0b346ddfc5ec224ad977718e2868bfb937ba958870",
+    "scripts/phase3/serve_runtime.py": "68efb8c973e0d1915904dbc381c2fcf56c162b7676e817ecbcbcfa0f62dae30a",
+    "scripts/phase3/setup_colab.py": "3df756bdaa70acdac31a850275c47df208e1b4a6123e1d38998060c9dec0bf57",
+    "scripts/phase3/stream_client.py": "844601b85158147578a93b82010325908b457a16f0f0ed9146ee7cb301737bce",
+    "scripts/phase3/validate.py": "12ede6ce26fe34c4cb765ad0d41b30e4d7087d437eec1e83c3cbb95134c81e48",
+    "scripts/phase3/workload.json": "b0b21aa733b6f52088cf8ac04dcfa387c9e2015d2c71a49bd11c0abb883b6e05",
+    "src/llm_runtime/__init__.py": "b5a67ee6971102192005ede30cc848cae5485b007e11a88eb2789170b91f092c",
+    "src/llm_runtime/batching.py": "d023f5c332c93476fb4eae8806a1d37eccb36402c12ddf35faf5434b8bcd3b0d",
+    "src/llm_runtime/benchmark_cache.py": "6d5b66867d1bc1f2e74d63837864e10cfad5df78499b64f5650576d011e4185b",
+    "src/llm_runtime/benchmark_cache_sweep.py": "a4bdb7a664d6351c7c1ee247d1b74dc9ef80435da63e0bc3ea06b98f88d26718",
+    "src/llm_runtime/benchmark_continuous_cache.py": "c25649277d375fc5e11436abd6b4eff9dccee1638a402478f19629f9e69dbc9d",
+    "src/llm_runtime/benchmark_naive.py": "ea39b893dafd90ce086a72edb4a1634f2426e8d42f74c160c4cce6b86d147a4d",
+    "src/llm_runtime/benchmark_quantization.py": "9c4d352e77e703ff1205327ddef106584ee370d62633d1ff446d19d8efd5dc06",
+    "src/llm_runtime/benchmark_server.py": "35d0f5e38888afb5e6d91f34f5930864106a808e8430999140e2628445cb64fa",
+    "src/llm_runtime/benchmark_speculative.py": "32374aa8401c68e44356f0259a39ec6b995a54c3f103783592a4bc346fce87e1",
+    "src/llm_runtime/benchmark_summary.py": "c7329b6fd4de611b861c6e19f983aac8519c6ce3063447253f255e6690b2519a",
+    "src/llm_runtime/block_allocator.py": "2de24f10da3c8e422924d4bb1100d4252ab354b3d81a89d2eae63282eac75e6a",
+    "src/llm_runtime/cache_batch.py": "5983a005b3b3ef3324733e0e2d6f0498d7fc3fc96ae8432b5218e4fc007da03e",
+    "src/llm_runtime/cached_continuous_batcher.py": "d7efeaa89e4359648d106aeb4c5f53aee2b46a57622e08968178b3c40b74e457",
+    "src/llm_runtime/cached_decode.py": "daea53b13818a29088948a0b43645c0150244029c7eb6c456cd4dae4f2d61035",
+    "src/llm_runtime/continuous_batcher.py": "2f506481e06ce7d5fe21369d3a0f24b4c5a74057808d791d8af39b00f3f21e4b",
+    "src/llm_runtime/forward_inspect.py": "2b5623de095bb819c9ca47a5e772fcf22e9ac550def8f090e4af67e4db9d6f27",
+    "src/llm_runtime/greedy_decode.py": "780f78768fb1021a170e67187efc0495cfad8e5076d6113e87a589d505226936",
+    "src/llm_runtime/model_adapter.py": "fc950aae5b921f7984a4e388a964f980ee5aa26e3691bc01349fa836b65cd4a8",
+    "src/llm_runtime/model_loader.py": "c7957a7cb62b1fedce6b4c2a2c34b5f5ced0fce2ee097b4525a8d942bcdd8aaf",
+    "src/llm_runtime/portfolio.py": "8e66ab1e004afc1cec0777ce3a5ee2b24643b365bb21cbe090edb16e143ce545",
+    "src/llm_runtime/request.py": "67b8927057f83d474f548fb2ab16a62c3080a0cb5e33b426fbc8420483115a5b",
+    "src/llm_runtime/sample_decode.py": "65ed6ffd69af675a3ecab9402257c3c7f3d2b6c059c00189ac2ae1a2aa5a9c27",
+    "src/llm_runtime/sampling.py": "86ea7f181287d485774e32d0e9b77336e78b5643d19ad9eee1cae1046a6ce7ec",
+    "src/llm_runtime/scheduler.py": "2d0781d8b0df1b5be2dd0a5674242d956909c8e6fb063f43c492068424491815",
+    "src/llm_runtime/server.py": "44f83cb6b94c518933cf52fc2c4e1f98aadf09e6c08fe5bf91dac32d58f37067",
+    "src/llm_runtime/speculative_decode.py": "7e5e6ec887f0c626383cd19061d5b6ff92eb291fbd78dc099da9aba2fe46a205"
+  },
+  "model": "Qwen/Qwen2.5-0.5B",
+  "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "dtype": "float32",
+  "execution_policy": "fp32-math",
+  "engine_configuration": {
+    "dtype": "float32",
+    "attention": "sdpa",
+    "vllm_dtype": "float32",
+    "vllm_attention": "TRITON_ATTN",
+    "vllm_eager": true
+  },
+  "correctness_evidence": {
+    "file": "correctness.json",
+    "status": "pass"
+  },
+  "hardware": {
+    "recorded_at_utc": "2026-10-21T13:20:28.084158+00:00",
+    "python": "3.13.15",
+    "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+    "cpu": "x86_64",
+    "versions": {
+      "torch": "2.10.0+cu129",
+      "transformers": "5.17.0",
+      "vllm": null,
+      "fastapi": "0.156.6",
+      "uvicorn": "0.54.0",
+      "httpx": "0.28.1",
+      "flashinfer-python": null
+    },
+    "system_ram_bytes": 13605830656,
+    "cuda_runtime": "12.9",
+    "cuda_available": true,
+    "gpu_count": 1,
+    "gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "total_vram_bytes": 15637086208,
+        "compute_capability": [
+          7,
+          5
+        ]
+      }
+    ],
+    "nvidia_smi": {
+      "command": [
+        "nvidia-smi"
+      ],
+      "returncode": 0,
+      "stdout": "Wed Oct 21 13:20:28 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   44C    P8             13W /   70W |       3MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+      "stderr": ""
+    },
+    "nvcc": {
+      "command": [
+        "nvcc",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+      "stderr": ""
+    },
+    "gpu_observation": {
+      "command": [
+        "nvidia-smi",
+        "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+        "--format=csv,noheader,nounits"
+      ],
+      "returncode": 0,
+      "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 44, 18.75\n",
+      "stderr": ""
+    },
+    "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."
+  },
+  "workload": [
+    {
+      "id": "request-00",
+      "prompt": "The capital of France is",
+      "prompt_token_ids": [
+        785,
+        6722,
+        315,
+        9625,
+        374
+      ],
+      "max_new_tokens": 4
+    },
+    {
+      "id": "request-01",
+      "prompt": "An operating system manages",
+      "prompt_token_ids": [
+        2082,
+        10350,
+        1849,
+        28872
+      ],
+      "max_new_tokens": 4
+    },
+    {
+      "id": "request-02",
+      "prompt": "In the early morning, the city",
+      "prompt_token_ids": [
+        641,
+        279,
+        4124,
+        6556,
+        11,
+        279,
+        3283
+      ],
+      "max_new_tokens": 4
+    },
+    {
+      "id": "request-03",
+      "prompt": "A computer network connects",
+      "prompt_token_ids": [
+        32,
+        6366,
+        3922,
+        33061
+      ],
+      "max_new_tokens": 4
+    }
+  ],
+  "concurrencies": [
+    1
+  ],
+  "sessions": [
+    {
+      "index": 0,
+      "engine": "runtime",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/runtime/bin/python",
+        "scripts/phase3/serve_runtime.py",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--port",
+        "8766",
+        "--execution-policy",
+        "fp32-math"
+      ],
+      "configuration_order": [
+        1
+      ],
+      "started_at_utc": "2026-10-21T13:23:42.655371+00:00",
+      "before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 74, 30.88\n",
+        "stderr": ""
+      },
+      "server_pid": 84548,
+      "environment": {
+        "environment": {
+          "recorded_at_utc": "2026-10-21T13:23:49.869768+00:00",
+          "python": "3.13.15",
+          "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+          "cpu": "x86_64",
+          "versions": {
+            "torch": "2.10.0+cu129",
+            "transformers": "5.17.0",
+            "vllm": null,
+            "fastapi": "0.156.6",
+            "uvicorn": "0.54.0",
+            "httpx": "0.28.1",
+            "flashinfer-python": null
+          },
+          "system_ram_bytes": 13605830656,
+          "cuda_runtime": "12.9",
+          "cuda_available": true,
+          "gpu_count": 1,
+          "gpus": [
+            {
+              "index": 0,
+              "name": "Tesla T4",
+              "total_vram_bytes": 15637086208,
+              "compute_capability": [
+                7,
+                5
+              ]
+            }
+          ],
+          "nvidia_smi": {
+            "command": [
+              "nvidia-smi"
+            ],
+            "returncode": 0,
+            "stdout": "Wed Oct 21 13:23:49 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   73C    P0             30W /   70W |    2105MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           84548      C   ...Z-2ec61482/runtime/bin/python       2102MiB |\n+-----------------------------------------------------------------------------------------+\n",
+            "stderr": ""
+          },
+          "nvcc": {
+            "command": [
+              "nvcc",
+              "--version"
+            ],
+            "returncode": 0,
+            "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+            "stderr": ""
+          },
+          "gpu_observation": {
+            "command": [
+              "nvidia-smi",
+              "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+              "--format=csv,noheader,nounits"
+            ],
+            "returncode": 0,
+            "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2105, 73, 31.17\n",
+            "stderr": ""
+          },
+          "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."
+        },
+        "model": "Qwen/Qwen2.5-0.5B",
+        "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "dtype": "torch.float32",
+        "execution_policy": "fp32-math",
+        "checkpoint_load_dtype": "float32",
+        "parameter_dtypes": [
+          "torch.float32"
+        ],
+        "numerical_settings": {
+          "fp16_reduced_precision_reduction": false,
+          "flash_sdp": false,
+          "mem_efficient_sdp": false,
+          "math_sdp": true,
+          "cudnn_sdp": false,
+          "math_sdp_reduced_precision": false,
+          "matmul_allow_tf32": false
+        },
+        "attention_implementation": "sdpa"
+      },
+      "finished_at_utc": "2026-10-21T13:23:52.556483+00:00",
+      "after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 73, 34.51\n",
+        "stderr": ""
+      }
+    },
+    {
+      "index": 1,
+      "engine": "vllm",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/vllm/bin/python",
+        "-m",
+        "vllm.entrypoints.openai.api_server",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--tokenizer-revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--dtype",
+        "float32",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8767",
+        "--served-model-name",
+        "phase3-qwen",
+        "--max-model-len",
+        "2048",
+        "--max-num-seqs",
+        "1",
+        "--gpu-memory-utilization",
+        "0.70",
+        "--generation-config",
+        "vllm",
+        "--no-enable-prefix-caching",
+        "--attention-config",
+        "{\"backend\": \"TRITON_ATTN\"}",
+        "--enforce-eager"
+      ],
+      "configuration_order": [
+        1
+      ],
+      "started_at_utc": "2026-10-21T13:23:52.581730+00:00",
+      "before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 73, 34.71\n",
+        "stderr": ""
+      },
+      "server_pid": 84620,
+      "environment": {
+        "recorded_at_utc": "2026-10-21T13:24:28.453781+00:00",
+        "python": "3.13.15",
+        "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+        "cpu": "x86_64",
+        "versions": {
+          "torch": "2.10.0+cu129",
+          "transformers": "4.57.6",
+          "vllm": "0.17.1",
+          "fastapi": "0.156.6",
+          "uvicorn": "0.54.0",
+          "httpx": "0.28.1",
+          "flashinfer-python": "0.6.4"
+        },
+        "system_ram_bytes": 13605830656,
+        "cuda_runtime": "12.9",
+        "cuda_available": true,
+        "gpu_count": 1,
+        "gpus": [
+          {
+            "index": 0,
+            "name": "Tesla T4",
+            "total_vram_bytes": 15637086208,
+            "compute_capability": [
+              7,
+              5
+            ]
+          }
+        ],
+        "nvidia_smi": {
+          "command": [
+            "nvidia-smi"
+          ],
+          "returncode": 0,
+          "stdout": "Wed Oct 21 13:24:28 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   71C    P0             30W /   70W |   10489MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           84705      C   VLLM::EngineCore                      10486MiB |\n+-----------------------------------------------------------------------------------------+\n",
+          "stderr": ""
+        },
+        "nvcc": {
+          "command": [
+            "nvcc",
+            "--version"
+          ],
+          "returncode": 0,
+          "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+          "stderr": ""
+        },
+        "gpu_observation": {
+          "command": [
+            "nvidia-smi",
+            "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10489, 71, 30.78\n",
+          "stderr": ""
+        },
+        "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes.",
+        "fp16_cuda_matmul": "pass",
+        "fp32_cuda_matmul": "pass"
+      },
+      "models": {
+        "object": "list",
+        "data": [
+          {
+            "id": "phase3-qwen",
+            "object": "model",
+            "created": 1792589069,
+            "owned_by": "vllm",
+            "root": "Qwen/Qwen2.5-0.5B",
+            "parent": null,
+            "max_model_len": 2048,
+            "permission": [
+              {
+                "id": "modelperm-90fb32bfc84f1a73",
+                "object": "model_permission",
+                "created": 1792589069,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          }
+        ]
+      },
+      "version": {
+        "version": "0.17.1"
+      },
+      "finished_at_utc": "2026-10-21T13:24:34.500546+00:00",
+      "after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 72, 40.39\n",
+        "stderr": ""
+      }
+    },
+    {
+      "index": 2,
+      "engine": "vllm",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/vllm/bin/python",
+        "-m",
+        "vllm.entrypoints.openai.api_server",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--tokenizer-revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--dtype",
+        "float32",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8767",
+        "--served-model-name",
+        "phase3-qwen",
+        "--max-model-len",
+        "2048",
+        "--max-num-seqs",
+        "1",
+        "--gpu-memory-utilization",
+        "0.70",
+        "--generation-config",
+        "vllm",
+        "--no-enable-prefix-caching",
+        "--attention-config",
+        "{\"backend\": \"TRITON_ATTN\"}",
+        "--enforce-eager"
+      ],
+      "configuration_order": [
+        1
+      ],
+      "started_at_utc": "2026-10-21T13:24:34.527266+00:00",
+      "before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 72, 40.39\n",
+        "stderr": ""
+      },
+      "server_pid": 84917,
+      "environment": {
+        "recorded_at_utc": "2026-10-21T13:24:58.316909+00:00",
+        "python": "3.13.15",
+        "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+        "cpu": "x86_64",
+        "versions": {
+          "torch": "2.10.0+cu129",
+          "transformers": "4.57.6",
+          "vllm": "0.17.1",
+          "fastapi": "0.156.6",
+          "uvicorn": "0.54.0",
+          "httpx": "0.28.1",
+          "flashinfer-python": "0.6.4"
+        },
+        "system_ram_bytes": 13605830656,
+        "cuda_runtime": "12.9",
+        "cuda_available": true,
+        "gpu_count": 1,
+        "gpus": [
+          {
+            "index": 0,
+            "name": "Tesla T4",
+            "total_vram_bytes": 15637086208,
+            "compute_capability": [
+              7,
+              5
+            ]
+          }
+        ],
+        "nvidia_smi": {
+          "command": [
+            "nvidia-smi"
+          ],
+          "returncode": 0,
+          "stdout": "Wed Oct 21 13:24:58 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   71C    P0             30W /   70W |   10489MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           84961      C   VLLM::EngineCore                      10486MiB |\n+-----------------------------------------------------------------------------------------+\n",
+          "stderr": ""
+        },
+        "nvcc": {
+          "command": [
+            "nvcc",
+            "--version"
+          ],
+          "returncode": 0,
+          "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+          "stderr": ""
+        },
+        "gpu_observation": {
+          "command": [
+            "nvidia-smi",
+            "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10489, 71, 30.88\n",
+          "stderr": ""
+        },
+        "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes.",
+        "fp16_cuda_matmul": "pass",
+        "fp32_cuda_matmul": "pass"
+      },
+      "models": {
+        "object": "list",
+        "data": [
+          {
+            "id": "phase3-qwen",
+            "object": "model",
+            "created": 1792589099,
+            "owned_by": "vllm",
+            "root": "Qwen/Qwen2.5-0.5B",
+            "parent": null,
+            "max_model_len": 2048,
+            "permission": [
+              {
+                "id": "modelperm-bb62f68c754cb42a",
+                "object": "model_permission",
+                "created": 1792589099,
+                "allow_create_engine": false,
+                "allow_sampling": true,
+                "allow_logprobs": true,
+                "allow_search_indices": false,
+                "allow_view": true,
+                "allow_fine_tuning": false,
+                "organization": "*",
+                "group": null,
+                "is_blocking": false
+              }
+            ]
+          }
+        ]
+      },
+      "version": {
+        "version": "0.17.1"
+      },
+      "finished_at_utc": "2026-10-21T13:25:01.934352+00:00",
+      "after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 72, 39.90\n",
+        "stderr": ""
+      }
+    },
+    {
+      "index": 3,
+      "engine": "runtime",
+      "command": [
+        "/content/phase3-envs/20261021T080713847703Z-2ec61482/runtime/bin/python",
+        "scripts/phase3/serve_runtime.py",
+        "--model",
+        "Qwen/Qwen2.5-0.5B",
+        "--revision",
+        "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "--port",
+        "8766",
+        "--execution-policy",
+        "fp32-math"
+      ],
+      "configuration_order": [
+        1
+      ],
+      "started_at_utc": "2026-10-21T13:25:01.958073+00:00",
+      "before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 72, 41.16\n",
+        "stderr": ""
+      },
+      "server_pid": 85120,
+      "environment": {
+        "environment": {
+          "recorded_at_utc": "2026-10-21T13:25:09.108147+00:00",
+          "python": "3.13.15",
+          "os": "Linux-6.6.122+-x86_64-with-glibc2.39",
+          "cpu": "x86_64",
+          "versions": {
+            "torch": "2.10.0+cu129",
+            "transformers": "5.17.0",
+            "vllm": null,
+            "fastapi": "0.156.6",
+            "uvicorn": "0.54.0",
+            "httpx": "0.28.1",
+            "flashinfer-python": null
+          },
+          "system_ram_bytes": 13605830656,
+          "cuda_runtime": "12.9",
+          "cuda_available": true,
+          "gpu_count": 1,
+          "gpus": [
+            {
+              "index": 0,
+              "name": "Tesla T4",
+              "total_vram_bytes": 15637086208,
+              "compute_capability": [
+                7,
+                5
+              ]
+            }
+          ],
+          "nvidia_smi": {
+            "command": [
+              "nvidia-smi"
+            ],
+            "returncode": 0,
+            "stdout": "Wed Oct 21 13:25:09 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.82.07              Driver Version: 580.82.07      CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla T4                       Off |   00000000:00:04.0 Off |                    0 |\n| N/A   72C    P0             30W /   70W |    2105MiB /  15360MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A           85120      C   ...Z-2ec61482/runtime/bin/python       2102MiB |\n+-----------------------------------------------------------------------------------------+\n",
+            "stderr": ""
+          },
+          "nvcc": {
+            "command": [
+              "nvcc",
+              "--version"
+            ],
+            "returncode": 0,
+            "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+            "stderr": ""
+          },
+          "gpu_observation": {
+            "command": [
+              "nvidia-smi",
+              "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+              "--format=csv,noheader,nounits"
+            ],
+            "returncode": 0,
+            "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2105, 72, 30.98\n",
+            "stderr": ""
+          },
+          "loader_library_policy": "Preserve inherited library paths, including Colab's NVIDIA driver paths. Diagnose any library mismatch before targeted changes."
+        },
+        "model": "Qwen/Qwen2.5-0.5B",
+        "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+        "dtype": "torch.float32",
+        "execution_policy": "fp32-math",
+        "checkpoint_load_dtype": "float32",
+        "parameter_dtypes": [
+          "torch.float32"
+        ],
+        "numerical_settings": {
+          "fp16_reduced_precision_reduction": false,
+          "flash_sdp": false,
+          "mem_efficient_sdp": false,
+          "math_sdp": true,
+          "cudnn_sdp": false,
+          "math_sdp_reduced_precision": false,
+          "matmul_allow_tf32": false
+        },
+        "attention_implementation": "sdpa"
+      },
+      "finished_at_utc": "2026-10-21T13:25:11.796503+00:00",
+      "after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 3, 72, 35.88\n",
+        "stderr": ""
+      }
+    }
+  ],
+  "warmups": [
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 342.1134149975842,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 388.0557449992921,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 420.27929199684877,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 453.5760179969657,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 453.84621399716707,
+          "generated_tokens": 4,
+          "ttft_ms": 342.1134149975842,
+          "mean_itl_ms": 37.15420099979383,
+          "tokens_per_second": 8.813558153919002
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 37.04473299876554,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 69.6917540008144,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 101.75064299983205,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 133.47218700073427,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 133.71560999803478,
+          "generated_tokens": 4,
+          "ttft_ms": 37.04473299876554,
+          "mean_itl_ms": 32.14248466732291,
+          "tokens_per_second": 29.914233649001698
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 41.61362199738505,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 74.47166899873991,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 108.45386800065171,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 141.84510899940506,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 142.10480999827269,
+          "generated_tokens": 4,
+          "ttft_ms": 41.61362199738505,
+          "mean_itl_ms": 33.41049566734,
+          "tokens_per_second": 28.148237910093407
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 35.617637000541436,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 67.73380000231555,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 99.04335499959416,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 132.31156899928465,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 132.52989900138346,
+          "generated_tokens": 4,
+          "ttft_ms": 35.617637000541436,
+          "mean_itl_ms": 32.23131066624774,
+          "tokens_per_second": 30.181868620893198
+        }
+      ],
+      "wall_time_ms": 865.5187559998012,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 4.621505856773044,
+      "generated_token_throughput": 18.486023427092174,
+      "latency_ms": {
+        "count": 4,
+        "median": 137.91020999815373,
+        "p50": 137.91020999815373,
+        "p90": 360.3237927974988,
+        "p95": 407.0850033973328,
+        "max": 453.84621399716707
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 39.329177498075296,
+        "p50": 39.329177498075296,
+        "p90": 251.9634770975245,
+        "p95": 297.0384460475542,
+        "max": 342.1134149975842
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 32.82090316679387,
+        "p50": 32.82090316679387,
+        "p90": 36.03108940005768,
+        "p95": 36.592645199925755,
+        "max": 37.15420099979383
+      },
+      "engine": "runtime",
+      "session": 0,
+      "warmup": 0
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 37.90559000117355,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 73.84335200185888,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 108.2541100004164,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 140.97229600156425,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 141.21330000125454,
+          "generated_tokens": 4,
+          "ttft_ms": 37.90559000117355,
+          "mean_itl_ms": 34.3555686667969,
+          "tokens_per_second": 28.325943802492144
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.48425600113114,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 68.24467800106504,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 100.20783399886568,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 132.0039159982116,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 132.2496159991715,
+          "generated_tokens": 4,
+          "ttft_ms": 36.48425600113114,
+          "mean_itl_ms": 31.839886665693484,
+          "tokens_per_second": 30.245834513614454
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 42.40818600010243,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 94.60309600035544,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 126.63644399799523,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 159.16239699799917,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 159.39768699900014,
+          "generated_tokens": 4,
+          "ttft_ms": 42.40818600010243,
+          "mean_itl_ms": 38.91807033263225,
+          "tokens_per_second": 25.094467023383412
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.775115000637015,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 68.54149499849882,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 100.29845800090698,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 133.04994400095893,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 133.27008600026602,
+          "generated_tokens": 4,
+          "ttft_ms": 36.775115000637015,
+          "mean_itl_ms": 32.09160966677397,
+          "tokens_per_second": 30.014237403523666
+        }
+      ],
+      "wall_time_ms": 569.1136480018031,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 7.02847316005208,
+      "generated_token_throughput": 28.11389264020832,
+      "latency_ms": {
+        "count": 4,
+        "median": 137.24169300076028,
+        "p50": 137.24169300076028,
+        "p90": 153.94237089967646,
+        "p95": 156.6700289493383,
+        "max": 159.39768699900014
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 37.34035250090528,
+        "p50": 37.34035250090528,
+        "p90": 41.05740720042377,
+        "p95": 41.7327966002631,
+        "max": 42.40818600010243
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 33.22358916678543,
+        "p50": 33.22358916678543,
+        "p90": 37.54931983288164,
+        "p95": 38.233695082756945,
+        "max": 38.91807033263225
+      },
+      "engine": "runtime",
+      "session": 0,
+      "warmup": 1
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 2472.293205002643,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 2496.78054800097,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 2519.904768003471,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 2522.2015860017564,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 5,
+            "total_tokens": 9,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 2522.533408002346,
+          "generated_tokens": 4,
+          "ttft_ms": 2472.293205002643,
+          "mean_itl_ms": 16.636126999704477,
+          "tokens_per_second": 1.5857074428868299
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 52.1260630011966,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 76.74281500294455,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 101.53444100069464,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 103.22582500157296,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 103.52948300351272,
+          "generated_tokens": 4,
+          "ttft_ms": 52.1260630011966,
+          "mean_itl_ms": 17.033254000125453,
+          "tokens_per_second": 38.63633705061853
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 83.06983700094861,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 107.8106309978466,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 132.7424160008377,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 134.9012020000373,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 7,
+            "total_tokens": 11,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 135.22030099920812,
+          "generated_tokens": 4,
+          "ttft_ms": 83.06983700094861,
+          "mean_itl_ms": 17.2771216663629,
+          "tokens_per_second": 29.581357018451133
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 52.63653799920576,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 78.2770010009699,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 105.53332800191129,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 105.77570500026923,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 105.90348000187078,
+          "generated_tokens": 4,
+          "ttft_ms": 52.63653799920576,
+          "mean_itl_ms": 17.713055667021155,
+          "tokens_per_second": 37.77024135495208
+        }
+      ],
+      "wall_time_ms": 2870.136380999611,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 1.393661996858449,
+      "generated_token_throughput": 5.574647987433796,
+      "latency_ms": {
+        "count": 4,
+        "median": 120.56189050053945,
+        "p50": 120.56189050053945,
+        "p90": 1806.339475901405,
+        "p95": 2164.4364419518743,
+        "max": 2522.533408002346
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 67.85318750007718,
+        "p50": 67.85318750007718,
+        "p90": 1755.526194602135,
+        "p95": 2113.909699802388,
+        "max": 2472.293205002643
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 17.155187833244177,
+        "p50": 17.155187833244177,
+        "p90": 17.582275466823678,
+        "p95": 17.647665566922417,
+        "max": 17.713055667021155
+      },
+      "engine": "vllm",
+      "session": 1,
+      "warmup": 0
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 55.03561300065485,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 79.55741100158775,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 104.46545200102264,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 105.86356999920099,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 5,
+            "total_tokens": 9,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 106.19237600258202,
+          "generated_tokens": 4,
+          "ttft_ms": 55.03561300065485,
+          "mean_itl_ms": 16.942652332848713,
+          "tokens_per_second": 37.66748754075096
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 52.32552600136842,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 77.89823200073442,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 109.34252600054606,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 109.4267270018463,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 109.53506100122468,
+          "generated_tokens": 4,
+          "ttft_ms": 52.32552600136842,
+          "mean_itl_ms": 19.033733666825963,
+          "tokens_per_second": 36.51798760540497
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 63.10552400100278,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 89.83946400257992,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 112.97805800131755,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 115.30871200011461,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 7,
+            "total_tokens": 11,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 115.80060000051162,
+          "generated_tokens": 4,
+          "ttft_ms": 63.10552400100278,
+          "mean_itl_ms": 17.40106266637061,
+          "tokens_per_second": 34.54213536011323
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 53.80081600014819,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 76.648580001347,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 102.43838699898333,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 103.48163800153998,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 103.79351600204245,
+          "generated_tokens": 4,
+          "ttft_ms": 53.80081600014819,
+          "mean_itl_ms": 16.56027400046393,
+          "tokens_per_second": 38.538052800150716
+        }
+      ],
+      "wall_time_ms": 438.6427889985498,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 9.119037404290316,
+      "generated_token_throughput": 36.47614961716126,
+      "latency_ms": {
+        "count": 4,
+        "median": 107.86371850190335,
+        "p50": 107.86371850190335,
+        "p90": 113.92093830072554,
+        "p95": 114.86076915061858,
+        "max": 115.80060000051162
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 54.41821450040152,
+        "p50": 54.41821450040152,
+        "p90": 60.6845507008984,
+        "p95": 61.89503735095059,
+        "max": 63.10552400100278
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 17.17185749960966,
+        "p50": 17.17185749960966,
+        "p90": 18.543932366689358,
+        "p95": 18.78883301675766,
+        "max": 19.033733666825963
+      },
+      "engine": "vllm",
+      "session": 1,
+      "warmup": 1
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 128.41511799706495,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 149.8598089965526,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 175.66528599854792,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 178.11991700000362,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 5,
+            "total_tokens": 9,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 178.45231799947214,
+          "generated_tokens": 4,
+          "ttft_ms": 128.41511799706495,
+          "mean_itl_ms": 16.56826633431289,
+          "tokens_per_second": 22.414951202885646
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 69.62962800025707,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 93.9423000017996,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 120.2657959984208,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 122.1713400009321,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 122.45777100179112,
+          "generated_tokens": 4,
+          "ttft_ms": 69.62962800025707,
+          "mean_itl_ms": 17.51390400022501,
+          "tokens_per_second": 32.66432148223157
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 57.524261999787996,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 81.89788799791131,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 107.97952400025679,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 110.08315299841342,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 7,
+            "total_tokens": 11,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 110.4046769978595,
+          "generated_tokens": 4,
+          "ttft_ms": 57.524261999787996,
+          "mean_itl_ms": 17.519630332875142,
+          "tokens_per_second": 36.23034919143463
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 53.38864900113549,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 78.01755599939497,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 103.85605600095005,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 105.63120100050583,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 105.96459999942454,
+          "generated_tokens": 4,
+          "ttft_ms": 53.38864900113549,
+          "mean_itl_ms": 17.41418399979011,
+          "tokens_per_second": 37.7484556165146
+        }
+      ],
+      "wall_time_ms": 520.602560001862,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 7.683404399674281,
+      "generated_token_throughput": 30.733617598697123,
+      "latency_ms": {
+        "count": 4,
+        "median": 116.4312239998253,
+        "p50": 116.4312239998253,
+        "p90": 161.65395390016783,
+        "p95": 170.05313594981996,
+        "max": 178.45231799947214
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 63.57694500002253,
+        "p50": 63.57694500002253,
+        "p90": 110.77947099802259,
+        "p95": 119.59729449754374,
+        "max": 128.41511799706495
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 17.46404400000756,
+        "p50": 17.46404400000756,
+        "p90": 17.517912433080102,
+        "p95": 17.518771382977622,
+        "max": 17.519630332875142
+      },
+      "engine": "vllm",
+      "session": 2,
+      "warmup": 0
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 55.373782000970095,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 81.6437789981137,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 105.79949499879149,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 108.0901460009045,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 5,
+            "total_tokens": 9,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 108.36287299753167,
+          "generated_tokens": 4,
+          "ttft_ms": 55.373782000970095,
+          "mean_itl_ms": 17.57212133331147,
+          "tokens_per_second": 36.9130117110416
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 50.88505499952589,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 78.1519890006166,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 102.37059800056159,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 104.40380400177673,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 104.7412580010132,
+          "generated_tokens": 4,
+          "ttft_ms": 50.88505499952589,
+          "mean_itl_ms": 17.83958300075028,
+          "tokens_per_second": 38.18934464164357
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 56.07427799986908,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 85.198995002429,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 112.81068600146682,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 113.82833200332243,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 7,
+            "total_tokens": 11,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 114.15130200111889,
+          "generated_tokens": 4,
+          "ttft_ms": 56.07427799986908,
+          "mean_itl_ms": 19.25135133448445,
+          "tokens_per_second": 35.041212232172285
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 55.54102799942484,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 79.97759399950155,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 103.99166600109311,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 105.93514400170534,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 106.26959799992619,
+          "generated_tokens": 4,
+          "ttft_ms": 55.54102799942484,
+          "mean_itl_ms": 16.798038667426834,
+          "tokens_per_second": 37.64011603772867
+        }
+      ],
+      "wall_time_ms": 436.46335800076486,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 9.164572298398966,
+      "generated_token_throughput": 36.65828919359586,
+      "latency_ms": {
+        "count": 4,
+        "median": 107.31623549872893,
+        "p50": 107.31623549872893,
+        "p90": 112.41477330004273,
+        "p95": 113.28303765058081,
+        "max": 114.15130200111889
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 55.45740500019747,
+        "p50": 55.45740500019747,
+        "p90": 55.91430299973581,
+        "p95": 55.994290499802446,
+        "max": 56.07427799986908
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 17.705852167030876,
+        "p50": 17.705852167030876,
+        "p90": 18.8278208343642,
+        "p95": 19.039586084424325,
+        "max": 19.25135133448445
+      },
+      "engine": "vllm",
+      "session": 2,
+      "warmup": 1
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 317.31246799972723,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 368.6398640020343,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 403.06677799890167,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 436.67897500199615,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 436.91910399866174,
+          "generated_tokens": 4,
+          "ttft_ms": 317.31246799972723,
+          "mean_itl_ms": 39.78883566742297,
+          "tokens_per_second": 9.155012823637604
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.495035001280485,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 68.5532659990713,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 100.23062300024321,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 132.66210700021475,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 132.8699570003664,
+          "generated_tokens": 4,
+          "ttft_ms": 36.495035001280485,
+          "mean_itl_ms": 32.05569066631142,
+          "tokens_per_second": 30.104623274537293
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 40.86190700036241,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 74.25963300192961,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 114.05993600055808,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 151.7244259994186,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 151.97792899925844,
+          "generated_tokens": 4,
+          "ttft_ms": 40.86190700036241,
+          "mean_itl_ms": 36.9541729996854,
+          "tokens_per_second": 26.319611185249915
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.6076529971906,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 69.3481989983411,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 100.94647699952475,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 134.3329659976007,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 134.56192599915084,
+          "generated_tokens": 4,
+          "ttft_ms": 36.6076529971906,
+          "mean_itl_ms": 32.57510433347003,
+          "tokens_per_second": 29.726090573534464
+        }
+      ],
+      "wall_time_ms": 859.253753998928,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 4.655202239599398,
+      "generated_token_throughput": 18.620808958397593,
+      "latency_ms": {
+        "count": 4,
+        "median": 143.26992749920464,
+        "p50": 143.26992749920464,
+        "p90": 351.4367514988408,
+        "p95": 394.17792774875113,
+        "max": 436.91910399866174
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 38.7347799987765,
+        "p50": 38.7347799987765,
+        "p90": 234.37729969991784,
+        "p95": 275.8448838498224,
+        "max": 317.31246799972723
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 34.76463866657771,
+        "p50": 34.76463866657771,
+        "p90": 38.9384368671017,
+        "p95": 39.363636267262336,
+        "max": 39.78883566742297
+      },
+      "engine": "runtime",
+      "session": 3,
+      "warmup": 0
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.36452200225904,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 74.8049110006832,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 106.53816800186178,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 138.74470900191227,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 138.96532900253078,
+          "generated_tokens": 4,
+          "ttft_ms": 36.36452200225904,
+          "mean_itl_ms": 34.12672899988441,
+          "tokens_per_second": 28.784158096924692
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.22167900175555,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 68.72233399917604,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 101.67264800111298,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 133.68221999917296,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 133.8935380008479,
+          "generated_tokens": 4,
+          "ttft_ms": 36.22167900175555,
+          "mean_itl_ms": 32.48684699913914,
+          "tokens_per_second": 29.87448132093327
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 35.9023309974873,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 67.51454999903217,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 100.41102499963017,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 131.86119300007704,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 132.0926589978626,
+          "generated_tokens": 4,
+          "ttft_ms": 35.9023309974873,
+          "mean_itl_ms": 31.98628733419658,
+          "tokens_per_second": 30.281773645458408
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 37.01729000022169,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 70.2123910014052,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 103.46131600090303,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 136.13931399959256,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 136.4036560007662,
+          "generated_tokens": 4,
+          "ttft_ms": 37.01729000022169,
+          "mean_itl_ms": 33.04067466645696,
+          "tokens_per_second": 29.324727190431986
+        }
+      ],
+      "wall_time_ms": 544.1737580003974,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 7.350593337499893,
+      "generated_token_throughput": 29.40237334999957,
+      "latency_ms": {
+        "count": 4,
+        "median": 135.14859700080706,
+        "p50": 135.14859700080706,
+        "p90": 138.1968271020014,
+        "p95": 138.5810780522661,
+        "max": 138.96532900253078
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 36.29310050200729,
+        "p50": 36.29310050200729,
+        "p90": 36.821459600832895,
+        "p95": 36.919374800527294,
+        "max": 37.01729000022169
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 32.76376083279805,
+        "p50": 32.76376083279805,
+        "p90": 33.80091269985618,
+        "p95": 33.963820849870295,
+        "max": 34.12672899988441
+      },
+      "engine": "runtime",
+      "session": 3,
+      "warmup": 1
+    }
+  ],
+  "raw_repetitions": [
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 37.0150470007502,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 68.38426700051059,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 101.1436689987022,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 133.45189499887056,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 133.7048040004447,
+          "generated_tokens": 4,
+          "ttft_ms": 37.0150470007502,
+          "mean_itl_ms": 32.145615999373454,
+          "tokens_per_second": 29.916651311845875
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 35.273692999908235,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 67.2970340019674,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 98.97185700174305,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 131.04656799987424,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 131.32084500102792,
+          "generated_tokens": 4,
+          "ttft_ms": 35.273692999908235,
+          "mean_itl_ms": 31.924291666655336,
+          "tokens_per_second": 30.459749173626548
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 35.63383300206624,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 67.75034000020241,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 100.7314310008951,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 133.28081900181132,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 133.529599999747,
+          "generated_tokens": 4,
+          "ttft_ms": 35.63383300206624,
+          "mean_itl_ms": 32.548995333248364,
+          "tokens_per_second": 29.955904908032217
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.214176998328185,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 67.70757299818797,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 104.116623999289,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 138.52314799805754,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 138.75592399926973,
+          "generated_tokens": 4,
+          "ttft_ms": 36.214176998328185,
+          "mean_itl_ms": 34.10299033324312,
+          "tokens_per_second": 28.82759802039913
+        }
+      ],
+      "wall_time_ms": 540.238481000415,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 7.404137507185325,
+      "generated_token_throughput": 29.6165500287413,
+      "latency_ms": {
+        "count": 4,
+        "median": 133.61720200009586,
+        "p50": 133.61720200009586,
+        "p90": 137.24058799962222,
+        "p95": 137.99825599944597,
+        "max": 138.75592399926973
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 35.92400500019721,
+        "p50": 35.92400500019721,
+        "p90": 36.774786000023596,
+        "p95": 36.8949165003869,
+        "max": 37.0150470007502
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 32.34730566631091,
+        "p50": 32.34730566631091,
+        "p90": 33.63679183324469,
+        "p95": 33.86989108324391,
+        "max": 34.10299033324312
+      },
+      "engine": "runtime",
+      "session": 0,
+      "repetition": 0,
+      "external_process_vram_samples": [
+        {
+          "elapsed_ms": 24.741196000832133,
+          "command": [
+            "nvidia-smi",
+            "--query-compute-apps=pid,gpu_uuid,used_gpu_memory",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "84548, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 2150\n",
+          "stderr": ""
+        },
+        {
+          "elapsed_ms": 551.1358959993231,
+          "command": [
+            "nvidia-smi",
+            "--query-compute-apps=pid,gpu_uuid,used_gpu_memory",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "84548, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 2150\n",
+          "stderr": ""
+        }
+      ],
+      "gpu_before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2153, 73, 33.23\n",
+        "stderr": ""
+      },
+      "gpu_after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2153, 73, 44.26\n",
+        "stderr": ""
+      },
+      "engine_stats": {
+        "torch_memory": {
+          "allocated_bytes": 1986421248,
+          "reserved_bytes": 2120220672,
+          "peak_allocated_bytes": 1987990016,
+          "peak_reserved_bytes": 2120220672,
+          "metric_scope": "PyTorch allocator in OUR server process, not physical/process VRAM"
+        },
+        "forwards": [
+          {
+            "input_shape": [
+              1,
+              5
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              4
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              7
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              4
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          }
+        ],
+        "model_forward_count": 16,
+        "forwarded_token_positions": 32,
+        "peak_active_requests": 1,
+        "traces_tail": [
+          {
+            "tick": 33,
+            "admitted": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "active_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "model_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "96e33a3c7ed84fddbb0d427d6845ac86",
+                "phase": "prefill",
+                "token_id": 12095,
+                "logical_context_length": 5,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 5,
+                "model_input_width": 5,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " Paris",
+                "generated_text": " Paris",
+                "tick": 33
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 0
+            },
+            "logical_cache_lengths_after": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 5
+            },
+            "prefill_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "prefill_input_shape": [
+              1,
+              5
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2388.772186001006,
+            "worker_step_ms": 33.40840499731712,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 34,
+            "admitted": [],
+            "active_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "model_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "96e33a3c7ed84fddbb0d427d6845ac86",
+                "phase": "decode",
+                "token_id": 13,
+                "logical_context_length": 6,
+                "logical_cache_length_before": 5,
+                "logical_cache_length_after": 6,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": ".",
+                "generated_text": " Paris.",
+                "tick": 34
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 5
+            },
+            "logical_cache_lengths_after": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 6
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2420.166004998464,
+            "worker_step_ms": 31.15586199783138,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 35,
+            "admitted": [],
+            "active_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "model_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "96e33a3c7ed84fddbb0d427d6845ac86",
+                "phase": "decode",
+                "token_id": 1084,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 6,
+                "logical_cache_length_after": 7,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": " It",
+                "generated_text": " Paris. It",
+                "tick": 35
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 6
+            },
+            "logical_cache_lengths_after": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 7
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2452.930749001098,
+            "worker_step_ms": 32.55457799969008,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 36,
+            "admitted": [],
+            "active_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "model_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "completed": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "events": [
+              {
+                "request_id": "96e33a3c7ed84fddbb0d427d6845ac86",
+                "phase": "decode",
+                "token_id": 374,
+                "logical_context_length": 8,
+                "logical_cache_length_before": 7,
+                "logical_cache_length_after": 8,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": " is",
+                "generated_text": " Paris. It is",
+                "tick": 36
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 7
+            },
+            "logical_cache_lengths_after": {
+              "96e33a3c7ed84fddbb0d427d6845ac86": 8
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "96e33a3c7ed84fddbb0d427d6845ac86"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2485.2107080005226,
+            "worker_step_ms": 32.06748500087997,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 37,
+            "admitted": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "active_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "model_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "809c79b7ae1c4c738257219963e56c36",
+                "phase": "prefill",
+                "token_id": 279,
+                "logical_context_length": 4,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 4,
+                "model_input_width": 4,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " the",
+                "generated_text": " the",
+                "tick": 37
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "809c79b7ae1c4c738257219963e56c36": 0
+            },
+            "logical_cache_lengths_after": {
+              "809c79b7ae1c4c738257219963e56c36": 4
+            },
+            "prefill_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "prefill_input_shape": [
+              1,
+              4
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2521.4174869979615,
+            "worker_step_ms": 31.924572002026252,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 38,
+            "admitted": [],
+            "active_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "model_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "809c79b7ae1c4c738257219963e56c36",
+                "phase": "decode",
+                "token_id": 4963,
+                "logical_context_length": 5,
+                "logical_cache_length_before": 4,
+                "logical_cache_length_after": 5,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": " resources",
+                "generated_text": " the resources",
+                "tick": 38
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "809c79b7ae1c4c738257219963e56c36": 4
+            },
+            "logical_cache_lengths_after": {
+              "809c79b7ae1c4c738257219963e56c36": 5
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2553.3453850002843,
+            "worker_step_ms": 31.722264000563882,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 39,
+            "admitted": [],
+            "active_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "model_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "809c79b7ae1c4c738257219963e56c36",
+                "phase": "decode",
+                "token_id": 315,
+                "logical_context_length": 6,
+                "logical_cache_length_before": 5,
+                "logical_cache_length_after": 6,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": " of",
+                "generated_text": " the resources of",
+                "tick": 39
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "809c79b7ae1c4c738257219963e56c36": 5
+            },
+            "logical_cache_lengths_after": {
+              "809c79b7ae1c4c738257219963e56c36": 6
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2585.119646999374,
+            "worker_step_ms": 31.539662999421125,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 40,
+            "admitted": [],
+            "active_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "model_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "completed": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "events": [
+              {
+                "request_id": "809c79b7ae1c4c738257219963e56c36",
+                "phase": "decode",
+                "token_id": 264,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 6,
+                "logical_cache_length_after": 7,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": " a",
+                "generated_text": " the resources of a",
+                "tick": 40
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "809c79b7ae1c4c738257219963e56c36": 6
+            },
+            "logical_cache_lengths_after": {
+              "809c79b7ae1c4c738257219963e56c36": 7
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "809c79b7ae1c4c738257219963e56c36"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2617.08514899874,
+            "worker_step_ms": 31.75514599934104,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 41,
+            "admitted": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "active_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "model_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "a018129080814e3eaffa1253f3e161c6",
+                "phase": "prefill",
+                "token_id": 315,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 7,
+                "model_input_width": 7,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " of",
+                "generated_text": " of",
+                "tick": 41
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "a018129080814e3eaffa1253f3e161c6": 0
+            },
+            "logical_cache_lengths_after": {
+              "a018129080814e3eaffa1253f3e161c6": 7
+            },
+            "prefill_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "prefill_input_shape": [
+              1,
+              7
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2653.7832920002984,
+            "worker_step_ms": 32.33506399919861,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 42,
+            "admitted": [],
+            "active_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "model_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "a018129080814e3eaffa1253f3e161c6",
+                "phase": "decode",
+                "token_id": 1599,
+                "logical_context_length": 8,
+                "logical_cache_length_before": 7,
+                "logical_cache_length_after": 8,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": " X",
+                "generated_text": " of X",
+                "tick": 42
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "a018129080814e3eaffa1253f3e161c6": 7
+            },
+            "logical_cache_lengths_after": {
+              "a018129080814e3eaffa1253f3e161c6": 8
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2685.8924879998085,
+            "worker_step_ms": 31.887590997939697,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 43,
+            "admitted": [],
+            "active_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "model_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "a018129080814e3eaffa1253f3e161c6",
+                "phase": "decode",
+                "token_id": 287,
+                "logical_context_length": 9,
+                "logical_cache_length_before": 8,
+                "logical_cache_length_after": 9,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": "ing",
+                "generated_text": " of Xing",
+                "tick": 43
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "a018129080814e3eaffa1253f3e161c6": 8
+            },
+            "logical_cache_lengths_after": {
+              "a018129080814e3eaffa1253f3e161c6": 9
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2718.7885269995604,
+            "worker_step_ms": 32.670912998582935,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 44,
+            "admitted": [],
+            "active_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "model_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "completed": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "events": [
+              {
+                "request_id": "a018129080814e3eaffa1253f3e161c6",
+                "phase": "decode",
+                "token_id": 61495,
+                "logical_context_length": 10,
+                "logical_cache_length_before": 9,
+                "logical_cache_length_after": 10,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": "'an",
+                "generated_text": " of Xing'an",
+                "tick": 44
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "a018129080814e3eaffa1253f3e161c6": 9
+            },
+            "logical_cache_lengths_after": {
+              "a018129080814e3eaffa1253f3e161c6": 10
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "a018129080814e3eaffa1253f3e161c6"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2751.32065499929,
+            "worker_step_ms": 32.25760100031039,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 45,
+            "admitted": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "active_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "model_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "72fca5a494804ffaa054f6ff296d8268",
+                "phase": "prefill",
+                "token_id": 220,
+                "logical_context_length": 4,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 4,
+                "model_input_width": 4,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " ",
+                "generated_text": " ",
+                "tick": 45
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "72fca5a494804ffaa054f6ff296d8268": 0
+            },
+            "logical_cache_lengths_after": {
+              "72fca5a494804ffaa054f6ff296d8268": 4
+            },
+            "prefill_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "prefill_input_shape": [
+              1,
+              4
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2788.5764140009996,
+            "worker_step_ms": 32.695222998881945,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 46,
+            "admitted": [],
+            "active_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "model_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "72fca5a494804ffaa054f6ff296d8268",
+                "phase": "decode",
+                "token_id": 16,
+                "logical_context_length": 5,
+                "logical_cache_length_before": 4,
+                "logical_cache_length_after": 5,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": "1",
+                "generated_text": " 1",
+                "tick": 46
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "72fca5a494804ffaa054f6ff296d8268": 4
+            },
+            "logical_cache_lengths_after": {
+              "72fca5a494804ffaa054f6ff296d8268": 5
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2820.136161000846,
+            "worker_step_ms": 31.29572300167638,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 47,
+            "admitted": [],
+            "active_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "model_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "72fca5a494804ffaa054f6ff296d8268",
+                "phase": "decode",
+                "token_id": 15,
+                "logical_context_length": 6,
+                "logical_cache_length_before": 5,
+                "logical_cache_length_after": 6,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": "0",
+                "generated_text": " 10",
+                "tick": 47
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "72fca5a494804ffaa054f6ff296d8268": 5
+            },
+            "logical_cache_lengths_after": {
+              "72fca5a494804ffaa054f6ff296d8268": 6
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2854.6892939993995,
+            "worker_step_ms": 34.34664200176485,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 48,
+            "admitted": [],
+            "active_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "model_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "completed": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "events": [
+              {
+                "request_id": "72fca5a494804ffaa054f6ff296d8268",
+                "phase": "decode",
+                "token_id": 15,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 6,
+                "logical_cache_length_after": 7,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": "0",
+                "generated_text": " 100",
+                "tick": 48
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "72fca5a494804ffaa054f6ff296d8268": 6
+            },
+            "logical_cache_lengths_after": {
+              "72fca5a494804ffaa054f6ff296d8268": 7
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "72fca5a494804ffaa054f6ff296d8268"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2890.890095000941,
+            "worker_step_ms": 35.948770000686636,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          }
+        ],
+        "trace_note": "Tail is bounded to 128 ticks; full work counts come from the forward observer."
+      }
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 61.37976500031073,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 86.00136799941538,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 109.70269300014479,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 111.9332710004528,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 5,
+            "total_tokens": 9,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 112.27837199839996,
+          "generated_tokens": 4,
+          "ttft_ms": 61.37976500031073,
+          "mean_itl_ms": 16.851168666714027,
+          "tokens_per_second": 35.625739212330245
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 54.03927999941516,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 79.34666300207027,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 104.9424610027927,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 106.31064300105209,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 106.65363199950662,
+          "generated_tokens": 4,
+          "ttft_ms": 54.03927999941516,
+          "mean_itl_ms": 17.42378766721231,
+          "tokens_per_second": 37.50458306022344
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 58.40940500274883,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 81.6600340003788,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 105.28172300109873,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 107.33810100282426,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 7,
+            "total_tokens": 11,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 107.66959900138318,
+          "generated_tokens": 4,
+          "ttft_ms": 58.40940500274883,
+          "mean_itl_ms": 16.309565333358478,
+          "tokens_per_second": 37.150690975905036
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 51.24043899922981,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 73.6185089990613,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 98.66046800016193,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 100.79092800151557,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 101.08080600184621,
+          "generated_tokens": 4,
+          "ttft_ms": 51.24043899922981,
+          "mean_itl_ms": 16.516829667428585,
+          "tokens_per_second": 39.57230020432308
+        }
+      ],
+      "wall_time_ms": 430.6255439987581,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 9.288812648818473,
+      "generated_token_throughput": 37.15525059527389,
+      "latency_ms": {
+        "count": 4,
+        "median": 107.1616155004449,
+        "p50": 107.1616155004449,
+        "p90": 110.89574009929493,
+        "p95": 111.58705604884744,
+        "max": 112.27837199839996
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 56.22434250108199,
+        "p50": 56.22434250108199,
+        "p90": 60.48865700104216,
+        "p95": 60.93421100067644,
+        "max": 61.37976500031073
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 16.683999167071306,
+        "p50": 16.683999167071306,
+        "p90": 17.252001967062824,
+        "p95": 17.337894817137567,
+        "max": 17.42378766721231
+      },
+      "engine": "vllm",
+      "session": 1,
+      "repetition": 0,
+      "external_process_vram_samples": [
+        {
+          "elapsed_ms": 26.104956999915885,
+          "command": [
+            "nvidia-smi",
+            "--query-compute-apps=pid,gpu_uuid,used_gpu_memory",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "84705, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 10486\n",
+          "stderr": ""
+        }
+      ],
+      "gpu_before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10489, 71, 32.46\n",
+        "stderr": ""
+      },
+      "gpu_after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10489, 71, 43.57\n",
+        "stderr": ""
+      },
+      "engine_stats": {
+        "torch_memory": null,
+        "model_forward_count": null,
+        "note": "No equivalent external executor counters/allocator statistics claimed"
+      }
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 57.71164799807593,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 82.6175410002179,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 108.50287299763295,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 110.37715799830039,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 5,
+            "total_tokens": 9,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 110.72417399918777,
+          "generated_tokens": 4,
+          "ttft_ms": 57.71164799807593,
+          "mean_itl_ms": 17.55517000007482,
+          "tokens_per_second": 36.12580573443106
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 56.41267299870378,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 86.85660400078632,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 122.90552299964475,
+              "token_ids": [
+                315,
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 123.32719299956807,
+          "generated_tokens": 4,
+          "ttft_ms": 56.41267299870378,
+          "mean_itl_ms": 22.16428333364699,
+          "tokens_per_second": 32.43404720979913
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 58.41518300076132,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 83.26041300097131,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 109.26485700110788,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 111.24219600242213,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 7,
+            "total_tokens": 11,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 111.55848900307319,
+          "generated_tokens": 4,
+          "ttft_ms": 58.41518300076132,
+          "mean_itl_ms": 17.60900433388694,
+          "tokens_per_second": 35.85563085109381
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 53.90991099920939,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 81.08056800119812,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 104.51950499918894,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 106.59008299990091,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "length",
+          "usage": {
+            "prompt_tokens": 4,
+            "total_tokens": 8,
+            "completion_tokens": 4
+          },
+          "prompt_ids_verified": true,
+          "latency_ms": 106.88769899934414,
+          "generated_tokens": 4,
+          "ttft_ms": 53.90991099920939,
+          "mean_itl_ms": 17.560057333563844,
+          "tokens_per_second": 37.42245400964749
+        }
+      ],
+      "wall_time_ms": 455.82729899979313,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 8.775253278548847,
+      "generated_token_throughput": 35.10101311419539,
+      "latency_ms": {
+        "count": 4,
+        "median": 111.14133150113048,
+        "p50": 111.14133150113048,
+        "p90": 119.7965818006196,
+        "p95": 121.56188740009384,
+        "max": 123.32719299956807
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 57.06216049838986,
+        "p50": 57.06216049838986,
+        "p90": 58.2041224999557,
+        "p95": 58.30965275035851,
+        "max": 58.41518300076132
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 17.584530833725392,
+        "p50": 17.584530833725392,
+        "p90": 20.797699633718974,
+        "p95": 21.480991483682978,
+        "max": 22.16428333364699
+      },
+      "engine": "vllm",
+      "session": 2,
+      "repetition": 1,
+      "external_process_vram_samples": [
+        {
+          "elapsed_ms": 23.73425099722226,
+          "command": [
+            "nvidia-smi",
+            "--query-compute-apps=pid,gpu_uuid,used_gpu_memory",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "84961, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 10486\n",
+          "stderr": ""
+        }
+      ],
+      "gpu_before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10489, 72, 41.28\n",
+        "stderr": ""
+      },
+      "gpu_after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 10489, 72, 33.15\n",
+        "stderr": ""
+      },
+      "engine_stats": {
+        "torch_memory": null,
+        "model_forward_count": null,
+        "note": "No equivalent external executor counters/allocator statistics claimed"
+      }
+    },
+    {
+      "requests": [
+        {
+          "id": "request-00",
+          "generated_token_ids": [
+            12095,
+            13,
+            1084,
+            374
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 37.24023399990983,
+              "token_ids": [
+                12095
+              ]
+            },
+            {
+              "arrival_ms": 69.91807699887431,
+              "token_ids": [
+                13
+              ]
+            },
+            {
+              "arrival_ms": 102.05204500016407,
+              "token_ids": [
+                1084
+              ]
+            },
+            {
+              "arrival_ms": 134.2299540010572,
+              "token_ids": [
+                374
+              ]
+            }
+          ],
+          "engine_text": " Paris. It is",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 134.4679690009798,
+          "generated_tokens": 4,
+          "ttft_ms": 37.24023399990983,
+          "mean_itl_ms": 32.32990666704912,
+          "tokens_per_second": 29.74686112772964
+        },
+        {
+          "id": "request-01",
+          "generated_token_ids": [
+            279,
+            4963,
+            315,
+            264
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.486035998677835,
+              "token_ids": [
+                279
+              ]
+            },
+            {
+              "arrival_ms": 82.71839699955308,
+              "token_ids": [
+                4963
+              ]
+            },
+            {
+              "arrival_ms": 115.53201800052193,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 147.6393269986147,
+              "token_ids": [
+                264
+              ]
+            }
+          ],
+          "engine_text": " the resources of a",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 147.84771899940097,
+          "generated_tokens": 4,
+          "ttft_ms": 36.486035998677835,
+          "mean_itl_ms": 37.05109699997896,
+          "tokens_per_second": 27.054864471843537
+        },
+        {
+          "id": "request-02",
+          "generated_token_ids": [
+            315,
+            1599,
+            287,
+            61495
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 36.47993899721769,
+              "token_ids": [
+                315
+              ]
+            },
+            {
+              "arrival_ms": 70.4181149994838,
+              "token_ids": [
+                1599
+              ]
+            },
+            {
+              "arrival_ms": 106.8645409977762,
+              "token_ids": [
+                287
+              ]
+            },
+            {
+              "arrival_ms": 139.53260500056786,
+              "token_ids": [
+                61495
+              ]
+            }
+          ],
+          "engine_text": " of Xing'an",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 139.81809100005194,
+          "generated_tokens": 4,
+          "ttft_ms": 36.47993899721769,
+          "mean_itl_ms": 34.35088866778339,
+          "tokens_per_second": 28.608601157331737
+        },
+        {
+          "id": "request-03",
+          "generated_token_ids": [
+            220,
+            16,
+            15,
+            15
+          ],
+          "arrival_events": [
+            {
+              "arrival_ms": 39.00324099959107,
+              "token_ids": [
+                220
+              ]
+            },
+            {
+              "arrival_ms": 73.38646999778575,
+              "token_ids": [
+                16
+              ]
+            },
+            {
+              "arrival_ms": 111.94707699905848,
+              "token_ids": [
+                15
+              ]
+            },
+            {
+              "arrival_ms": 145.02152199929697,
+              "token_ids": [
+                15
+              ]
+            }
+          ],
+          "engine_text": " 100",
+          "success": true,
+          "stop_reason": "max_new_tokens",
+          "usage": null,
+          "prompt_ids_verified": true,
+          "latency_ms": 145.28090599924326,
+          "generated_tokens": 4,
+          "ttft_ms": 39.00324099959107,
+          "mean_itl_ms": 35.33942699990197,
+          "tokens_per_second": 27.532867946327613
+        }
+      ],
+      "wall_time_ms": 570.2143990019977,
+      "concurrency": 1,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "request_throughput": 7.014905282996873,
+      "generated_token_throughput": 28.05962113198749,
+      "latency_ms": {
+        "count": 4,
+        "median": 142.5494984996476,
+        "p50": 142.5494984996476,
+        "p90": 147.07767509935366,
+        "p95": 147.4626970493773,
+        "max": 147.84771899940097
+      },
+      "ttft_ms": {
+        "count": 4,
+        "median": 36.863134999293834,
+        "p50": 36.863134999293834,
+        "p90": 38.4743388996867,
+        "p95": 38.738789949638885,
+        "max": 39.00324099959107
+      },
+      "mean_itl_ms": {
+        "count": 4,
+        "median": 34.84515783384268,
+        "p50": 34.84515783384268,
+        "p90": 36.53759599995586,
+        "p95": 36.79434649996741,
+        "max": 37.05109699997896
+      },
+      "engine": "runtime",
+      "session": 3,
+      "repetition": 1,
+      "external_process_vram_samples": [
+        {
+          "elapsed_ms": 24.31404900198686,
+          "command": [
+            "nvidia-smi",
+            "--query-compute-apps=pid,gpu_uuid,used_gpu_memory",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "85120, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 2150\n",
+          "stderr": ""
+        },
+        {
+          "elapsed_ms": 550.5337690010492,
+          "command": [
+            "nvidia-smi",
+            "--query-compute-apps=pid,gpu_uuid,used_gpu_memory",
+            "--format=csv,noheader,nounits"
+          ],
+          "returncode": 0,
+          "stdout": "85120, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 2150\n",
+          "stderr": ""
+        }
+      ],
+      "gpu_before": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2153, 72, 33.23\n",
+        "stderr": ""
+      },
+      "gpu_after": {
+        "command": [
+          "nvidia-smi",
+          "--query-gpu=index,name,uuid,driver_version,memory.total,memory.used,temperature.gpu,power.draw",
+          "--format=csv,noheader,nounits"
+        ],
+        "returncode": 0,
+        "stdout": "0, Tesla T4, GPU-8af3c4b1-b49d-3dd7-c866-b3bf725caa22, 580.82.07, 15360, 2153, 72, 42.93\n",
+        "stderr": ""
+      },
+      "engine_stats": {
+        "torch_memory": {
+          "allocated_bytes": 1986421248,
+          "reserved_bytes": 2120220672,
+          "peak_allocated_bytes": 1987990016,
+          "peak_reserved_bytes": 2120220672,
+          "metric_scope": "PyTorch allocator in OUR server process, not physical/process VRAM"
+        },
+        "forwards": [
+          {
+            "input_shape": [
+              1,
+              5
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              4
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              7
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              4
+            ],
+            "phase": "prefill"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          },
+          {
+            "input_shape": [
+              1,
+              1
+            ],
+            "phase": "decode"
+          }
+        ],
+        "model_forward_count": 16,
+        "forwarded_token_positions": 32,
+        "peak_active_requests": 1,
+        "traces_tail": [
+          {
+            "tick": 33,
+            "admitted": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "active_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "model_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "2c8c8d59b3414efb903f662cff4c9168",
+                "phase": "prefill",
+                "token_id": 12095,
+                "logical_context_length": 5,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 5,
+                "model_input_width": 5,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " Paris",
+                "generated_text": " Paris",
+                "tick": 33
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2c8c8d59b3414efb903f662cff4c9168": 0
+            },
+            "logical_cache_lengths_after": {
+              "2c8c8d59b3414efb903f662cff4c9168": 5
+            },
+            "prefill_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "prefill_input_shape": [
+              1,
+              5
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2420.728605000477,
+            "worker_step_ms": 33.816249000665266,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 34,
+            "admitted": [],
+            "active_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "model_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "2c8c8d59b3414efb903f662cff4c9168",
+                "phase": "decode",
+                "token_id": 13,
+                "logical_context_length": 6,
+                "logical_cache_length_before": 5,
+                "logical_cache_length_after": 6,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": ".",
+                "generated_text": " Paris.",
+                "tick": 34
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2c8c8d59b3414efb903f662cff4c9168": 5
+            },
+            "logical_cache_lengths_after": {
+              "2c8c8d59b3414efb903f662cff4c9168": 6
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2453.4257640007127,
+            "worker_step_ms": 32.46607500113896,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 35,
+            "admitted": [],
+            "active_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "model_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "2c8c8d59b3414efb903f662cff4c9168",
+                "phase": "decode",
+                "token_id": 1084,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 6,
+                "logical_cache_length_after": 7,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": " It",
+                "generated_text": " Paris. It",
+                "tick": 35
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2c8c8d59b3414efb903f662cff4c9168": 6
+            },
+            "logical_cache_lengths_after": {
+              "2c8c8d59b3414efb903f662cff4c9168": 7
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2485.5599449983856,
+            "worker_step_ms": 31.925785002385965,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 36,
+            "admitted": [],
+            "active_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "model_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "completed": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "events": [
+              {
+                "request_id": "2c8c8d59b3414efb903f662cff4c9168",
+                "phase": "decode",
+                "token_id": 374,
+                "logical_context_length": 8,
+                "logical_cache_length_before": 7,
+                "logical_cache_length_after": 8,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": " is",
+                "generated_text": " Paris. It is",
+                "tick": 36
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2c8c8d59b3414efb903f662cff4c9168": 7
+            },
+            "logical_cache_lengths_after": {
+              "2c8c8d59b3414efb903f662cff4c9168": 8
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "2c8c8d59b3414efb903f662cff4c9168"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2517.721475000144,
+            "worker_step_ms": 31.96026500154403,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 37,
+            "admitted": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "active_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "model_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "c01787c93664430aa73a9a11486d1c5e",
+                "phase": "prefill",
+                "token_id": 279,
+                "logical_context_length": 4,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 4,
+                "model_input_width": 4,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " the",
+                "generated_text": " the",
+                "tick": 37
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "c01787c93664430aa73a9a11486d1c5e": 0
+            },
+            "logical_cache_lengths_after": {
+              "c01787c93664430aa73a9a11486d1c5e": 4
+            },
+            "prefill_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "prefill_input_shape": [
+              1,
+              4
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2555.0405719986884,
+            "worker_step_ms": 33.31528899798286,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 38,
+            "admitted": [],
+            "active_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "model_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "c01787c93664430aa73a9a11486d1c5e",
+                "phase": "decode",
+                "token_id": 4963,
+                "logical_context_length": 5,
+                "logical_cache_length_before": 4,
+                "logical_cache_length_after": 5,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": " resources",
+                "generated_text": " the resources",
+                "tick": 38
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "c01787c93664430aa73a9a11486d1c5e": 4
+            },
+            "logical_cache_lengths_after": {
+              "c01787c93664430aa73a9a11486d1c5e": 5
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2601.2714930002403,
+            "worker_step_ms": 45.97269100122503,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 39,
+            "admitted": [],
+            "active_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "model_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "c01787c93664430aa73a9a11486d1c5e",
+                "phase": "decode",
+                "token_id": 315,
+                "logical_context_length": 6,
+                "logical_cache_length_before": 5,
+                "logical_cache_length_after": 6,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": " of",
+                "generated_text": " the resources of",
+                "tick": 39
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "c01787c93664430aa73a9a11486d1c5e": 5
+            },
+            "logical_cache_lengths_after": {
+              "c01787c93664430aa73a9a11486d1c5e": 6
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2634.079653998924,
+            "worker_step_ms": 32.560242998442845,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 40,
+            "admitted": [],
+            "active_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "model_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "completed": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "events": [
+              {
+                "request_id": "c01787c93664430aa73a9a11486d1c5e",
+                "phase": "decode",
+                "token_id": 264,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 6,
+                "logical_cache_length_after": 7,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": " a",
+                "generated_text": " the resources of a",
+                "tick": 40
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "c01787c93664430aa73a9a11486d1c5e": 6
+            },
+            "logical_cache_lengths_after": {
+              "c01787c93664430aa73a9a11486d1c5e": 7
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "c01787c93664430aa73a9a11486d1c5e"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2666.2131509983737,
+            "worker_step_ms": 31.87961100047687,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 41,
+            "admitted": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "active_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "model_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "4f7d0f4d7c9d4610b3daca957a041b08",
+                "phase": "prefill",
+                "token_id": 315,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 7,
+                "model_input_width": 7,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " of",
+                "generated_text": " of",
+                "tick": 41
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 0
+            },
+            "logical_cache_lengths_after": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 7
+            },
+            "prefill_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "prefill_input_shape": [
+              1,
+              7
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2703.640985997481,
+            "worker_step_ms": 33.21201899962034,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 42,
+            "admitted": [],
+            "active_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "model_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "4f7d0f4d7c9d4610b3daca957a041b08",
+                "phase": "decode",
+                "token_id": 1599,
+                "logical_context_length": 8,
+                "logical_cache_length_before": 7,
+                "logical_cache_length_after": 8,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": " X",
+                "generated_text": " of X",
+                "tick": 42
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 7
+            },
+            "logical_cache_lengths_after": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 8
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2737.5560219988984,
+            "worker_step_ms": 33.71599200181663,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 43,
+            "admitted": [],
+            "active_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "model_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "4f7d0f4d7c9d4610b3daca957a041b08",
+                "phase": "decode",
+                "token_id": 287,
+                "logical_context_length": 9,
+                "logical_cache_length_before": 8,
+                "logical_cache_length_after": 9,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": "ing",
+                "generated_text": " of Xing",
+                "tick": 43
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 8
+            },
+            "logical_cache_lengths_after": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 9
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2772.1858889999567,
+            "worker_step_ms": 34.426106001774315,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 44,
+            "admitted": [],
+            "active_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "model_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "completed": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "events": [
+              {
+                "request_id": "4f7d0f4d7c9d4610b3daca957a041b08",
+                "phase": "decode",
+                "token_id": 61495,
+                "logical_context_length": 10,
+                "logical_cache_length_before": 9,
+                "logical_cache_length_after": 10,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": "'an",
+                "generated_text": " of Xing'an",
+                "tick": 44
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 9
+            },
+            "logical_cache_lengths_after": {
+              "4f7d0f4d7c9d4610b3daca957a041b08": 10
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "4f7d0f4d7c9d4610b3daca957a041b08"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2806.646949000424,
+            "worker_step_ms": 34.22634299931815,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 45,
+            "admitted": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "active_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "model_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "2475dd5fae8b46c39a489953933f437d",
+                "phase": "prefill",
+                "token_id": 220,
+                "logical_context_length": 4,
+                "logical_cache_length_before": 0,
+                "logical_cache_length_after": 4,
+                "model_input_width": 4,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 1,
+                "token_text": " ",
+                "generated_text": " ",
+                "tick": 45
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2475dd5fae8b46c39a489953933f437d": 0
+            },
+            "logical_cache_lengths_after": {
+              "2475dd5fae8b46c39a489953933f437d": 4
+            },
+            "prefill_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "prefill_input_shape": [
+              1,
+              4
+            ],
+            "decode_request_ids": [],
+            "decode_input_shape": null,
+            "observed_at_ms": 2846.652232998167,
+            "worker_step_ms": 35.24918200128013,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 46,
+            "admitted": [],
+            "active_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "model_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "2475dd5fae8b46c39a489953933f437d",
+                "phase": "decode",
+                "token_id": 16,
+                "logical_context_length": 5,
+                "logical_cache_length_before": 4,
+                "logical_cache_length_after": 5,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 2,
+                "token_text": "1",
+                "generated_text": " 1",
+                "tick": 46
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2475dd5fae8b46c39a489953933f437d": 4
+            },
+            "logical_cache_lengths_after": {
+              "2475dd5fae8b46c39a489953933f437d": 5
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2880.3625389991794,
+            "worker_step_ms": 33.51469200060819,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 47,
+            "admitted": [],
+            "active_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "model_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "completed": [],
+            "events": [
+              {
+                "request_id": "2475dd5fae8b46c39a489953933f437d",
+                "phase": "decode",
+                "token_id": 15,
+                "logical_context_length": 6,
+                "logical_cache_length_before": 5,
+                "logical_cache_length_after": 6,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 3,
+                "token_text": "0",
+                "generated_text": " 10",
+                "tick": 47
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2475dd5fae8b46c39a489953933f437d": 5
+            },
+            "logical_cache_lengths_after": {
+              "2475dd5fae8b46c39a489953933f437d": 6
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2919.5319569989806,
+            "worker_step_ms": 38.93466800218448,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          },
+          {
+            "tick": 48,
+            "admitted": [],
+            "active_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "model_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "completed": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "events": [
+              {
+                "request_id": "2475dd5fae8b46c39a489953933f437d",
+                "phase": "decode",
+                "token_id": 15,
+                "logical_context_length": 7,
+                "logical_cache_length_before": 6,
+                "logical_cache_length_after": 7,
+                "model_input_width": 1,
+                "batch_size": 1,
+                "serving_cache": true,
+                "token_index": 4,
+                "token_text": "0",
+                "generated_text": " 100",
+                "tick": 48
+              }
+            ],
+            "serving_cache": true,
+            "model_forward_count_this_tick": 1,
+            "logical_cache_lengths_before": {
+              "2475dd5fae8b46c39a489953933f437d": 6
+            },
+            "logical_cache_lengths_after": {
+              "2475dd5fae8b46c39a489953933f437d": 7
+            },
+            "prefill_request_ids": [],
+            "prefill_input_shape": null,
+            "decode_request_ids": [
+              "2475dd5fae8b46c39a489953933f437d"
+            ],
+            "decode_input_shape": [
+              1,
+              1
+            ],
+            "observed_at_ms": 2952.600843000255,
+            "worker_step_ms": 32.80917200027034,
+            "waiting_request_ids": [],
+            "queue_depth": 0
+          }
+        ],
+        "trace_note": "Tail is bounded to 128 ticks; full work counts come from the forward observer."
+      }
+    }
+  ],
+  "limitations": [
+    "Only one 0.5B model, GPU and fixed mixed workload; not a production capacity claim.",
+    "10 repetitions (smoke: fewer). Request percentiles pool correlated requests; not tail SLAs or confidence intervals.",
+    "ABBA model-residency sessions with rotated concurrency order reduce, not eliminate, thermal/order bias. No strict per-repetition engine alternation.",
+    "TTFT starts immediately before HTTP send, after client semaphore admission, and ends at first nonempty token-ID event. No internet latency.",
+    "HTTP latency includes serialization, queueing, tokenization/detokenization and terminal SSE delivery, not model load/startup/warmup.",
+    "vLLM receives the same pretokenized prompt IDs; our HTTP endpoint tokenizes text. This favors vLLM slightly and is explicitly not an identical preprocessing path.",
+    "Mean ITL = first-to-last token EVENT arrival span/(tokens-1). Bundled chunks limit per-token timing resolution; raw event sizes/times are retained.",
+    "Our server synchronizes CUDA at idle reset/stats boundaries. Both engines must deliver real token IDs to CPU before SSE delivery; client-side synchronize cannot synchronize another process.",
+    "PyTorch allocated/reserved peaks describe only our allocator. External nvidia-smi process rows are sampled every ~0.5s plus query cost, not exact peaks or allocator-equivalent metrics.",
+    "Runtime forward observation and bounded telemetry are included in its serving cost. vLLM uses its ordinary native server.",
+    "vLLM 0.17.1 uses Transformers <5; our adapter uses Transformers 5.17.0. Both use the same Torch/CUDA package set. Actual versions and server commands are recorded.",
+    "Cross-engine greedy divergence is recorded, not rejected; internal runtime/reference parity is mandatory.",
+    "EOS is honored. Different output lengths change throughput denominators; inspect raw generated-token counts.",
+    "Our logical BlockAllocator is not PagedAttention; actual compact cache collation copies K/V every decode tick.",
+    "User-approved FP32 comparison after repeated strict FP16 parity failures; this is NOT an FP16 performance result or a claim that FP16 was fixed.",
+    "Both engines load the original pinned checkpoint directly as FP32. Earlier promoted-FP16-weight controls cannot authorize this run.",
+    "Our attention is math-only SDPA. vLLM uses its unmodified TRITON_ATTN backend with --enforce-eager (CUDA graphs/compilation disabled); not a best-tuned production-engine claim."
+  ],
+  "aggregates": [
+    {
+      "concurrency": 1,
+      "runtime": {
+        "measured_repetitions": 2,
+        "successful_requests": 8,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 8,
+          "median": 136.61194650012476,
+          "p50": 136.61194650012476,
+          "p90": 146.05094989929057,
+          "p95": 146.94933444934577,
+          "max": 147.84771899940097
+        },
+        "ttft_ms": {
+          "count": 8,
+          "median": 36.48298749794776,
+          "p50": 36.48298749794776,
+          "p90": 37.769136099814204,
+          "p95": 38.38618854970264,
+          "max": 39.00324099959107
+        },
+        "mean_itl_ms": {
+          "count": 8,
+          "median": 33.32599283324574,
+          "p50": 33.32599283324574,
+          "p90": 35.852927999925065,
+          "p95": 36.45201249995201,
+          "max": 37.05109699997896
+        },
+        "cohort_wall_time_ms": {
+          "count": 2,
+          "median": 555.2264400012064,
+          "p50": 555.2264400012064,
+          "p90": 567.2168072018394,
+          "p95": 568.7156031019185,
+          "max": 570.2143990019977
+        },
+        "request_throughput": {
+          "count": 2,
+          "median": 7.209521395091099,
+          "p50": 7.209521395091099,
+          "p90": 7.36521428476648,
+          "p95": 7.384675895975903,
+          "max": 7.404137507185325
+        },
+        "generated_token_throughput": {
+          "count": 2,
+          "median": 28.838085580364396,
+          "p50": 28.838085580364396,
+          "p90": 29.46085713906592,
+          "p95": 29.53870358390361,
+          "max": 29.6165500287413
+        },
+        "torch_peak_allocated_bytes": 1987990016,
+        "torch_peak_reserved_bytes": 2120220672,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "vllm": {
+        "measured_repetitions": 2,
+        "successful_requests": 8,
+        "failed_requests": 0,
+        "request_latency_ms": {
+          "count": 8,
+          "median": 109.19688650028547,
+          "p50": 109.19688650028547,
+          "p90": 115.5930182987504,
+          "p95": 119.46010564915923,
+          "max": 123.32719299956807
+        },
+        "ttft_ms": {
+          "count": 8,
+          "median": 57.06216049838986,
+          "p50": 57.06216049838986,
+          "p90": 59.30455760062614,
+          "p95": 60.34216130046843,
+          "max": 61.37976500031073
+        },
+        "mean_itl_ms": {
+          "count": 8,
+          "median": 17.489478833643567,
+          "p50": 17.489478833643567,
+          "p90": 18.975588033814955,
+          "p95": 20.569935683730968,
+          "max": 22.16428333364699
+        },
+        "cohort_wall_time_ms": {
+          "count": 2,
+          "median": 443.2264214992756,
+          "p50": 443.2264214992756,
+          "p90": 453.3071234996896,
+          "p95": 454.5672112497414,
+          "max": 455.82729899979313
+        },
+        "request_throughput": {
+          "count": 2,
+          "median": 9.03203296368366,
+          "p50": 9.03203296368366,
+          "p90": 9.237456711791511,
+          "p95": 9.263134680304992,
+          "max": 9.288812648818473
+        },
+        "generated_token_throughput": {
+          "count": 2,
+          "median": 36.12813185473464,
+          "p50": 36.12813185473464,
+          "p90": 36.949826847166044,
+          "p95": 37.05253872121997,
+          "max": 37.15525059527389
+        },
+        "torch_peak_allocated_bytes": null,
+        "torch_peak_reserved_bytes": null,
+        "external_vram": "See raw sampled process rows. No exact/comparable peak VRAM claim."
+      },
+      "comparison": {
+        "vllm_over_runtime_token_throughput": 1.2527923101571616,
+        "runtime_over_vllm_latency": 1.251060821223759,
+        "exact_output_parity_rate": 1,
+        "outputs": [
+          {
+            "repetition": 0,
+            "id": "request-00",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          },
+          {
+            "repetition": 0,
+            "id": "request-01",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          },
+          {
+            "repetition": 0,
+            "id": "request-02",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          },
+          {
+            "repetition": 0,
+            "id": "request-03",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          },
+          {
+            "repetition": 1,
+            "id": "request-00",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          },
+          {
+            "repetition": 1,
+            "id": "request-01",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          },
+          {
+            "repetition": 1,
+            "id": "request-02",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          },
+          {
+            "repetition": 1,
+            "id": "request-03",
+            "exact_token_parity": true,
+            "first_divergence_position_zero_based": null
+          }
+        ]
+      }
+    }
+  ],
+  "finished_at_utc": "2026-10-21T13:25:11.832215+00:00",
+  "status": "pass"
+}

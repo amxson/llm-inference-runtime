@@ -1,11 +1,12 @@
 # Phase 3 preparation evidence
 
-Status: **INCOMPLETE — real T4 inference ran; strict internal parity fails**.
+Status: **INCOMPLETE — final GPU comparison validated; publication UI/public signoff pending**.
 
 Qwen/GPT-2 forward-policy support was pushed in `21ccf4f`. This preparation
 adds the reproducible notebook, isolated installation plan, correctness gate,
 loopback SSE benchmark, raw-output validation and export workflow. It does not
-contain a GPU benchmark result or claim that vLLM has executed successfully.
+contain a GPU benchmark result. The initial preparation did not establish vLLM
+execution; later native FP32 execution is documented below.
 
 ## Local verification
 
@@ -188,3 +189,69 @@ compilation, and diff whitespace checks. The new policy tests use CPU/synthetic
 fixtures only. The existing notebook was reached in the authorized Chrome
 profile; its save-conflict warning was not overridden and a four-cell notebook
 backup was downloaded before adding any new execution cell.
+
+## Native FP32 execution recovered after battery interruption
+
+The real T4 run `approved-fp32-20261021T132004512269Z-fc8b7b66` executed
+`14700d4` in the existing isolated environments. Its downloaded correctness
+report passed the guarded review against all 41 source hashes: native FP32
+checkpoint loading, finite FP32 full logits, 24/24 exact requests at each
+capacity 1/2/4, eight manual checks and 24 successful loopback SSE requests
+carrying 1,760 token IDs. Zero-budget, forced-EOS and changing-cohort checks
+passed; the latter retains 11 real trace frames.
+
+The downloaded two-engine smoke report passed raw-artifact validation: ABBA
+sessions, four tiny measured cohorts, 16 successful requests, zero failures,
+FP32/TRITON_ATTN/enforce-eager in unmodified vLLM 0.17.1. Its final eligibility
+is explicitly false. This establishes actual vLLM model execution, not a final
+performance result. The full run continued remotely during the local battery
+shutdown; recovery inspected files/logs without rerunning or restarting it.
+
+Local publication tooling now verifies historical source blobs explicitly;
+collection still requires a clean checkout. The fresh-run notebook/guide use
+the approved FP32 policy and immutable Qwen revision, without changing the
+already-running Colab checkout. After those changes, 235 local Python tests
+passed with six existing warnings; compile and diff checks passed. The prepared
+GPU view passed 48 frontend tests and type checking, using labelled synthetic
+presentation fixtures until final raw measurements are available.
+## Completed approved comparison
+
+The original run finished on 2026-10-21 at 14:14:03 UTC, without a rerun after
+the local battery interruption. The downloaded archive's 118 manifest entries
+all matched. ZIP SHA256:
+`24522713a44c6d50fd93c4cca53a072fc97e212353c83dce2d03c521a80ff188`.
+
+The unmodified [final raw artifact](../../../benchmarks/results/gpu_final_comparison.json)
+records 60 measured cohorts, 24 excluded warmup cohorts and 1,440 successful
+requests with zero failures. Every engine/capacity has ten measured repetitions.
+Internal runtime/reference token IDs match throughout; all 720 paired
+cross-engine outputs also match on this fixed workload. Both the Colab validator
+and local recomputation against the immutable measured source `14700d4` pass.
+
+| Concurrency | Our median latency ms | vLLM median latency ms | Our median tok/s | vLLM median tok/s | vLLM/ours tok/s |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2171.24 | 1679.99 | 29.36 | 38.03 | 1.30 |
+| 2 | 2494.51 | 1723.22 | 49.06 | 70.94 | 1.45 |
+| 4 | 3021.65 | 1741.34 | 76.78 | 126.97 | 1.65 |
+
+Request latency pools 240 observations per engine/capacity; token throughput is
+the median cohort rate. These are not best-tuned vLLM, FP16 or production-capacity
+claims: both engines use native FP32, our math-only SDPA and unmodified vLLM
+TRITON_ATTN/enforce-eager. Prefix caching and CUDA graphs/compilation are disabled
+in vLLM. Full limitations, raw arrivals, output IDs, sampled process memory,
+allocator statistics and forward traces are in the raw artifact.
+
+Selected original files are copied without modification under `hardware/`,
+`correctness/`, `benchmark/` and `checks/`. The original archive also retains
+per-cohort duplicates; its manifest describes the entire ZIP, not only these
+selected copies. The raw artifact SHA256 is
+`e609163efa26fdaaafd87895b1f2cffe66d276c462dd631c9507a393efd72a6d`.
+Earlier failed/diagnostic JSON reports and original manifests are preserved in
+`precision/`; all 49 old manifest hashes and 424 recorded historical source
+hashes across 11 reports were reverified. A promoted-FP16 FP32 control is still
+a diagnostic, not the new native-FP32 primary result.
+
+Remaining: finish the result UI's real-artifact integration tests, final short
+README/postmortem, responsive/public browser review, existing-plan deployment,
+final evidence/review bundle and final Git/project signoff. The user requested a
+pause until their usage window resets; no project-complete claim is made.

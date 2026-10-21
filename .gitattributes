@@ -1,0 +1,3 @@
+# Preserve the original vLLM terminal output, including progress-line CRs/spaces.
+docs/evidence/phase3/benchmark/server-1-vllm.txt -text -whitespace
+docs/evidence/phase3/benchmark/server-2-vllm.txt -text -whitespace

@@ -1,0 +1,7 @@
+{
+  "status": "pass",
+  "final_eligible": true,
+  "source_commit": "14700d46569f2889d9b3ed110cbccf1b293c6c38",
+  "measured_cohorts": 60,
+  "note": "Consistency/provenance validation, not independent attestation of remote execution"
+}

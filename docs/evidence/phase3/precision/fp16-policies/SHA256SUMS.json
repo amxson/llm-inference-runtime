@@ -1,0 +1,9 @@
+{
+  "eager-full-reduction.json": "38a8209803565923519a412b49f01f3bb211fa571e569301339a47a2f9e8beb6",
+  "eager-full-reduction.txt": "2f7908c8e9c49c526faf0c1b87ccfaa9d85a3477892e741f2477d034c484b971",
+  "experiments.json": "7b43988d7e2e7e76c4011c69072ea7983b1229a7076b6486c0d148f1418fc56f",
+  "math-full-reduction.json": "11e851d247585197f248b1bfd5cc7bbe19bcc2e1a994b42420460ce9490c4a8e",
+  "math-full-reduction.txt": "6f9da4457169f54f27649acf26a8ffc9462b5697a155dfd753894c6088ee3d48",
+  "sdpa-full-reduction.json": "623b6aca74975e4ffe441c1ab336f2ad7173b537b9f73394eb658e8044c46e64",
+  "sdpa-full-reduction.txt": "793f185dc25467497c8e5f9b5fab029f82785225e4dc33b3ba73d89a5e670d2f"
+}
